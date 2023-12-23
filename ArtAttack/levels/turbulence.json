@@ -1,0 +1,780 @@
+{
+    "level_name": "turbulence",
+    "sound":
+    {
+        "sound_bank_name": "sound_bank_1",
+        "music_name": "caramelldansen",
+        "music_volume": 0.3
+    },
+    "spawn_locations":
+    {
+        "team_a":
+        [
+            {
+                "x": 10.0,
+                "y": 4870.0
+            },
+            {
+                "x": 72.0,
+                "y": 4870.0
+            },
+            {
+                "x": 134.0,
+                "y": 4870.0
+            },
+            {
+                "x": 196.0,
+                "y": 4800.0
+            }
+        ],
+        "team_b":
+        [
+            {
+                "x": 5752.0,
+                "y": 4870.0
+            },
+            {
+                "x": 5814.0,
+                "y": 4870.0
+            },
+            {
+                "x": 5876.0,
+                "y": 4870.0
+            },
+            {
+                "x": 5938.0,
+                "y": 4870.0
+            }
+        ]
+    },
+    "level_bounds":
+    {
+        "out_of_bounds":
+        {
+            "x": -100.0,
+            "y": -100.0,
+            "width": 6200.0,
+            "height": 6200.0
+        },
+        "camera_bounds":
+        {
+            "x": -50.0,
+            "y": -50.0,
+            "width": 6100.0,
+            "height": 6150.0
+        },
+        "zoom_out_start_bounds":
+        {
+            "x": 0.0,
+            "y": 4000.0,
+            "width": 1920.0,
+            "height": 1080.0
+        },
+        "zoom_out_finish_bounds":
+        {
+            "x": 0.0,
+            "y": 4000.0,
+            "width": 3840.0,
+            "height": 2160.0
+        }
+    },
+    "collision_objects":
+    [
+        {
+            "name": "boundary_wall_left",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": -100.0,
+                "y": 0.0,
+                "width": 100.0,
+                "height": 7000.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "boundary_ceiling",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": -100.0,
+                "y": -100.0,
+                "width": 6200.0,
+                "height": 100.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "boundary_wall_right",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 6000.0,
+                "y": 0.0,
+                "width": 100.0,
+                "height": 7000.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+
+
+
+
+
+        {
+            "name": "spawn_a_floor",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 0.0,
+                "y": 5000.0,
+                "width": 300.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "spawn_a_wall",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 300.0,
+                "y": 4855.0,
+                "width": 50.0,
+                "height": 195.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "spawn_a_ceiling",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 0.0,
+                "y": 4855.0,
+                "width": 300.0,
+                "height": 10.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "spawn_b_floor",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 5700.0,
+                "y": 5000.0,
+                "width": 300.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "spawn_b_wall",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 5650.0,
+                "y": 4855.0,
+                "width": 50.0,
+                "height": 195.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "spawn_a_ceiling",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 5700.0,
+                "y": 4855.0,
+                "width": 300.0,
+                "height": 10.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+
+
+
+
+
+
+        {
+            "name": "boundary_floor",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 0.0,
+                "y": 6000.0,
+                "width": 6000.0,
+                "height": 1000.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": false,
+                "top": true,
+                "right": false,
+                "bottom": false
+            },
+            "colour": "GREY"
+        },
+        {
+            "name": "central_divider",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2900.0,
+                "y": 5025.0,
+                "width": 200.0,
+                "height": 975.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "central_divider_ledge_left",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2300.0,
+                "y": 5025.0,
+                "width": 600.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "central_divider_ledge_right",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 3100.0,
+                "y": 5025.0,
+                "width": 600.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE",
+            "colour": "SADDLE_BROWN"
+        },
+        {
+            "name": "central_divider_ledge_paint",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2300.0,
+                "y": 5000.0,
+                "width": 1400.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": true,
+                "top": true,
+                "right": true,
+                "bottom": false
+            },
+            "colour": "GREY"
+        },
+
+
+
+
+        {
+            "name": "upper_left",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2300.0,
+                "y": 4775.0,
+                "width": 500.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": true,
+                "top": true,
+                "right": true,
+                "bottom": true
+            },
+            "colour": "GREY"
+        },
+        {
+            "name": "upper_right",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 3200.0,
+                "y": 4775.0,
+                "width": 500.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": true,
+                "top": true,
+                "right": true,
+                "bottom": true
+            },
+            "colour": "GREY"
+        },
+        {
+            "name": "upper_jump_mid",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2900.0,
+                "y": 4800.0,
+                "width": 200.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "upper_jump_left",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2150.0,
+                "y": 4575.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "upper_jump_right",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 3700.0,
+                "y": 4575.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "upper_top_paint",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2400.0,
+                "y": 4400.0,
+                "width": 1200.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": true,
+                "top": true,
+                "right": true,
+                "bottom": true
+            },
+            "colour": "GREY"
+        },
+
+
+
+
+
+
+
+        {
+            "name": "left_bottom_left_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 750.0,
+                "y": 5800.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "left_bottom_right_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2600.0,
+                "y": 5800.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "left_lower_paint",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 1000.0,
+                "y": 5675.0,
+                "width": 1500.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": true,
+                "top": true,
+                "right": true,
+                "bottom": true
+            },
+            "colour": "GREY"
+        },
+
+        {
+            "name": "left_mid_left_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 1115.0,
+                "y": 5475.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "left_mid_right_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2025.0,
+                "y": 5475.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "left_mid_paint",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 1350.0,
+                "y": 5335.0,
+                "width": 600.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": true,
+                "top": true,
+                "right": true,
+                "bottom": true
+            },
+            "colour": "GREY"
+        },
+        {
+            "name": "left_upper_mid_right_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 2025.0,
+                "y": 5160.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+
+
+
+
+
+
+        {
+            "name": "right_bottom_left_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 3460.0,
+                "y": 5800.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "right_bottom_right_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 5310.0,
+                "y": 5800.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "right_lower_paint",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 3710.0,
+                "y": 5675.0,
+                "width": 1500.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": true,
+                "top": true,
+                "right": true,
+                "bottom": true
+            },
+            "colour": "GREY"
+        },
+
+        {
+            "name": "right_mid_left_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 3825.0,
+                "y": 5475.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "right_mid_right_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 4735.0,
+                "y": 5475.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        },
+        {
+            "name": "right_mid_paint",
+            "type": "StructurePaintable",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 4060.0,
+                "y": 5335.0,
+                "width": 600.0,
+                "height": 50.0
+            },
+            "collision_type": "STRUCTURE_PAINTABLE",
+            "paintable_faces":
+            {
+                "left": true,
+                "top": true,
+                "right": true,
+                "bottom": true
+            },
+            "colour": "GREY"
+        },
+        {
+            "name": "right_upper_mid_right_jump",
+            "type": "Structure",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 3825.0,
+                "y": 5160.0,
+                "width": 150.0,
+                "height": 25.0
+            },
+            "collision_type": "STRUCTURE_JUMP_THROUGH",
+            "colour": "TAN"
+        }
+
+
+
+
+
+
+    ],
+    "non_collision_objects":
+    [
+        {
+            "name": "level_background",
+            "type": "Visual",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "square_white_4",
+            "rectangle":
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 6000.0,
+                "height": 6000.0
+            },
+            "colour": "LIGHT_SKY_BLUE"
+        },
+        {
+            "name": "cloud_left_spawn",
+            "type": "Visual",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "cloud_1",
+            "rectangle":
+            {
+                "x": 840.0,
+                "y": 5080.0,
+                "width": 600.0,
+                "height": 225.0
+            },
+            "colour": "WHITE"
+        },
+        {
+            "name": "cloud_right_spawn",
+            "type": "Visual",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "cloud_1",
+            "rectangle":
+            {
+                "x": 4792.0,
+                "y": 5138.0,
+                "width": 600.0,
+                "height": 225.0
+            },
+            "colour": "WHITE"
+        },
+        {
+            "name": "cloud_right_mid",
+            "type": "Visual",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "cloud_2",
+            "rectangle":
+            {
+                "x": 4120.0,
+                "y": 4632.0,
+                "width": 600.0,
+                "height": 225.0
+            },
+            "colour": "WHITE"
+        },
+        {
+            "name": "cloud_left_mid",
+            "type": "Visual",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "cloud_2",
+            "rectangle":
+            {
+                "x": 1388.0,
+                "y": 4396.0,
+                "width": 600.0,
+                "height": 225.0
+            },
+            "colour": "WHITE"
+        },
+        {
+            "name": "cloud_upper_mid",
+            "type": "Visual",
+            "sheet_name": "sprite_sheet_1",
+            "frame_name": "cloud_1",
+            "rectangle":
+            {
+                "x": 2900.0,
+                "y": 3980.0,
+                "width": 600.0,
+                "height": 225.0
+            },
+            "colour": "WHITE"
+        }
+    ]
+}
