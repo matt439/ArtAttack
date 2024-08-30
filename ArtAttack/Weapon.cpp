@@ -141,6 +141,156 @@ bool Weapon::facing_left(float rotation)
 	return false;
 }
 
+float Weapon::get_ammo() const
+{
+	return this->_ammo;
+}
+
+void Weapon::reset_ammo()
+{
+    this->_ammo = STARTING_AMMO;
+}
+
+const Vector2F& Weapon::get_player_center() const
+{
+	return this->_player_center;
+}
+
+void Weapon::set_player_center(const Vector2F& player_center)
+{
+	this->_player_center = player_center;
+}
+
+float Weapon::get_rotation() const
+{
+	return this->_rotation;
+}
+
+void Weapon::set_rotation(float rotation)
+{
+	this->_rotation = rotation;
+}
+
+bool Weapon::get_invert_x() const
+{
+	return this->_invert_x;
+}
+
+void Weapon::set_invert_x(bool invert_x)
+{
+	this->_invert_x = invert_x;
+}
+
+bool Weapon::get_invert_y() const
+{
+	return this->_invert_y;
+}
+
+void Weapon::set_invert_y(bool invert_y)
+{
+	this->_invert_y = invert_y;
+}
+
+bool Weapon::get_gun_player_aligned() const
+{
+	return this->_gun_player_aligned;
+}
+
+void Weapon::set_gun_player_aligned(bool gun_player_aligned)
+{
+	this->_gun_player_aligned = gun_player_aligned;
+}
+
+float Weapon::get_shoot_timer() const
+{
+	return this->_shoot_timer;
+}
+
+void Weapon::set_shoot_timer(float shoot_timer)
+{
+	this->_shoot_timer = shoot_timer;
+}
+
+void Weapon::alter_shoot_timer(float dt)
+{
+	this->_shoot_timer += dt;
+}
+
+void Weapon::set_ammo_timer(float ammo_timer)
+{
+	this->_ammo_timer = ammo_timer;
+}
+
+void Weapon::alter_ammo_timer(float dt)
+{
+	this->_ammo_timer += dt;
+}
+
+float Weapon::get_ammo_timer() const
+{
+	return this->_ammo_timer;
+}
+
+void Weapon::set_ammo(float ammo)
+{
+	this->_ammo = ammo;
+}
+
+void Weapon::alter_ammo(float ammo)
+{
+	this->_ammo += ammo;
+}
+
+player_team Weapon::get_team() const
+{
+	return this->_team;
+}
+
+int Weapon::get_player_num() const
+{
+	return this->_player_num;
+}
+
+const Colour& Weapon::get_team_colour() const
+{
+	return this->_team_colour;
+}
+
+wep_type Weapon::get_type() const
+{
+	return this->_type;
+}
+
+const WeaponDetails& Weapon::get_details() const
+{
+	return this->_details;
+}
+
+const Vector2F& Weapon::get_offset() const
+{
+	return this->_details.offset;
+}
+
+const Vector2F& Weapon::get_nozzle_offset() const
+{
+	return this->_details.nozzle_offset;
+}
+
+float Weapon::get_shoot_interval() const
+{
+	return this->_details.shoot_interval;
+}
+
+float Weapon::get_starting_vel_length() const
+{
+	return this->_details.starting_vel_length;
+}
+
+float Weapon::get_ammo_usage() const
+{
+	return this->_details.ammo_usage;
+}
+
 Vector2F Weapon::get_nozzle_pos() const
 {
 	//Vector2 result = this->get_rotation_nozzle_offset(
@@ -197,12 +347,7 @@ bool Weapon::check_if_shooting_and_ammo_update(
     const float dt = *this->_dt;
     bool normal_gun_ok_to_shoot = input.primary_shoot &&
         this->get_gun_player_aligned();
-    //bool roller_ok_to_shoot = this->get_movement() ==
-    //    wep_movement::ON_GROUND &&
-    //    input.primary_shoot; // NOTE: changed this from raw_shooting to primary shoot
     bool ok_to_shoot = normal_gun_ok_to_shoot; //|| roller_ok_to_shoot;
-
-    //std::vector<std::unique_ptr<ICollisionGameObject>> result;
 
     bool result = false;
 
@@ -233,7 +378,6 @@ bool Weapon::check_if_shooting_and_ammo_update(
     this->alter_ammo_timer(dt);
     this->alter_shoot_timer(dt);
 
-    //bool holding_shoot = ok_to_shoot && this->get_ammo() > 0.0f;
     this->_shooting_this_update = ok_to_shoot && this->get_ammo() > 0.0f;
 
     this->handle_shoot_sound(result, this->_shooting_this_update);
@@ -248,22 +392,18 @@ void Weapon::handle_shoot_sound(bool shooting_this_update, bool holding_shoot)
     if (holding_shoot || shooting_this_update)
     {
         this->_sound_bank->play_effect(
-            //this->_details.shoot_sound_name,
             sound_name,
             true,
             this->_details.shoot_sound_volume);
     }
     else
     {
-        //this->_sound_bank->stop_effect(this->_details.shoot_sound_name, true);
         this->_sound_bank->stop_effect(sound_name, true);
     }
 }
 void Weapon::stop_sounds() const
 {
     const std::string& sound_name = this->get_sound_effect_instance_name();
-    
-    //this->_sound_bank->stop_effect(this->_details.shoot_sound_name, true);
     this->_sound_bank->stop_effect(sound_name, true);
 }
 const std::string& Weapon::get_sound_effect_instance_name() const
@@ -276,8 +416,6 @@ const std::string& Weapon::get_sound_effect_instance_name() const
     {
     case wep_type::SPRAYER:
         return SPRAYER_SOUND_DETAILS.get_sound_name(team, player_num);
-    case wep_type::ROLLER:
-        return ROLLER_SOUND_DETAILS.get_sound_name(team, player_num);
     case wep_type::MISTER:
         return MISTER_SOUND_DETAILS.get_sound_name(team, player_num);
     default:
@@ -368,7 +506,6 @@ RelativeVelocityWeapon::RelativeVelocityWeapon(
         color, rotation, origin, effects, layer_depth),
     _rel_details(rel_details)
 {
-
 }
 
 Vector2F RelativeVelocityWeapon::calculate_projectile_launch_velocity(

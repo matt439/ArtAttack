@@ -77,14 +77,14 @@ private:
 	MattMath::RectangleF _out_of_bounds = MattMath::RectangleF::ZERO;
 	MattMath::RectangleF _camera_bounds = MattMath::RectangleF::ZERO;
 
-	std::vector<MattMath::Vector2F> _team_a_spawns = std::vector<MattMath::Vector2F>();
-	std::vector<MattMath::Vector2F> _team_b_spawns = std::vector<MattMath::Vector2F>();
+	std::vector<MattMath::Vector2F> _team_a_spawns;
+	std::vector<MattMath::Vector2F> _team_b_spawns;
 
 	const float* _dt = nullptr;
 	DirectX::SpriteBatch* _sprite_batch = nullptr;
 	ID3D11SamplerState* _sampler_state = nullptr;
 
-	std::vector<player_input> _player_inputs = std::vector<player_input>();
+	std::vector<player_input> _player_inputs;
 	std::unique_ptr<DebugText> _debug_text = nullptr;
 
 	int count_projectiles() const;

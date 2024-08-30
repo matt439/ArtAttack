@@ -30,66 +30,6 @@ Projectile::Projectile(const Vector2F& velocity,
 {
 }
 
-DiffusingProjectile::DiffusingProjectile(
-    const Vector2F& velocity,
-    player_team team,
-    int player_num,
-    const Colour& team_colour,
-    projectile_type type,
-    const float* dt,
-    SpriteBatch* sprite_batch,
-    ResourceManager* resource_manager,
-    const ProjectileDetails& details,
-    const DiffusionDetails& diffusion_details,
-    const Colour& color,
-    float rotation,
-    const Vector2F& origin,
-    SpriteEffects effects,
-    float layer_depth) :
-    Projectile(velocity, team, player_num,
-        team_colour, type, dt, sprite_batch,
-        resource_manager, details, color, rotation,
-        origin, effects, layer_depth),
-    _diffusion_details(diffusion_details)
-{
-}
-
-const Vector2F& DiffusingProjectile::get_base_size() const
-{
-	return this->get_details().size;
-}
-
-Vector2F DiffusingProjectile::calculate_diffusion_size() const
-{
-    const float time = this->get_timer();
-    const DiffusionDetails& details = this->_diffusion_details;
-    const Vector2F& base_size = this->get_base_size();
-    Vector2F multiple;
-    if (time < details.start_time)
-    {
-        multiple = Vector2F::ONE;
-    }
-    else if (time >= details.end_time)
-    {
-        multiple = details.end_scale;
-    }
-    else
-    {
-        float diff_length = details.end_time -
-            details.start_time;
-        float diff_time = time -
-            details.start_time;
-
-        float ratio = diff_time / diff_length;
-
-        multiple = Vector2F::ONE +
-            Vector2F(details.end_scale.x * ratio,
-			details.end_scale.y * ratio);
-    }
-
-    return base_size * multiple;
-}
-
 bool Projectile::is_matching_collision_object_type(
     const ICollisionGameObject* other) const
 {
@@ -281,4 +221,84 @@ void Projectile::update_movement(float gravity, float wind_resistance)
 		this->set_for_deletion(true);
 	}
     this->alter_timer(dt);
+}
+
+float Projectile::get_delete_timer() const
+{
+	return this->get_details().delete_timer;
+}
+
+Vector2F Projectile::get_col_rect_size() const
+{
+	return this->get_details().size;
+}
+
+float Projectile::get_player_damage() const
+{
+	return this->get_details().player_damage;
+}
+
+const ProjectileDetails& Projectile::get_details() const
+{
+	return this->_details;
+}
+
+DiffusingProjectile::DiffusingProjectile(
+    const Vector2F& velocity,
+    player_team team,
+    int player_num,
+    const Colour& team_colour,
+    projectile_type type,
+    const float* dt,
+    SpriteBatch* sprite_batch,
+    ResourceManager* resource_manager,
+    const ProjectileDetails& details,
+    const DiffusionDetails& diffusion_details,
+    const Colour& color,
+    float rotation,
+    const Vector2F& origin,
+    SpriteEffects effects,
+    float layer_depth) :
+    Projectile(velocity, team, player_num,
+        team_colour, type, dt, sprite_batch,
+        resource_manager, details, color, rotation,
+        origin, effects, layer_depth),
+    _diffusion_details(diffusion_details)
+{
+}
+
+const Vector2F& DiffusingProjectile::get_base_size() const
+{
+    return this->get_details().size;
+}
+
+Vector2F DiffusingProjectile::calculate_diffusion_size() const
+{
+    const float time = this->get_timer();
+    const DiffusionDetails& details = this->_diffusion_details;
+    const Vector2F& base_size = this->get_base_size();
+    Vector2F multiple;
+    if (time < details.start_time)
+    {
+        multiple = Vector2F::ONE;
+    }
+    else if (time >= details.end_time)
+    {
+        multiple = details.end_scale;
+    }
+    else
+    {
+        float diff_length = details.end_time -
+            details.start_time;
+        float diff_time = time -
+            details.start_time;
+
+        float ratio = diff_time / diff_length;
+
+        multiple = Vector2F::ONE +
+            Vector2F(details.end_scale.x * ratio,
+                details.end_scale.y * ratio);
+    }
+
+    return base_size * multiple;
 }

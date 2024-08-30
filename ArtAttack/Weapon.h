@@ -46,9 +46,9 @@ public:
 			const MattMath::Vector2F& player_velocity,
 			bool player_facing_right);
 
-	float get_ammo() const { return this->_ammo; }
-	void reset_ammo() { this->_ammo = weapon_consts::STARTING_AMMO; }
-	void set_player_center(const MattMath::Vector2F& player_center) { this->_player_center = player_center; }
+	float get_ammo() const;
+	void reset_ammo();
+	void set_player_center(const MattMath::Vector2F& player_center);
 	void stop_sounds() const;
 
 protected:
@@ -59,40 +59,39 @@ protected:
 
 	virtual void handle_shoot_sound(bool shooting_this_update, bool holding_shoot);
 
-	const MattMath::Vector2F& get_player_center() const { return this->_player_center; }
+	const MattMath::Vector2F& get_player_center() const;
 
-	player_team get_team() const { return this->_team; }
-	int get_player_num() const { return this->_player_num; }
-	const MattMath::Colour& get_team_colour() const { return this->_team_colour; }
-	wep_type get_type() const { return this->_type; }
+	player_team get_team() const;
+	int get_player_num() const;
+	const MattMath::Colour& get_team_colour() const;
+	wep_type get_type() const;
 	MattMath::RectangleF get_nozzle_rectangle() const;
 
+	const WeaponDetails& get_details() const;
+	const MattMath::Vector2F& get_offset() const;
+	const MattMath::Vector2F& get_nozzle_offset() const;
+	float get_shoot_interval() const;
+	float get_starting_vel_length() const;
+	float get_ammo_usage() const;
 
-	const WeaponDetails& get_details() const { return this->_details; }
-	const MattMath::Vector2F& get_offset() const { return this->_details.offset; }
-	const MattMath::Vector2F& get_nozzle_offset() const { return this->_details.nozzle_offset; }
-	float get_shoot_interval() const { return this->_details.shoot_interval; }
-	float get_starting_vel_length() const { return this->_details.starting_vel_length; }
-	float get_ammo_usage() const { return this->_details.ammo_usage; }
+	float get_rotation() const;
+	void set_rotation(float rotation);
+	bool get_invert_x() const;
+	void set_invert_x(bool invert_x);
+	bool get_invert_y() const;
+	void set_invert_y(bool invert_y);
 
-	float get_rotation() const { return this->_rotation; }
-	void set_rotation(float rotation) { this->_rotation = rotation; }
-	bool get_invert_x() const { return this->_invert_x; }
-	void set_invert_x(bool invert_x) { this->_invert_x = invert_x; }
-	bool get_invert_y() const { return this->_invert_y; }
-	void set_invert_y(bool invert_y) { this->_invert_y = invert_y; }
+	void set_gun_player_aligned(bool gun_player_aligned);
+	bool get_gun_player_aligned() const;
+	float get_shoot_timer() const;
+	void set_shoot_timer(float shoot_timer);
+	void alter_shoot_timer(float dt);
 
-	void set_gun_player_aligned(bool gun_player_aligned) { this->_gun_player_aligned = gun_player_aligned; }
-	bool get_gun_player_aligned() const { return this->_gun_player_aligned; }
-	float get_shoot_timer() const { return this->_shoot_timer; }
-	void set_shoot_timer(float shoot_timer) { this->_shoot_timer = shoot_timer; }
-	void alter_shoot_timer(float dt) { this->_shoot_timer += dt; }
-
-	void set_ammo(float ammo) { this->_ammo = ammo; }
-	void alter_ammo(float ammo) { this->_ammo += ammo; }
-	float get_ammo_timer() const { return this->_ammo_timer; }
-	void set_ammo_timer(float ammo_timer) { this->_ammo_timer = ammo_timer; }
-	void alter_ammo_timer(float dt) { this->_ammo_timer += dt; }
+	void set_ammo(float ammo);
+	void alter_ammo(float ammo);
+	float get_ammo_timer() const;
+	void set_ammo_timer(float ammo_timer);
+	void alter_ammo_timer(float dt);
 
 	MattMath::Vector2F get_draw_pos() const;
 	MattMath::Vector2F get_nozzle_pos() const;

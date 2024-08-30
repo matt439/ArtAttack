@@ -18,7 +18,7 @@ namespace weapon_consts
         { 0.0f, 0.0f },
         0.0f,
         1100.0f,
-        0.0f,                              //ammo_usage
+        0.0f,                           //ammo_usage
         "sprite_sheet_1",               //sheet_name
         "error",                        //frame_name
         projectile_type::SPRAY,         //projectile_type
@@ -40,7 +40,7 @@ namespace weapon_consts
         { projectile_consts::DETAILS_SPRAY.size.x / 2.0f, 0.0f },   //nozzle_offset
         0.0f,						//shoot_interval
         1100.0f,                    //starting_vel_length
-        0.007f,                              //ammo_usage
+        0.0f,  //0.007f,                              //ammo_usage
         "sprite_sheet_1",               //sheet_name
         "sprayer",                        //frame_name
         projectile_type::SPRAY,         //projectile_type
@@ -74,7 +74,7 @@ namespace weapon_consts
         { projectile_consts::DETAILS_JET.size.x / 2.0f, 0.0f },	//nozzle_offset
         1.0f,						//shoot_interval
         2000.0f,                    //starting_vel_length
-        0.25f,                              //ammo_usage
+        0.0f, //0.25f,                              //ammo_usage
         "sprite_sheet_1",               //sheet_name
         "sniper",                        //frame_name
         projectile_type::JET,         //projectile_type
@@ -84,34 +84,6 @@ namespace weapon_consts
         //rotation_origin::LEFT_CENTER,
     };
 
-    static const WeaponDetails DETAILS_ROLLER =
-    {
-        { -20.0f, -10.0 },		//offset
-        { 100.0f, 50.0f },	//size
-        { -projectile_consts::DETAILS_ROLLING.size.x / 2.0f, 0.0f },	//nozzle_offset
-        0.0001f,						//shoot_interval
-        0.0f,                        //starting_vel_length
-        0.004f,                              //ammo_usage
-        "sprite_sheet_1",               //sheet_name
-        "roller",                        //frame_name
-        projectile_type::ROLLING,         //projectile_type
-        "sound_bank_1",                 //sound_bank_name
-        "BowlingBallRoll",                  //shoot_sound_name
-        3.0f,                           //shoot_sound_volume
-    };
-
-    static const SoundEffectInstanceWeaponDetails ROLLER_SOUND_DETAILS =
-    {
-        "roller_a0",
-        "roller_a1",
-        "roller_a2",
-        "roller_a3",
-        "roller_b0",
-        "roller_b1",
-        "roller_b2",
-        "roller_b3",
-    };
-
     static const WeaponDetails DETAILS_MISTER =
     {
         { 20.0f, 0.0f },		//offset
@@ -119,7 +91,7 @@ namespace weapon_consts
         { projectile_consts::DETAILS_MIST.size.x / 2.0f, 0.0f },	//nozzle_offset
         0.1f,						//shoot_interval
         300.0f,                     //starting_vel_length
-        0.01f,                              //ammo_usage
+        0.0f, //0.01f,                              //ammo_usage
         "sprite_sheet_1",               //sheet_name
         "mister",                        //frame_name
         projectile_type::MIST,         //projectile_type
@@ -153,7 +125,7 @@ namespace weapon_consts
         { projectile_consts::DETAILS_BALL.size.x / 2.0f, 0.0f },	//nozzle_offset
         0.5f,						//shoot_interval
         800.0f,                     //starting_vel_length
-        0.1f,                              //ammo_usage
+        0.0f, //0.1f,                              //ammo_usage
         "sprite_sheet_1",               //sheet_name
         "bucket",                        //frame_name
         projectile_type::BALL,         //projectile_type

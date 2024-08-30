@@ -46,12 +46,12 @@ public:
 	const MattMath::Shape* get_shape() const override = 0;
 	bool get_for_deletion() const override;
 
-	float get_delete_timer() const { return this->_details.delete_timer; }
-	MattMath::Vector2F get_col_rect_size() const { return this->_details.col_rect_size; }
-	float get_player_damage() const { return this->_details.player_damage; }
+	float get_delete_timer() const;
+	MattMath::Vector2F get_col_rect_size() const;
+	float get_player_damage() const;
 
 protected:
-	const ProjectileDetails& get_details() const { return this->_details; }
+	const ProjectileDetails& get_details() const;
 
 	player_team get_team() const;
 	void set_for_deletion(bool for_deletion);
@@ -79,7 +79,6 @@ private:
 	bool _for_deletion = false;
 
 	const float* _dt = nullptr;
-
 };
 
 class DiffusingProjectile : public Projectile
