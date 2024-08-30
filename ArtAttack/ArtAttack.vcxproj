@@ -236,13 +236,10 @@
     <ClInclude Include="PhysicalObject.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerBuilder.h" />
-    <ClInclude Include="PlayerDrawer.h" />
     <ClInclude Include="PlayerInput.h" />
-    <ClInclude Include="PlayerUpdater.h" />
     <ClInclude Include="player_consts.h" />
     <ClInclude Include="player_input.h" />
     <ClInclude Include="player_team.h" />
-    <ClInclude Include="priority_level.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileBall.h" />
     <ClInclude Include="ProjectileBuilder.h" />
@@ -353,9 +350,7 @@
     <ClCompile Include="PhysicalObject.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerBuilder.cpp" />
-    <ClCompile Include="PlayerDrawer.cpp" />
     <ClCompile Include="PlayerInput.cpp" />
-    <ClCompile Include="PlayerUpdater.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileBall.cpp" />
     <ClCompile Include="ProjectileBuilder.cpp" />

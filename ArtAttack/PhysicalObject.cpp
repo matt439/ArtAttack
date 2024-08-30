@@ -43,7 +43,6 @@ void PhysicalObject::alter_position_y(float y)
 void PhysicalObject::set_position_from_top_right_origin(
 	const Vector2F& top_right_origin)
 {
-	//Vector2F size = this->get_size();
 	float width = this->get_width();
 	Vector2F position = top_right_origin;
 	position.x -= width;
@@ -94,22 +93,10 @@ void PhysicalObject::scale_size(const Vector2F& scale)
 {
 	this->_size *= scale;
 }
-//const RectangleF& PhysicalObject::get_bounding_box() const
-//{
-//	return RectangleF(this->_position, this->_size);
-//}
 RectangleI PhysicalObject::get_bounding_box_i() const
 {
 	return RectangleI(this->_position, this->_size);
 }
-////DirectX::SimpleMath::Rectangle PhysicalObject::get_sm_bounding_box() const
-////{
-////	return this->get_bounding_box().get_sm_rectangle();
-////}
-////RECT PhysicalObject::get_win_rect() const
-////{
-////	return this->get_bounding_box().get_win_rect();
-////}
 Vector2F PhysicalObject::get_center() const
 {
 	return this->_position + this->_size / 2.0f;

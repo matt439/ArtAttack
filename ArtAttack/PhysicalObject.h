@@ -2,7 +2,6 @@
 #define PHYSICALOBJECT_H
 
 #include "MattMath.h"
-//#include "IPhysical.h"
 
 class PhysicalObject
 {
@@ -46,10 +45,8 @@ public:
 
 	virtual void scale_size(const MattMath::Vector2F& scale);
 
-	//virtual const MattMath::RectangleF& get_bounding_box() const override;
 	virtual MattMath::RectangleI get_bounding_box_i() const;
-	//virtual DirectX::SimpleMath::Rectangle get_sm_bounding_box() const;
-	//virtual RECT get_win_rect() const;
+
 	virtual MattMath::Vector2F get_center() const;
 };
 

@@ -11,12 +11,10 @@
 #include "ICollisionGameObject.h"
 #include "MovingObject.h"
 #include "SoundBank.h"
-//#include "TextDropShadow.h"
 
 enum class player_state
 {
     ALIVE,
-    //READY_TO_RESPAWN,
     DEAD
 };
 
@@ -37,8 +35,6 @@ enum class player_animation_state
 	JUMPING,
 	FALLING,
     RUNNING,
-	//SHOOTING,
-	//DYING
 };
 
 enum class player_collision_type
@@ -65,14 +61,11 @@ class Player : public MovingObject, public ICollisionGameObject,
     public AnimationObject, public TextureObject
 {
 private:
-    //MattMath::Vector3F _camera = player_consts::DEFAULT_CAMERA;
-
     MattMath::Camera _camera = MattMath::Camera::DEFAULT_CAMERA;
 
     std::unique_ptr<Weapon> _primary = nullptr;
 
     float _health = player_consts::STARTING_HEALTH;
-    //float _prev_health = player_consts::STARTING_HEALTH;
     float _damage_sound_timer = 0.0f;
     float _air_time = 0.0f;
     bool _facing_right = true;
@@ -96,8 +89,6 @@ private:
 
     MattMath::Vector2F _respawn_position = MattMath::Vector2F::ZERO;
 
-    //std::unique_ptr<TextDropShadow> _countdown_text = nullptr;
-
     SoundBank* _sound_bank = nullptr;
 
     const float* _dt = nullptr;
@@ -109,8 +100,6 @@ private:
     virtual bool is_matching_collision_object_type(
         const ICollisionGameObject* other) const;
 
-    //virtual void on_wall_collision(const ICollisionGameObject* other);
-    //virtual void on_floor_collision(const ICollisionGameObject* other);
     virtual void on_projectile_collision(const ICollisionGameObject* other);
     virtual void on_structure_collision(const ICollisionGameObject* other);
 
@@ -166,18 +155,6 @@ protected:
     virtual void set_respawn_timer(float respawn_timer) { this->_respawn_timer = respawn_timer; }
     virtual void alter_respawn_timer(float change) { this->_respawn_timer += change; }
 
-    //virtual bool get_on_ground() const { return this->_on_ground; }
-    //virtual void set_on_ground(bool on_ground) { this->_on_ground = on_ground; }
-
-    //virtual bool get_on_ceiling() const { return this->_on_ceiling; }
-    //virtual void set_on_ceiling(bool on_ceiling) { this->_on_ceiling = on_ceiling; }
-
-    //virtual bool get_jumping() const { return this->_jumping; }
-    //virtual void set_jumping(bool jumping) { this->_jumping = jumping; }
-
-    /*virtual bool get_prev_requesting_jump() const { return this->_prev_requesting_jump; }
-    virtual void set_prev_requesting_jump(bool prev_requesting_jump) { this->_prev_requesting_jump = prev_requesting_jump; }*/
-
     virtual float get_air_time() const { return this->_air_time; }
     virtual void set_air_time(float air_time) { this->_air_time = air_time; }
     virtual void alter_air_time(float change) { this->_air_time += change; }
@@ -186,10 +163,8 @@ protected:
     virtual void set_score(int score) { this->_score = score; }
     virtual void alter_score(int change) { this->_score += change; }
 
-    //virtual bool get_showing_debug() const { return this->_showing_debug; }
     virtual void set_showing_debug(bool showing_debug) { this->_showing_debug = showing_debug; }
 
-    //virtual player_move_state get_move_state() const { return this->_move_state; }
     virtual void set_move_state(player_move_state move_state) { this->_move_state = move_state; }
 
 public:
@@ -236,11 +211,9 @@ public:
     virtual const MattMath::Viewport& get_viewport() const;
     virtual float get_input_x_movement() const;
     virtual const MattMath::Vector2F& get_input_shoot_direction() const;
-    //virtual direction_lock get_input_shoot_direction_lock() const;
     virtual bool get_input_primary_shoot() const;
     virtual bool get_input_jump_pressed() const;
     virtual bool get_input_jump_held() const;
-    //virtual bool get_prev_requesting_jump() const;
     virtual player_move_state get_move_state() const;
     virtual int get_player_num() const { return this->_player_num; }
 
@@ -263,25 +236,6 @@ public:
     void update_weapon_position();
     void update_prev_rectangle();
     void stop_sounds();
-
-    //const MattMath::RectangleF& get_bounding_box() const override;
-    //const MattMath::RectangleI get_bounding_box_i() const override;
-
-    //const MattMath::RectangleF& get_collision_aabb() const override;
-    //const std::vector<collidable_object_type>&
-    //    get_collidable_object_types() const override;
-    //const std::vector<collidable_object_detail>&
-    //    get_collidable_object_details() const override;
-
-    //const MattMath::Vector2F& get_velocity() const override;
-    //const MattMath::Vector2F& get_dx() const override;
-    //float get_rotation() const override;
-
-
-
-    //Weapon* get_primary() { return this->_primary.get(); }
-    //const Weapon* get_primary_const() const { return this->_primary.get(); }
-    //void set_primary(std::unique_ptr<Weapon> primary) { this->_primary = std::move(primary); }
 };
 
 #endif // !PLAYER_H
