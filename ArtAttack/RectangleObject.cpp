@@ -3,6 +3,9 @@
 
 using namespace MattMath;
 
+RectangleObject::RectangleObject(const MattMath::RectangleF& bounds) :
+	_rectangle(std::make_unique<MattMath::RectangleF>(bounds)) {}
+
 const RectangleF* RectangleObject::get_rectangle_ptr() const
 {
 	return this->_rectangle.get();

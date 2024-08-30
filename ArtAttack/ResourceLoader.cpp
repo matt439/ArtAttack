@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "ResourceLoader.h"
+#include "directory_consts.h"
 
 using namespace directory_consts;
 using namespace DirectX;
 using Microsoft::WRL::ComPtr;
 
-void ResourceLoader::load_textures()
+void ResourceLoader::load_textures() const
 {
     this->load_sprite_sheet_from_directory(TEXTURE_DIRECTORY, "sprite_sheet_1");
 }
@@ -26,7 +27,7 @@ void ResourceLoader::load_sounds()
     this->load_sound_bank_from_directory(SOUNDS_DIRECTORY, "sound_bank_1");
 }
 
-void ResourceLoader::load_level_info()
+void ResourceLoader::load_level_info() const
 {
     this->load_level_info_from_directory(LEVEL_DIRECTORY, "king_of_the_hill", level_stage::KING_OF_THE_HILL);
     this->load_level_info_from_directory(LEVEL_DIRECTORY, "turbulence", level_stage::TURBULENCE);
@@ -103,7 +104,7 @@ void ResourceLoader::load_sprite_sheet(
     const std::string& texture_path,
     const std::string& texture_name,
     const std::string& json_path,
-    const std::string& sprite_sheet_name)
+    const std::string& sprite_sheet_name) const
 {
     this->load_texture(texture_path, texture_name);
 
@@ -117,7 +118,7 @@ void ResourceLoader::load_sprite_sheet(
 
 void ResourceLoader::load_sprite_sheet_from_directory(
     const std::string& directory,
-    const std::string& name)
+    const std::string& name) const
 {
     std::string tex_path = directory + name + ".dds";
     std::string json_path = directory + name + ".json";
@@ -125,7 +126,7 @@ void ResourceLoader::load_sprite_sheet_from_directory(
 }
 
 void ResourceLoader::load_level_info(const std::string& json_path,
-    level_stage stage)
+    level_stage stage) const
 {
     std::unique_ptr<LevelLoadedInfo> lli = std::make_unique<LevelLoadedInfo>(json_path.c_str());
     this->_resource_manager->add_level_info(stage, std::move(lli));
@@ -134,7 +135,7 @@ void ResourceLoader::load_level_info(const std::string& json_path,
 void ResourceLoader::load_level_info_from_directory(
     const std::string& directory,
     const std::string& level_name,
-    level_stage stage)
+    level_stage stage) const
 {
     std::string path = directory + level_name + ".json";
     this->load_level_info(path, stage);

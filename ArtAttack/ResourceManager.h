@@ -11,13 +11,6 @@
 
 class ResourceManager
 {
-private:
-	std::map<std::string, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> _textures;
-	std::map<std::string, std::unique_ptr<DirectX::SpriteFont>> _sprite_fonts;
-	std::map<std::string, std::unique_ptr<SpriteSheet>> _sprite_sheets;
-	std::map<level_stage, std::unique_ptr<LevelLoadedInfo>> _level_infos;
-	std::map<std::string, std::unique_ptr<SoundBank>> _sound_banks;
-
 public:
 	ResourceManager() = default;
 
@@ -44,5 +37,13 @@ public:
 	void reset_all_sprite_fonts();
 	void reset_all_textures();
 	void reset_all_sounds();
+
+private:
+	std::map<std::string, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> _textures;
+	std::map<std::string, std::unique_ptr<DirectX::SpriteFont>> _sprite_fonts;
+	std::map<std::string, std::unique_ptr<SpriteSheet>> _sprite_sheets;
+	std::map<level_stage, std::unique_ptr<LevelLoadedInfo>> _level_infos;
+	std::map<std::string, std::unique_ptr<SoundBank>> _sound_banks;
+
 };
 #endif // !RESOURCEMANAGER_H

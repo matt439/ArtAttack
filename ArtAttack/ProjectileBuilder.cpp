@@ -1,5 +1,10 @@
 #include "pch.h"
 #include "ProjectileBuilder.h"
+#include "ProjectileSpray.h"
+#include "ProjectileJet.h"
+#include "ProjectileBall.h"
+#include "ProjectileMist.h"
+#include "ProjectileRolling.h"
 
 using namespace MattMath;
 using namespace DirectX;
@@ -23,7 +28,7 @@ std::vector<std::unique_ptr<ICollisionGameObject>>
 {
 	switch (type)
     {
-    case projectile_type::SPRAY:
+    case SPRAY:
 	{
 		std::vector<std::unique_ptr<ICollisionGameObject>> projectiles;
 		projectiles.push_back(
@@ -42,7 +47,7 @@ std::vector<std::unique_ptr<ICollisionGameObject>>
 				layer_depth));
 		return projectiles;
 	}
-    case projectile_type::JET:
+    case JET:
 	{
 		std::vector<std::unique_ptr<ICollisionGameObject>> projectiles;
 		projectiles.push_back(
@@ -61,7 +66,7 @@ std::vector<std::unique_ptr<ICollisionGameObject>>
 				layer_depth));
 		return projectiles;
 	}
-	case projectile_type::ROLLING:
+	case ROLLING:
 	{
 		std::vector<std::unique_ptr<ICollisionGameObject>> projectiles;
 		projectiles.push_back(
@@ -80,7 +85,7 @@ std::vector<std::unique_ptr<ICollisionGameObject>>
 				layer_depth));
 		return projectiles;
 	}
-	case projectile_type::MIST:
+	case MIST:
 		return this->build_mist_projectiles(
 			position,
 			velocity,
@@ -95,7 +100,7 @@ std::vector<std::unique_ptr<ICollisionGameObject>>
 			origin,
 			effects,
 			layer_depth);
-	case projectile_type::BALL:
+	case BALL:
 	{
 		std::vector<std::unique_ptr<ICollisionGameObject>> projectiles;
 		projectiles.push_back(

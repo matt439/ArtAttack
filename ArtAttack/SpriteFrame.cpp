@@ -4,13 +4,12 @@
 using namespace MattMath;
 
 SpriteFrame::SpriteFrame(const RectangleI& source_rectangle,
-	const Vector2F& origin,
-	bool rotated)
+	const Vector2F& origin, bool rotated) :
+	_origin(origin), _rotated(rotated)
 {
-	this->set_source_rectangle(source_rectangle);
-	this->_origin = origin;
-	this->_rotated = rotated;
+	set_source_rectangle(source_rectangle);
 }
+
 SpriteFrame::SpriteFrame(const Vector2F& position, const Vector2F& size,
 	const Vector2F& origin, bool rotated)
 {
@@ -31,6 +30,6 @@ void SpriteFrame::set_source_rectangle(const RectangleI& source_rectangle)
 void SpriteFrame::set_source_rectangle(const Vector2F& position,
 	const Vector2F& size)
 {
-	RectangleI source_rectan = RectangleI(position, size);
+	auto source_rectan = RectangleI(position, size);
 	this->_source_rectangle = source_rectan.get_win_rect();
 }

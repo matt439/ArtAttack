@@ -31,7 +31,7 @@ ProjectileBall::ProjectileBall(const RectangleF& rectangle,
 
 void ProjectileBall::update()
 {
-	const projectile_details& details = this->get_details();
+	const ProjectileDetails& details = this->get_details();
 	
 	Projectile::update_movement(details.gravity,
 		details.wind_resistance);

@@ -5,8 +5,10 @@
 
 class RectangleObject
 {
-private:
-	std::unique_ptr<MattMath::RectangleF> _rectangle = nullptr;
+public:
+	RectangleObject() = default;
+	RectangleObject(const MattMath::RectangleF& bounds);
+	virtual ~RectangleObject() = default;
 protected:
 	virtual const MattMath::RectangleF* get_rectangle_ptr() const;
 	virtual const MattMath::RectangleF& get_rectangle() const;
@@ -23,10 +25,9 @@ protected:
 	virtual void scale(const MattMath::Vector2F& amount);
 	virtual void set_position(const MattMath::Vector2F& position);
 	virtual void set_size(const MattMath::Vector2F& size);
-public:
-	RectangleObject() {}
-	RectangleObject(const MattMath::RectangleF& bounds) :
-		_rectangle(std::make_unique<MattMath::RectangleF>(bounds)) {}
+
+private:
+	std::unique_ptr<MattMath::RectangleF> _rectangle = nullptr;
 };
 
 #endif // !RECTANGLEOBJECT_H

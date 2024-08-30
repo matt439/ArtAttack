@@ -22,7 +22,7 @@ private:
         const MattMath::Vector2I& vec) const;
 
 public:
-    ResolutionManager() {}
+    ResolutionManager() = default;
     MattMath::Vector2I get_resolution_ivec() const;
     MattMath::Vector2F get_resolution_vec() const;
     std::string get_resolution_string() const;

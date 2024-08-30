@@ -92,25 +92,22 @@ screen_resolution ResolutionManager::convert_string_to_resolution(
     {
         return screen_resolution::S_1280_720;
     }
-    else if (string == this->convert_resolution_to_string(
+    if (string == this->convert_resolution_to_string(
         screen_resolution::S_1920_1080))
     {
         return screen_resolution::S_1920_1080;
     }
-    else if (string == this->convert_resolution_to_string(
+    if (string == this->convert_resolution_to_string(
         screen_resolution::S_2560_1440))
     {
         return screen_resolution::S_2560_1440;
     }
-    else if (string == this->convert_resolution_to_string(
+    if (string == this->convert_resolution_to_string(
         screen_resolution::S_3840_2160))
     {
         return screen_resolution::S_3840_2160;
     }
-    else
-    {
-        return screen_resolution::S_1280_720;
-    }
+    return screen_resolution::S_1280_720;
 }
 
 screen_resolution ResolutionManager::convert_vec_to_resolution(
@@ -121,25 +118,22 @@ screen_resolution ResolutionManager::convert_vec_to_resolution(
     {
 		return screen_resolution::S_1280_720;
 	}
-    else if (vec == this->convert_resolution_to_vec(
+    if (vec == this->convert_resolution_to_vec(
         screen_resolution::S_1920_1080))
     {
 		return screen_resolution::S_1920_1080;
 	}
-    else if (vec == this->convert_resolution_to_vec(
+    if (vec == this->convert_resolution_to_vec(
         screen_resolution::S_2560_1440))
     {
 		return screen_resolution::S_2560_1440;
 	}
-    else if (vec == this->convert_resolution_to_vec(
+    if (vec == this->convert_resolution_to_vec(
         screen_resolution::S_3840_2160))
     {
-		return screen_resolution::S_3840_2160;
-	}
-    else
-    {
-		return screen_resolution::S_1280_720;
-	}
+        return screen_resolution::S_3840_2160;
+    }
+	return screen_resolution::S_1280_720;
 }
 
 screen_resolution ResolutionManager::convert_ivec_to_resolution(
@@ -149,20 +143,17 @@ screen_resolution ResolutionManager::convert_ivec_to_resolution(
     {
         return screen_resolution::S_1280_720;
     }
-    else if (vec.x == 1920 && vec.y == 1080)
+    if (vec.x == 1920 && vec.y == 1080)
     {
 		return screen_resolution::S_1920_1080;
 	}
-    else if (vec.x == 2560 && vec.y == 1440)
+    if (vec.x == 2560 && vec.y == 1440)
     {
 		return screen_resolution::S_2560_1440;
 	}
-    else if (vec.x == 3840 && vec.y == 2160)
+    if (vec.x == 3840 && vec.y == 2160)
     {
 		return screen_resolution::S_3840_2160;
 	}
-    else
-    {
-		return screen_resolution::S_1280_720;
-	}
+	return screen_resolution::S_1280_720;
 }

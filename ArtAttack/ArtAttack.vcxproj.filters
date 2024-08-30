@@ -65,9 +65,7 @@
     <ClInclude Include="ProjectileMist.h" />
     <ClInclude Include="ProjectileRolling.h" />
     <ClInclude Include="ProjectileSpray.h" />
-    <ClInclude Include="RectangleAnimation.h" />
     <ClInclude Include="RectangleObject.h" />
-    <ClInclude Include="RectangleTexture.h" />
     <ClInclude Include="ResolutionManager.h" />
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -136,9 +134,7 @@
     <ClCompile Include="ProjectileMist.cpp" />
     <ClCompile Include="ProjectileRolling.cpp" />
     <ClCompile Include="ProjectileSpray.cpp" />
-    <ClCompile Include="RectangleAnimation.cpp" />
     <ClCompile Include="RectangleObject.cpp" />
-    <ClCompile Include="RectangleTexture.cpp" />
     <ClCompile Include="ResolutionManager.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
