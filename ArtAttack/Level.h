@@ -93,7 +93,7 @@ private:
 
 	void update_level_logic(const std::vector<player_input>& player_inputs) const;
 
-	void draw_active_level();
+	void draw_active_level() const;
 
 	void stop_player_sounds() const;
 };

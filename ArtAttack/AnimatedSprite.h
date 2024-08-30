@@ -33,7 +33,7 @@ public:
 		const MattMath::Vector2F& origin = MattMath::Vector2F::ZERO,
 		float scale = 1.0f,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
-		float layer_depth = 0.0f);
+		float layer_depth = 0.0f) const;
 	void update();
 	void reset();
 	void stop();

@@ -29,7 +29,7 @@ public:
 	void load_texture(const std::string& texture_path,
 		const std::string& texture_name) const;
 	void load_texture_from_directory(const std::string& directory,
-		const std::string& texture_name);
+		const std::string& texture_name) const;
 
 	void load_sprite_font(const std::string& font_path,
 		const std::string& font_name);

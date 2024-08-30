@@ -235,7 +235,7 @@ public:
 
     void update_weapon_position() const;
     void update_prev_rectangle();
-    void stop_sounds();
+    void stop_sounds() const;
 };
 
 #endif // !PLAYER_H

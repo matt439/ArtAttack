@@ -192,9 +192,9 @@ std::vector<PaintTile> StructurePaintable::generate_paint_tiles() const
 
 	return paint_tiles;
 }
-paint_total StructurePaintable::get_paint_total() const
+PaintTotal StructurePaintable::get_paint_total() const
 {
-	paint_total total = paint_total();
+	PaintTotal total = PaintTotal();
 	for (auto& paint_tile : this->_paint_tiles)
 	{
 		player_team team = paint_tile.get_team();

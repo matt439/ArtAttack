@@ -72,7 +72,7 @@ void Game::tick()
 }
 
 // Updates the world.
-void Game::update(DX::StepTimer const& timer)
+void Game::update(DX::StepTimer const& timer) const
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
     *this->_dt = elapsedTime;
@@ -218,7 +218,7 @@ void Game::create_window_size_dependent_resources()
     //auto size = _deviceResources->GetOutputSize();
 }
 
-void Game::OnDeviceLost()
+void Game::on_device_lost()
 {
     // TODO: Add Direct3D resource cleanup here.
     _spriteBatch.reset();
@@ -228,7 +228,7 @@ void Game::OnDeviceLost()
     this->_resource_manager->reset_all_sounds();
 }
 
-void Game::OnDeviceRestored()
+void Game::on_device_restored()
 {
     create_device_dependent_resources();
 

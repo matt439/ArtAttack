@@ -10,17 +10,8 @@
 
 class LevelLoadedInfo
 {
-private:
-	rapidjson::Document _json_doc;
-
-	std::vector<MattMath::Vector2F>
-		decode_team_spawns_json(const rapidjson::Value& json) const;
-
-	rapidjson::Document load_from_json(const char* json_path) const;
-
 public:
-	LevelLoadedInfo(const char* json_path) :
-		_json_doc(load_from_json(json_path)) {}
+	LevelLoadedInfo(const char* json_path);
 
 	std::string get_level_name() const;
 	std::vector<MattMath::Vector2F> get_team_a_spawns() const;
@@ -38,5 +29,13 @@ public:
 	std::string get_sound_bank_name() const;
 	std::string get_music_name() const;
 	float get_music_volume() const;
+private:
+	rapidjson::Document _json_doc;
+
+	std::vector<MattMath::Vector2F>
+		decode_team_spawns_json(const rapidjson::Value& json) const;
+
+	rapidjson::Document load_from_json(const char* json_path) const;
+
 };
 #endif // !LEVEL_LOADED_INFO_H

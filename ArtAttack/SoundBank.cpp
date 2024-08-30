@@ -36,7 +36,7 @@ void SoundBank::play_effect(const std::string& effect_name, bool loop, float vol
 	sei->SetPan(pan);
 	sei->Play(loop);
 }
-void SoundBank::stop_effect(const std::string& effect_name, bool immediate)
+void SoundBank::stop_effect(const std::string& effect_name, bool immediate) const
 {
 	this->get_sound_effect_instance(effect_name)->Stop(immediate);
 }

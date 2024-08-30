@@ -219,7 +219,7 @@ void Level::draw()
 {		
 	this->draw_active_level();
 }
-void Level::draw_active_level()
+void Level::draw_active_level() const
 {
 	for (auto& player : *this->_player_objects)
 	{

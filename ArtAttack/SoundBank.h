@@ -23,7 +23,7 @@ public:
 
 	void play_effect(const std::string& effect_name, bool loop = false, float volume = 1.0f,
 		float pitch = 0.0f, float pan = 0.0f);
-	void stop_effect(const std::string& effect_name, bool immediate = false);
+	void stop_effect(const std::string& effect_name, bool immediate = false) const;
 	void pause_effect(const std::string& effect_name);
 	void resume_effect(const std::string& effect_name);
 	void set_effect_volume(const std::string& effect_name, float volume);

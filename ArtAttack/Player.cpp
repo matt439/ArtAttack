@@ -919,7 +919,7 @@ player_animation_state Player::calculate_animation_state() const
 		throw std::exception("Invalid player move state.");
 	}
 }
-void Player::stop_sounds()
+void Player::stop_sounds() const
 {
     this->_primary->stop_sounds();
 }

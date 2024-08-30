@@ -208,7 +208,6 @@
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="LevelLoadedInfo.h" />
     <ClInclude Include="LevelObjectBuilder.h" />
-    <ClInclude Include="level_end_info.h" />
     <ClInclude Include="level_mode.h" />
     <ClInclude Include="level_stage.h" />
     <ClInclude Include="MattMath.h" />

@@ -11,7 +11,7 @@ private:
 public:
 	StateContext() {}
 	void update() const;
-	void draw();
+	void draw() const;
 	void transition_to(std::unique_ptr<State> state);
 };
 

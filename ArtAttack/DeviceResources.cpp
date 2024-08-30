@@ -419,7 +419,7 @@ void DeviceResources::HandleDeviceLost()
 {
     if (m_deviceNotify)
     {
-        m_deviceNotify->OnDeviceLost();
+        m_deviceNotify->on_device_lost();
     }
 
     m_d3dDepthStencilView.Reset();
@@ -448,7 +448,7 @@ void DeviceResources::HandleDeviceLost()
 
     if (m_deviceNotify)
     {
-        m_deviceNotify->OnDeviceRestored();
+        m_deviceNotify->on_device_restored();
     }
 }
 

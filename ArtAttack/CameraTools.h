@@ -20,7 +20,7 @@ namespace camera_consts
 class CameraTools
 {
 private:
-    border_thickness calculate_camera_scroll_border(
+    BorderThickness calculate_camera_scroll_border(
         const MattMath::Vector2F& viewport_size) const;
 public:
     MattMath::Camera calculate_camera(

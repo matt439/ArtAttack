@@ -27,8 +27,8 @@ public:
     void tick();
 
     // IDeviceNotify
-    void OnDeviceLost() override;
-    void OnDeviceRestored() override;
+    void on_device_lost() override;
+    void on_device_restored() override;
 
     // Messages
     void on_activated();
@@ -42,7 +42,7 @@ public:
     void set_game_data(GameData* game_data) { this->_data = game_data; }
 
 private:
-    void update(DX::StepTimer const& timer);
+    void update(DX::StepTimer const& timer) const;
     void render();
 
     void clear() const;

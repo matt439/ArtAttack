@@ -46,7 +46,7 @@ public:
 	virtual void draw() override;
 	virtual void on_collision(const ICollisionGameObject* other) override;
 
-	paint_total get_paint_total() const override;
+	PaintTotal get_paint_total() const override;
 protected:
 
 private:

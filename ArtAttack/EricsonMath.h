@@ -6,7 +6,6 @@
 // 2005
 
 #include "MattMath.h"
-#include <cmath>
 
 namespace EricsonMath
 {

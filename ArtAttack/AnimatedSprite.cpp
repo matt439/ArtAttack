@@ -41,7 +41,7 @@ void AnimatedSprite::draw(SpriteBatch* sprite_batch,
 	const Vector2F& origin,
 	float scale,
 	SpriteEffects effects,
-	float layer_depth)
+	float layer_depth) const
 {
 	const RECT* source_rect =
 		this->_animation_strip->get_frame_rect(this->_frame_index);

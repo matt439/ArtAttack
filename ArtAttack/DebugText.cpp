@@ -91,6 +91,8 @@ void DebugText::draw_debug_info(const Player* player, int num_projectiles) const
     case player_move_state::JUMPING:
         move_state_string += "jumping";
         break;
+	default:
+        break;
     };
     lines.push_back(move_state_string);
 

@@ -15,7 +15,7 @@ SoundBank* SoundBankObject::get_sound_bank() const
 {
 	return this->_resource_manager->get_sound_bank(this->_sound_bank_name);
 }
-SoundBank* SoundBankObject::get_sb()
+SoundBank* SoundBankObject::get_sb() const
 {
 	return this->get_sound_bank();
 }

@@ -65,7 +65,7 @@ void ResourceLoader::load_texture(const std::string& texture_path,
 
 void ResourceLoader::load_texture_from_directory(
     const std::string& directory,
-    const std::string& texture_name)
+    const std::string& texture_name) const
 {
     std::string path = directory + texture_name + ".dds";
     this->load_texture(path, texture_name);

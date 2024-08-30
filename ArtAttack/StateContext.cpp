@@ -9,7 +9,7 @@ void StateContext::update() const
 	}
 	this->_state->update();
 }
-void StateContext::draw()
+void StateContext::draw() const
 {
 	if (this->_state == nullptr)
 	{

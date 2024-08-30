@@ -155,7 +155,7 @@ void SpriteSheet::draw(SpriteBatch* sprite_batch,
 	float rotation,
 	const Vector2F& origin,
 	SpriteEffects effects,
-	float layer_depth)
+	float layer_depth) const
 {
 	sprite_batch->Draw(
 		this->_texture,
