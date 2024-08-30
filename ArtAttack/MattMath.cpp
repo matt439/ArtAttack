@@ -85,7 +85,7 @@ void MattMath::clamp_ref(int& value, int min, int max)
 int MattMath::sign(const Vector2F& p1,
 	const Vector2F& p2, const Vector2F& p3)
 {
-	return (p1.x - p3.x) * (p2.y - p3.y) -
+	return (p2.y - p3.y) * (p1.x - p3.x) -
 		(p2.x - p3.x) * (p1.y - p3.y);
 }
 
@@ -2169,17 +2169,11 @@ float MattMath::determinant(const MatrixF& matrix)
 					}
 				}
 			}
-			result += matrix.get_element(0, i) * determinant(submatrix) * ((i % 2 == 0) ? 1 : -1);
+			result += (i % 2 == 0 ? 1 : -1) * (matrix.get_element(0, i) * determinant(submatrix));
 		}
 		return result;
 	}
 }
-//std::vector<MatrixF> MattMath::eigenvectors(const MatrixF& matrix)
-//{
-//}
-//std::vector<float> MattMath::eigenvalues(const MatrixF& matrix)
-//{
-//}
 
 #pragma endregion MatrixF
 

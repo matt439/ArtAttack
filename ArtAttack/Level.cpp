@@ -28,21 +28,21 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	_collision_objects(std::move(collision_objects)),
 	_player_objects(std::move(player_objects)),
 	_viewport_dividers(std::move(viewport_dividers)),
-	_stage(stage),
+	_music_name(music_name),
+	_music_volume(music_volume),
+	_level_name(level_name),
+	_resolution_manager(resolution_manager),
+	_viewport_manager(viewport_manager),
+	_resource_manager(resource_manager),
 	_team_colours(team_colours),
+	_stage(stage),
 	_out_of_bounds(out_of_bounds),
 	_camera_bounds(camera_bounds),
 	_team_a_spawns(team_a_spawns),
 	_team_b_spawns(team_b_spawns),
-	_music_name(music_name),
-	_music_volume(music_volume),
 	_dt(dt),
 	_sprite_batch(sprite_batch),
-	_sampler_state(sampler_state),
-	_level_name(level_name),
-	_resolution_manager(resolution_manager),
-	_viewport_manager(viewport_manager),
-	_resource_manager(resource_manager)
+	_sampler_state(sampler_state)
 {
 	this->_debug_text = std::make_unique<DebugText>(sprite_batch,
 		resource_manager, dt, resolution_manager);
@@ -69,6 +69,7 @@ void Level::update(const std::vector<player_input>& player_inputs)
 				object->get_camera(),
 				this->_camera_bounds);
 			object->set_camera(camera);
+			player_index++;
 		}
 		this->_first_update = false;
 	}
@@ -270,8 +271,6 @@ void Level::draw_active_level()
 		}
 
 		this->_sprite_batch->End();
-
-		player_state state = player->get_state();
 
 		// draw debug info
 		if (player->get_showing_debug())

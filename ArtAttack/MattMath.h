@@ -2,7 +2,6 @@
 #define MATTMATH_H
 
 #include "SimpleMath.h"
-#include <cmath>
 #include "shape_type.h"
 
 namespace MattMath

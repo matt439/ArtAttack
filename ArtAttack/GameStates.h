@@ -9,12 +9,12 @@
 
 enum class game_level_state
 {
-    FIRST_UPDATE,
-    SECOND_UPDATE,
-    ACTIVE,
+	FIRST_UPDATE,
+	SECOND_UPDATE,
+	ACTIVE,
 };
 
-class GameLevel : public State
+class GameLevel final : public State
 {
 private:
     GameData* _game_data = nullptr;
@@ -23,10 +23,10 @@ private:
     std::unique_ptr<LevelBuilder> _level_builder = nullptr;
     std::unique_ptr<PlayerInput> _player_input = nullptr;
     game_level_state _state = game_level_state::FIRST_UPDATE;
-    GameData* get_data();
+    GameData* get_data() const;
 public:
     GameLevel(GameData* game_data, const MenuLevelSettings& settings) :
-        _settings(settings), _game_data(game_data) {}
+        _game_data(game_data), _settings(settings) {}
     void update() override;
     void draw() override;
     void init() override;

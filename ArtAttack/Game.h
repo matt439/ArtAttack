@@ -10,14 +10,45 @@
 
 class Game final : public DX::IDeviceNotify, public StateContext
 {
+public:
+    Game() noexcept(false);
+    ~Game();
+
+    Game(Game&&) = default;
+    Game& operator= (Game&&) = default;
+
+    Game(Game const&) = delete;
+    Game& operator= (Game const&) = delete;
+
+    // Initialization and management
+    void initialize(GameData* game_data);
+
+    // Basic game loop
+    void tick();
+
+    // IDeviceNotify
+    void OnDeviceLost() override;
+    void OnDeviceRestored() override;
+
+    // Messages
+    void on_activated();
+    void on_deactivated();
+    void on_suspending();
+    void on_resuming();
+    void on_window_moved();
+    void on_display_change();
+    void on_window_size_changed(int width, int height);
+
+    void set_game_data(GameData* game_data) { this->_data = game_data; }
+
 private:
-    void Update(DX::StepTimer const& timer);
-    void Render();
+    void update(DX::StepTimer const& timer);
+    void render();
 
-    void Clear();
+    void clear();
 
-    void CreateDeviceDependentResources();
-    void CreateWindowSizeDependentResources();
+    void create_device_dependent_resources();
+    void create_window_size_dependent_resources();
 
     std::unique_ptr<DX::DeviceResources> _deviceResources = nullptr;
     DX::StepTimer m_timer = DX::StepTimer();
@@ -31,37 +62,6 @@ private:
     std::unique_ptr<ViewportManager> _viewport_manager = nullptr;
     GameData* _data = nullptr;
     std::unique_ptr<DirectX::AudioEngine> _audio_engine = nullptr;
-
-public:
-    Game() noexcept(false);
-    ~Game();
-
-    Game(Game&&) = default;
-    Game& operator= (Game&&) = default;
-
-    Game(Game const&) = delete;
-    Game& operator= (Game const&) = delete;
-
-    // Initialization and management
-    void Initialize(GameData* game_data);
-
-    // Basic game loop
-    void Tick();
-
-    // IDeviceNotify
-    void OnDeviceLost() override;
-    void OnDeviceRestored() override;
-
-    // Messages
-    void OnActivated();
-    void OnDeactivated();
-    void OnSuspending();
-    void OnResuming();
-    void OnWindowMoved();
-    void OnDisplayChange();
-    void OnWindowSizeChanged(int width, int height);
-
-    void set_game_data(GameData* game_data) { this->_data = game_data; }
 };
 
 #endif // !GAME_H

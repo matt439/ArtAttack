@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "GameStates.h"
 
-GameData* GameLevel::get_data()
+GameData* GameLevel::get_data() const
 {
     return this->_game_data;
 }
@@ -49,16 +49,8 @@ void GameLevel::update()
 
 void GameLevel::draw()
 {
-    switch (this->_state)
+    if (this->_state == game_level_state::ACTIVE)
     {
-    case game_level_state::FIRST_UPDATE:
-        break;
-    case game_level_state::SECOND_UPDATE:
-        break;
-    case game_level_state::ACTIVE:
-        this->_level->draw();
-        break;
-	default:
-		break;
+		this->_level->draw();
     }
 }

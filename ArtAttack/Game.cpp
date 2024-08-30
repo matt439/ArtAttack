@@ -29,7 +29,7 @@ Game::~Game()
 }
 
 // Initialize the Direct3D resources required to run.
-void Game::Initialize(GameData* game_data)
+void Game::initialize(GameData* game_data)
 {
     this->_data = game_data;
 
@@ -46,10 +46,10 @@ void Game::Initialize(GameData* game_data)
     _audio_engine = std::make_unique<AudioEngine>(eflags);
 
     _deviceResources->CreateDeviceResources();
-    CreateDeviceDependentResources();
+    create_device_dependent_resources();
 
     _deviceResources->CreateWindowSizeDependentResources();
-    CreateWindowSizeDependentResources();
+    create_window_size_dependent_resources();
 
     this->_gamepad = std::make_unique<GamePad>();
     this->_data->set_gamepad(this->_gamepad.get());
@@ -61,22 +61,22 @@ void Game::Initialize(GameData* game_data)
 }
 
 #pragma region Frame Update
-void Game::Tick()
+void Game::tick()
 {
     m_timer.Tick([&]()
         {
-            Update(m_timer);
+            update(m_timer);
         });
 
-    Render();
+    render();
 }
 
 // Updates the world.
-void Game::Update(DX::StepTimer const& timer)
+void Game::update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
     *this->_dt = elapsedTime;
-	this->update();
+	this->StateContext::update();
     // TODO: Add your game logic here.
     if (!_audio_engine->Update())
     {
@@ -88,7 +88,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 #pragma region Frame Render
 // Draws the scene.
-void Game::Render()
+void Game::render()
 {
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
@@ -96,7 +96,7 @@ void Game::Render()
         return;
     }
 
-    Clear();
+    clear();
 
     _deviceResources->PIXBeginEvent(L"Render");
 
@@ -109,7 +109,7 @@ void Game::Render()
 }
 
 // Helper method to clear the back buffers.
-void Game::Clear()
+void Game::clear()
 {
     _deviceResources->PIXBeginEvent(L"Clear");
 
@@ -130,7 +130,7 @@ void Game::Clear()
 
 #pragma region Message Handlers
 // Message handlers
-void Game::OnActivated()
+void Game::on_activated()
 {
     // TODO: Game is becoming active window.
 
@@ -138,20 +138,20 @@ void Game::OnActivated()
         this->_gamepad->Resume();
 }
 
-void Game::OnDeactivated()
+void Game::on_deactivated()
 {
     // TODO: Game is becoming background window.
     this->_gamepad->Suspend();
 }
 
-void Game::OnSuspending()
+void Game::on_suspending()
 {
     // TODO: Game is being power-suspended (or minimized).
     this->_gamepad->Suspend();
     _audio_engine->Suspend();
 }
 
-void Game::OnResuming()
+void Game::on_resuming()
 {
     m_timer.ResetElapsedTime();
     this->_gamepad->Resume();
@@ -159,23 +159,23 @@ void Game::OnResuming()
     // TODO: Game is being power-resumed (or returning from minimize).
 }
 
-void Game::OnWindowMoved()
+void Game::on_window_moved()
 {
     auto const r = _deviceResources->GetOutputSize();
     _deviceResources->WindowSizeChanged(r.right, r.bottom);
 }
 
-void Game::OnDisplayChange()
+void Game::on_display_change()
 {
     _deviceResources->UpdateColorSpace();
 }
 
-void Game::OnWindowSizeChanged(int width, int height)
+void Game::on_window_size_changed(int width, int height)
 {
     if (!_deviceResources->WindowSizeChanged(width, height))
         return;
 
-    CreateWindowSizeDependentResources();
+    create_window_size_dependent_resources();
 
     // TODO: Game window is being resized.
 }
@@ -184,7 +184,7 @@ void Game::OnWindowSizeChanged(int width, int height)
 
 #pragma region Direct3D Resources
 // These are the resources that depend on the device.
-void Game::CreateDeviceDependentResources()
+void Game::create_device_dependent_resources()
 {
     auto device = _deviceResources->GetD3DDevice();
 
@@ -213,9 +213,9 @@ void Game::CreateDeviceDependentResources()
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
-void Game::CreateWindowSizeDependentResources()
+void Game::create_window_size_dependent_resources()
 {
-    auto size = _deviceResources->GetOutputSize();
+    //auto size = _deviceResources->GetOutputSize();
 }
 
 void Game::OnDeviceLost()
@@ -230,9 +230,9 @@ void Game::OnDeviceLost()
 
 void Game::OnDeviceRestored()
 {
-    CreateDeviceDependentResources();
+    create_device_dependent_resources();
 
-    CreateWindowSizeDependentResources();
+    create_window_size_dependent_resources();
 }
 
 #pragma endregion

@@ -1,22 +1,47 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
-#include "ICollisionGameObject.h"
-#include "TeamColour.h"
-#include "level_stage.h"
-#include "PlayerInput.h"
-#include "Player.h"
-#include "ResolutionManager.h"
-#include "ViewportManager.h"
-#include "DebugText.h"
 #include "CameraTools.h"
-#include "level_end_info.h"
-#include "IPaintableGameObject.h"
-#include "TextDropShadow.h"
+#include "DebugText.h"
+#include "ICollisionGameObject.h"
+#include "level_stage.h"
+#include "Player.h"
+#include "PlayerInput.h"
+#include "ResolutionManager.h"
 #include "SoundBank.h"
+#include "TeamColour.h"
+#include "TextDropShadow.h"
+#include "ViewportManager.h"
 
 class Level
 {
+public:
+	Level() = default;
+	Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_collision_objects,
+		std::unique_ptr<std::vector<std::unique_ptr<ICollisionGameObject>>> collision_objects,
+		std::unique_ptr<std::vector<std::unique_ptr<Player>>> player_objects,
+		std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> viewport_dividers,
+		level_stage stage,
+		const team_colour& team_colours,
+		const MattMath::RectangleF& out_of_bounds,
+		const MattMath::RectangleF& camera_bounds,
+		const std::vector<MattMath::Vector2F>& team_a_spawns,
+		const std::vector<MattMath::Vector2F>& team_b_spawns,
+		const std::string& sound_bank_name,
+		const std::string& music_name,
+		float music_volume,
+		const float* dt,
+		DirectX::SpriteBatch* sprite_batch,
+		ID3D11SamplerState* sampler_state,
+		const std::string& level_name,
+		const ResolutionManager* resolution_manager,
+		ViewportManager* viewport_manager,
+		ResourceManager* resource_manager);
+
+	void update(const std::vector<player_input>& player_inputs);
+	void draw();
+	void stop_music() const;
+
 private:
 	std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>>
 		_non_collision_objects = nullptr;
@@ -71,33 +96,6 @@ private:
 	void draw_active_level();
 
 	void stop_player_sounds() const;
-public:
-	Level() = default;
-	Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_collision_objects,
-		std::unique_ptr<std::vector<std::unique_ptr<ICollisionGameObject>>> collision_objects,
-		std::unique_ptr<std::vector<std::unique_ptr<Player>>> player_objects,
-		std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> viewport_dividers,
-		level_stage stage,
-		const team_colour& team_colours,
-		const MattMath::RectangleF& out_of_bounds,
-		const MattMath::RectangleF& camera_bounds,
-		const std::vector<MattMath::Vector2F>& team_a_spawns,
-		const std::vector<MattMath::Vector2F>& team_b_spawns,
-		const std::string& sound_bank_name,
-		const std::string& music_name,
-		float music_volume,
-		const float* dt,
-		DirectX::SpriteBatch* sprite_batch,
-		ID3D11SamplerState* sampler_state,
-		const std::string& level_name,
-		const ResolutionManager* resolution_manager,
-		ViewportManager* viewport_manager,
-		ResourceManager* resource_manager);
-
-	void update(const std::vector<player_input>& player_inputs);
-	void draw();
-
-	void stop_music() const;
 };
 
 #endif
