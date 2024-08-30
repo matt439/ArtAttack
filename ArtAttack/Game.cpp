@@ -76,14 +76,13 @@ void Game::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
     *this->_dt = elapsedTime;
-    this->update();
+	this->update();
     // TODO: Add your game logic here.
     if (!_audio_engine->Update())
     {
         // more about this below...
     }
 
-    //elapsedTime;
 }
 #pragma endregion
 

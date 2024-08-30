@@ -203,7 +203,6 @@
     <ClInclude Include="GameStates.h" />
     <ClInclude Include="ICollisionGameObject.h" />
     <ClInclude Include="IGameObject.h" />
-    <ClInclude Include="InterfaceGameplay.h" />
     <ClInclude Include="IPaintableGameObject.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelBuilder.h" />
@@ -285,7 +284,6 @@
     <ClCompile Include="EricsonMath.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameStates.cpp" />
-    <ClCompile Include="InterfaceGameplay.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="LevelLoadedInfo.cpp" />

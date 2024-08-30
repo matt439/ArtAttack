@@ -10,7 +10,6 @@
 #include "ViewportManager.h"
 #include "DebugText.h"
 #include "CameraTools.h"
-#include "InterfaceGameplay.h"
 #include "level_end_info.h"
 #include "IPaintableGameObject.h"
 #include "TextDropShadow.h"
@@ -24,29 +23,6 @@ enum class level_state
 	OVERVIEW,
 	FINISHED,
 };
-
-namespace level_consts
-{
-	constexpr float TIMER = 100000.0f;
-	constexpr float START_TIMER = 3.0f;
-	const static std::string COUNTDOWN_TEXT = "3";
-	const static std::string COUNTDOWN_FONT_NAME = "gill_sans_mt_bold_144";
-	const static MattMath::Colour COUNTDOWN_COLOUR = colour_consts::DARK_GRAY;
-	const static MattMath::Colour COUNTDOWN_SHADOW_COLOUR = colour_consts::BLACK;
-	constexpr float COUNTDOWN_SCALE = 2.0f;
-	const static MattMath::Vector2F COUNTDOWN_SHADOW_OFFSET = { 5.0f, 5.0f };
-	constexpr float COUNTDOWN_TEXT_WIDTH = 400.0f;
-	constexpr float COUNTDOWN_TEXT_HEIGHT = 600.0f;
-
-	constexpr float ZOOM_OUT_TIMER = 2.0f;
-	constexpr float OVERVIEW_TIMER = 2.0f;
-
-	const std::string COUNTDOWN_SOUND = "smash_countdown";
-	constexpr float COUNTDOWN_SOUND_VOLUME = 1.0f;
-
-	const std::string ZOOM_OUT_SOUND = "slide_whistle_up";
-	constexpr float ZOOM_OUT_SOUND_VOLUME = 0.5f;
-}
 
 class Level
 {
@@ -68,17 +44,13 @@ private:
 	std::unique_ptr<TextDropShadow> _countdown_text = nullptr;
 
 	std::unique_ptr<CameraTools> _camera_tools = nullptr;
-	std::unique_ptr<InterfaceGameplay> _interface_gameplay = nullptr;
 
 	std::string _level_name = "";
 	const ResolutionManager* _resolution_manager = nullptr;
 	ViewportManager* _viewport_manager = nullptr;
 	ResourceManager* _resource_manager = nullptr;
 
-	float _timer = level_consts::TIMER;
-	float _start_timer = level_consts::START_TIMER;
-	float _zoom_out_timer = level_consts::ZOOM_OUT_TIMER;
-	float _overview_timer = level_consts::OVERVIEW_TIMER;
+	bool _first_update = true;
 
 	MattMath::Camera _zoom_out_camera = MattMath::Camera::DEFAULT_CAMERA;
 
@@ -104,14 +76,10 @@ private:
 	int count_projectiles() const;
 	float get_dt() const;
 	bool is_object_out_of_bounds(const ICollisionGameObject* object) const;
-	void draw_end_screen() const;
 
 	void update_level_logic(const std::vector<player_input>& player_inputs);
 
 	void draw_active_level();
-	void draw_zoom_out_level();
-
-	float zoom_out_camera_ratio();
 
 	void stop_player_sounds() const;
 public:
@@ -144,8 +112,6 @@ public:
 
 	level_state get_state() const;
 	void set_state(level_state state);
-
-	level_end_info get_level_end_info() const;
 
 	void stop_music() const;
 };

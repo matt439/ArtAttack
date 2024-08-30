@@ -9,8 +9,6 @@ void GameLevel::init()
 {
     this->_player_input = std::make_unique<PlayerInput>(
         this->get_data()->get_gamepad());
-    //this->_menu_input = std::make_unique<MenuInput>(
-    //    this->get_data()->get_gamepad());
 
     this->_level_builder = std::make_unique<LevelBuilder>(
         this->get_data()->get_viewport_manager(),
@@ -41,7 +39,6 @@ void GameLevel::update()
     {
         std::vector<player_input> player_inputs =
             this->_player_input->update_and_get_player_inputs();
-
         this->_level->update(player_inputs);
         break;
     }
@@ -61,30 +58,7 @@ void GameLevel::draw()
     case game_level_state::ACTIVE:
         this->_level->draw();
         break;
-    //case game_level_state::PAUSE_MENU:
-    //    this->_level->draw();
-    //    this->_pause_menu->draw();
-    //    break;
-    //case game_level_state::RESULTS:
-    //    this->_level->draw();
-    //    this->_results_menu->draw();
-    //    break;
-    //case game_level_state::END_MENU:
-    //    this->_level->draw();
-    //    this->_end_menu->draw();
-    //    break;
+	default:
+		break;
     }
 }
-
-//int GameLevel::check_for_pause_input(
-//    const std::vector<player_input>& player_inputs)
-//{
-//    for (int i = 0; i < static_cast<int>(player_inputs.size()); i++)
-//    {
-//        if (player_inputs[i].toggle_pause_menu)
-//        {
-//            return i;
-//        }
-//    }
-//    return -1;
-//}
