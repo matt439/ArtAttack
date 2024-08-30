@@ -7,7 +7,7 @@ using namespace player_consts;
 using namespace colour_consts;
 
 Player::Player(const RectangleF& rectangle,
-    const player_animation_info& animation_info,
+    const PlayerAnimationInfo& animation_info,
     SpriteBatch* sprite_batch,
     ResourceManager* resource_manager,
     int player_num,
@@ -59,7 +59,7 @@ void Player::draw(const Camera& camera)
     {
 		this->_animation_state = new_animation_state;
 
-        const player_animation_info& info = this->get_animation_info(new_animation_state);
+        const PlayerAnimationInfo& info = this->get_animation_info(new_animation_state);
         TextureObject::set_sprite_sheet_name(info.sprite_sheet);
         TextureObject::set_element_name(info.uniform_texture);
 
@@ -845,7 +845,7 @@ bool Player::get_showing_debug() const
 {
 	return this->_showing_debug;
 }
-const player_animation_info& Player::get_animation_info(player_animation_state state) const
+const PlayerAnimationInfo& Player::get_animation_info(player_animation_state state) const
 {
     switch (state)
     {

@@ -65,7 +65,7 @@ Vector2F DiffusingProjectile::calculate_diffusion_size() const
     const float time = this->get_timer();
     const diffusion_details& details = this->_diffusion_details;
     const Vector2F& base_size = this->get_base_size();
-    Vector2F multiple = Vector2F::ZERO;
+    Vector2F multiple;
     if (time < details.start_time)
     {
         multiple = Vector2F::ONE;

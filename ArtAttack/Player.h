@@ -62,7 +62,7 @@ class Player final : public MovingObject, public ICollisionGameObject,
 {
 public:
     Player(const MattMath::RectangleF& rectangle,
-        const player_animation_info& animation_info,
+        const PlayerAnimationInfo& animation_info,
         DirectX::SpriteBatch* sprite_batch,
         ResourceManager* resource_manager,
         int player_num,
@@ -218,7 +218,7 @@ private:
 
     player_animation_state calculate_animation_state() const;
 
-    const player_animation_info& get_animation_info(player_animation_state state) const;
+    const PlayerAnimationInfo& get_animation_info(player_animation_state state) const;
 
     void respawn();
 

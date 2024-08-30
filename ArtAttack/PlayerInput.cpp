@@ -10,13 +10,13 @@ PlayerInput::PlayerInput(GamePad* gamepad) :
 {
     for (int i = 0; i < 4; i++)
     {
-        this->_prev_inputs[i] = raw_player_input();
+        this->_prev_inputs[i] = RawPlayerInput();
     }
 }
 
-raw_player_input PlayerInput::get_raw_input(int gamepad_num) const
+RawPlayerInput PlayerInput::get_raw_input(int gamepad_num) const
 {
-    raw_player_input result = raw_player_input();
+    RawPlayerInput result = RawPlayerInput();
     auto pad = this->_gamepad->GetState(gamepad_num, GamePad::DEAD_ZONE_CIRCULAR);
     if (pad.IsConnected())
     {
@@ -36,9 +36,9 @@ raw_player_input PlayerInput::get_raw_input(int gamepad_num) const
 }
 
 player_input PlayerInput::calculate_player_input(
-    const raw_player_input& current, const raw_player_input& previous)
+    const RawPlayerInput& current, const RawPlayerInput& previous)
 {
-    player_input result = player_input();
+    player_input result;
 
     result.jump_held = current.jump_button || current.jump_trigger > TRIGGER_JUMP_THRESHOLD;
 
@@ -118,7 +118,7 @@ player_input PlayerInput::calculate_player_input(
 
 std::vector<player_input> PlayerInput::update_and_get_player_inputs()
 {
-    raw_player_input current[4];
+    RawPlayerInput current[4];
     for (int i = 0; i < 4; i++)
     {
         current[i] = this->get_raw_input(i);
