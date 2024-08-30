@@ -5,7 +5,7 @@ using namespace DirectX;
 using namespace MattMath;
 using namespace weapon_consts;
 
-Weapon::Weapon(const weapon_details& details,
+Weapon::Weapon(const WeaponDetails& details,
     player_team team,
     int player_num,
     const Colour& team_colour,
@@ -20,16 +20,16 @@ Weapon::Weapon(const weapon_details& details,
     SpriteEffects effects,
     float layer_depth) :
     TextureObject(details.sheet_name, details.frame_name, sprite_batch, resource_manager,
-        color, rotation, origin, effects, layer_depth),
+                  color, rotation, origin, effects, layer_depth),
         _details(details),
+        _dt(dt),
+        _sprite_batch(sprite_batch),
+        _resource_manager(resource_manager),
         _team(team),
         _player_num(player_num),
         _team_colour(team_colour),
         _type(type),
-        _player_center(player_center),
-        _dt(dt),
-        _sprite_batch(sprite_batch),
-        _resource_manager(resource_manager)
+        _player_center(player_center)
 {
     this->_proj_builder = std::make_unique<ProjectileBuilder>();
     this->_sound_bank = resource_manager->get_sound_bank(details.sound_bank_name);
@@ -41,7 +41,7 @@ void Weapon::draw(const Camera& camera, bool debug)
     Vector2F draw_pos = this->get_draw_pos();
     RectangleF draw_rectangle = RectangleF(draw_pos, this->get_details().size);
 
-    Vector2F origin = this->calculate_sprite_origin(
+    Vector2F origin = calculate_sprite_origin(
         this->get_details().size, rotation_origin::LEFT_CENTER);
 
     SpriteEffects effects = SpriteEffects::SpriteEffects_None;
@@ -72,8 +72,8 @@ void Weapon::draw(const Camera& camera, bool debug)
         // draw nozzle
         TextureObject::set_element_name("nozzle");
         RectangleF draw_rectangle_noz = this->get_nozzle_rectangle();
-        Vector2F origin_noz = this->calculate_sprite_origin(
-            this->get_nozzle_size(), rotation_origin::CENTER);
+        Vector2F origin_noz = calculate_sprite_origin(
+            get_nozzle_size(), rotation_origin::CENTER);
 
         TextureObject::set_origin(origin_noz);
         TextureObject::set_effects(SpriteEffects::SpriteEffects_None);
@@ -88,40 +88,35 @@ void Weapon::draw(bool debug)
 }
 
 Vector2F Weapon::calculate_sprite_origin(
-    const Vector2F& size, rotation_origin origin) const
+    const Vector2F& size, rotation_origin origin)
 {
     switch (origin)
     {
     case rotation_origin::CENTER:
         return Vector2F(size) / 2.0f;
     case rotation_origin::LEFT_CENTER:
-        return Vector2F(0.0f, size.y / 2.0f);
-    case rotation_origin::TOP_LEFT:
-        return Vector2F::ZERO;
-    default:
+        return {0.0f, size.y / 2.0f};
+    default: //rotation_origin::TOP_LEFT
         return Vector2F::ZERO;
     }
 }
 
 RectangleF Weapon::get_nozzle_rectangle() const
 {
-	Vector2F nozzle_pos = this->get_nozzle_pos();
+    Vector2F nozzle_pos = this->get_nozzle_pos();
 
-    return RectangleF(nozzle_pos, NOZZLE_SIZE);
+    return { nozzle_pos, NOZZLE_SIZE};
 }
 
-Vector2F Weapon::get_nozzle_size() const
+Vector2F Weapon::get_nozzle_size()
 {
 	return NOZZLE_SIZE;
 }
 
-
-
-
 Vector2F Weapon::get_draw_pos() const
 {
 	Vector2F result = this->get_player_center();
-	if (this->facing_left(this->_rotation))
+	if (facing_left(this->_rotation))
 	{
 		result.x -= this->_details.offset.x;
 		result.y += this->_details.offset.y;
@@ -134,7 +129,7 @@ Vector2F Weapon::get_draw_pos() const
 	return result;
 }
 
-bool Weapon::facing_left(float rotation) const
+bool Weapon::facing_left(float rotation)
 {
 	//gun facing left
 	if (rotation > PI / 2.0f ||
@@ -143,10 +138,7 @@ bool Weapon::facing_left(float rotation) const
 		return true;
 	}
 	//gun facing right
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 Vector2F Weapon::get_nozzle_pos() const
@@ -156,8 +148,7 @@ Vector2F Weapon::get_nozzle_pos() const
 	Vector2F result = this->_details.nozzle_offset;
 	result.x += this->_details.size.x;
 	result = Vector2F::rotate_vector(result, this->_rotation);
-	result += this->get_wep_rotation_origin_offset(
-		this->facing_left(this->_rotation));
+	result += this->get_wep_rotation_origin_offset(facing_left(this->_rotation));
 	result += this->get_player_center();
 	return result;
 }
@@ -300,8 +291,6 @@ void Weapon::update_movement_and_rotation(player_input input,
     const Vector2F& player_velocity,
     bool player_facing_right)
 {
-    const float dt = *this->_dt;
-
     if (input.shoot_direction_requested)
     {
         this->set_rotation(input.shoot_angle);
@@ -318,13 +307,10 @@ void Weapon::update_movement_and_rotation(player_input input,
 		}
     }
 
-    
-    
-
     this->set_player_center(player_center);
 
     //gun facing left
-    if (this->facing_left(this->get_rotation()))
+    if (facing_left(this->get_rotation()))
     {
         this->set_invert_y(true);
     }
@@ -362,8 +348,8 @@ Vector2F Weapon::calculate_projectile_launch_velocity(
 }
 
 RelativeVelocityWeapon::RelativeVelocityWeapon(
-    const weapon_details& details,
-    relative_weapon_details rel_details,
+    const WeaponDetails& details,
+    RelativeWeaponDetails rel_details,
     player_team team,
     int player_num,
     const Colour& team_colour,
@@ -413,7 +399,7 @@ std::vector<std::unique_ptr<ICollisionGameObject>> RelativeVelocityWeapon::shoot
     const MattMath::Vector2F& shoot_direction,
     const MattMath::Vector2F& player_velocity) const
 {
-    relative_weapon_details rel_details = this->_rel_details;
+    RelativeWeaponDetails rel_details = this->_rel_details;
     
     add_player_velocity add_player_vel = rel_details.add_vel;
 

@@ -1,19 +1,13 @@
 #ifndef WEAPONBUILDER_H
 #define WEAPONBUILDER_H
 
-#include "WeaponSprayer.h"
-#include "WeaponSniper.h"
-#include "WeaponBucket.h"
-#include "WeaponMister.h"
-#include "WeaponRoller.h"
+#include "Weapon.h"
 
 class WeaponBuilder
 {
-private:
-
 public:
 	WeaponBuilder() = default;
-	std::unique_ptr<Weapon> build_weapon(
+	static std::unique_ptr<Weapon> build_weapon(
 		player_team team,
 		int player_num,
 		const MattMath::Colour& team_colour,

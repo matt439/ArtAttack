@@ -24,8 +24,8 @@ WeaponSniper::WeaponSniper(player_team team,
         sprite_batch, resource_manager, dt,
         color, rotation, origin, effects, layer_depth)
 {
-
 }
+
 void WeaponSniper::handle_shoot_sound(bool shooting_this_update, bool holding_shoot)
 {
     if (shooting_this_update)

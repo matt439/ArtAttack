@@ -24,5 +24,4 @@ WeaponSprayer::WeaponSprayer(player_team team,
         sprite_batch, resource_manager, dt,
         color, rotation, origin, effects, layer_depth)
 {
-
 }

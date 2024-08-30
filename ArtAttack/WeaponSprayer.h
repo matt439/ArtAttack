@@ -3,10 +3,8 @@
 
 #include "Weapon.h"
 
-class WeaponSprayer : public RelativeVelocityWeapon
+class WeaponSprayer final : public RelativeVelocityWeapon
 {
-private:
-
 public:
 	WeaponSprayer(player_team team,
 		int player_num,

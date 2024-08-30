@@ -3,11 +3,8 @@
 
 #include "Weapon.h"
 
-class WeaponSniper : public Weapon
+class WeaponSniper final : public Weapon
 {
-private:
-protected:
-	void handle_shoot_sound(bool shooting_this_update, bool holding_shoot) override;
 public:
 	WeaponSniper(player_team team,
 		int player_num,
@@ -22,6 +19,9 @@ public:
 		const MattMath::Vector2F& origin = MattMath::Vector2F::ZERO,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f);
+
+protected:
+	void handle_shoot_sound(bool shooting_this_update, bool holding_shoot) override;
 };
 
 #endif // !WEAPONSNIPER_H

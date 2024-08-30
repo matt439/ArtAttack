@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "WeaponBuilder.h"
 
+#include "WeaponSprayer.h"
+#include "WeaponSniper.h"
+#include "WeaponBucket.h"
+#include "WeaponMister.h"
+
 using namespace MattMath;
 using namespace DirectX;
 
@@ -22,10 +27,6 @@ std::unique_ptr<Weapon> WeaponBuilder::build_weapon(
             sprite_batch, resource_manager, dt);
     case wep_type::SNIPER:
         return std::make_unique<WeaponSniper>(team, player_num, team_colour,
-            type, player_center,
-            sprite_batch, resource_manager, dt);
-    case wep_type::ROLLER:
-        return std::make_unique<WeaponRoller>(team, player_num, team_colour,
             type, player_center,
             sprite_batch, resource_manager, dt);
     case wep_type::MISTER:

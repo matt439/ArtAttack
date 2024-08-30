@@ -260,7 +260,6 @@
     <ClInclude Include="WeaponBucket.h" />
     <ClInclude Include="WeaponBuilder.h" />
     <ClInclude Include="WeaponMister.h" />
-    <ClInclude Include="WeaponRoller.h" />
     <ClInclude Include="WeaponSniper.h" />
     <ClInclude Include="WeaponSprayer.h" />
     <ClInclude Include="weapon_consts.h" />
@@ -327,7 +326,6 @@
     <ClCompile Include="WeaponBucket.cpp" />
     <ClCompile Include="WeaponBuilder.cpp" />
     <ClCompile Include="WeaponMister.cpp" />
-    <ClCompile Include="WeaponRoller.cpp" />
     <ClCompile Include="WeaponSniper.cpp" />
     <ClCompile Include="WeaponSprayer.cpp" />
   </ItemGroup>
