@@ -1,7 +1,3 @@
-//
-// Game.h
-//
-
 #pragma once
 
 #include "DeviceResources.h"
@@ -75,5 +71,4 @@ public:
     void OnWindowSizeChanged(int width, int height);
 
     void set_game_data(GameData* game_data) { this->_data = game_data; }
-    //GameData* get_game_data() { return this->_data; }
 };

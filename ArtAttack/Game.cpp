@@ -1,14 +1,9 @@
-//
-// Game.cpp
-//
-
 #include "pch.h"
 #include "Game.h"
 
 extern void ExitGame() noexcept;
 
 using namespace DirectX;
-//using namespace DirectX::SimpleMath;
 
 using Microsoft::WRL::ComPtr;
 
@@ -44,9 +39,6 @@ void Game::Initialize(GameData* game_data)
     m_deviceResources->SetWindow(this->_data->get_window(),
         window_size.x, window_size.y);
 
-    //m_deviceResources->SetWindow(this->_data->get_window(),
-    //    window_size.x, window_size.y);
-
     AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
 #ifdef _DEBUG
     eflags |= AudioEngine_Debug;
@@ -69,7 +61,6 @@ void Game::Initialize(GameData* game_data)
 }
 
 #pragma region Frame Update
-// Executes the basic game loop.
 void Game::Tick()
 {
     m_timer.Tick([&]()
@@ -78,7 +69,6 @@ void Game::Tick()
         });
 
     Render();
-
 }
 
 // Updates the world.
@@ -86,7 +76,6 @@ void Game::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
     *this->_dt = elapsedTime;
-    //this->_state->update();
     this->update();
     // TODO: Add your game logic here.
     if (!m_audio_engine->Update())
@@ -94,7 +83,7 @@ void Game::Update(DX::StepTimer const& timer)
         // more about this below...
     }
 
-    elapsedTime;
+    //elapsedTime;
 }
 #pragma endregion
 
@@ -112,7 +101,6 @@ void Game::Render()
 
     m_deviceResources->PIXBeginEvent(L"Render");
 
-    //this->_state->draw();
     this->draw();
 
     m_deviceResources->PIXEndEvent();
@@ -193,13 +181,6 @@ void Game::OnWindowSizeChanged(int width, int height)
     // TODO: Game window is being resized.
 }
 
-// Properties
-//void Game::GetDefaultSize(int& width, int& height) const noexcept
-//{
-//    // TODO: Change to desired default window size (note minimum size is 320x200).
-//    width = 1920;
-//    height = 1080;
-//}
 #pragma endregion
 
 #pragma region Direct3D Resources
@@ -230,8 +211,6 @@ void Game::CreateDeviceDependentResources()
     this->_data->set_common_states(m_states.get());
 
     this->_resource_loader->load_all_resources();
-
-    device;
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
