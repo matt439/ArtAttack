@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "StateContext.h"
 
-void StateContext::update()
+void StateContext::update() const
 {
 	if (this->_state == nullptr)
 	{

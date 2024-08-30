@@ -43,7 +43,7 @@ public:
 
 	void set_layout(screen_layout layout);
 	screen_layout get_layout() const { return _layout; }
-	void apply_player_viewport(int player_num);
+	void apply_player_viewport(int player_num) const;
 	MattMath::Viewport get_player_viewport(int player_num) const;
 	std::vector<MattMath::Viewport> get_all_viewports() const;
 

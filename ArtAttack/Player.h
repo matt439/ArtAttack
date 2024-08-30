@@ -233,7 +233,7 @@ public:
 
     float get_respawn_timer() const { return this->_respawn_timer; }
 
-    void update_weapon_position();
+    void update_weapon_position() const;
     void update_prev_rectangle();
     void stop_sounds();
 };

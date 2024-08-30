@@ -134,7 +134,7 @@ void SpriteSheet::draw(SpriteBatch* sprite_batch,
 	const Vector2F& origin,
 	float scale,
 	SpriteEffects effects,
-	float layer_depth)
+	float layer_depth) const
 {
 	sprite_batch->Draw(
 		this->_texture,

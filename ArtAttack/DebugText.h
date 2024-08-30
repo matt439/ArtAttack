@@ -28,7 +28,7 @@ public:
 		Drawer(sprite_batch, resource_manager, dt),
 		_resolution_manager(resolution_manager) {}
 
-	void draw_debug_info(const Player* player, int num_projectiles);
+	void draw_debug_info(const Player* player, int num_projectiles) const;
 
 private:
 	const ResolutionManager* _resolution_manager = nullptr;

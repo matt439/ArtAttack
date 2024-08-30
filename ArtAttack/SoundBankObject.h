@@ -10,7 +10,7 @@ public:
 	SoundBankObject() = default;
 	SoundBankObject(std::string sound_bank_name, ResourceManager* resource_manager);
 protected:
-	SoundBank* get_sound_bank();
+	SoundBank* get_sound_bank() const;
 	SoundBank* get_sb();
 
 	void play_wave(const std::string& wave_name,

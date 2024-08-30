@@ -17,7 +17,7 @@ std::unique_ptr<std::vector<std::unique_ptr<Player>>> PlayerBuilder::build_playe
 	DirectX::SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	ViewportManager* viewport_manager,
-	const float* dt)
+	const float* dt) const
 {
 	std::unique_ptr<std::vector<std::unique_ptr<Player>>> players =
 		std::make_unique<std::vector<std::unique_ptr<Player>>>();

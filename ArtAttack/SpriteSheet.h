@@ -58,7 +58,7 @@ public:
 		MattMath::Vector2F::ZERO,
 		float scale = 1.0f,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
-		float layer_depth = 0.0f);
+		float layer_depth = 0.0f) const;
 
 	void draw(DirectX::SpriteBatch* sprite_batch,
 		const RECT* source_rect,

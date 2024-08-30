@@ -5,7 +5,7 @@ using namespace DirectX;
 using namespace MattMath;
 using namespace debug_text_consts;
 
-void DebugText::draw_debug_info(const Player* player, int num_projectiles)
+void DebugText::draw_debug_info(const Player* player, int num_projectiles) const
 {
     const player_input& input = player->get_input();
     

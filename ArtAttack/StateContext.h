@@ -10,7 +10,7 @@ private:
 	std::unique_ptr<State> _state = nullptr;
 public:
 	StateContext() {}
-	void update();
+	void update() const;
 	void draw();
 	void transition_to(std::unique_ptr<State> state);
 };

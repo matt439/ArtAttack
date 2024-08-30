@@ -24,7 +24,7 @@ public:
 		float rotation = 0.0f,
 		const MattMath::Vector2F& origin = MattMath::Vector2F::ZERO,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
-		float layer_depth = 0.0f);
+		float layer_depth = 0.0f) const;
 
 	void draw(DirectX::SpriteBatch* sprite_batch,
 		const MattMath::Vector2F& position,

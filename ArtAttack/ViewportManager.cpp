@@ -33,7 +33,7 @@ RectangleF ViewportManager::get_camera_adjusted_player_viewport_rect(
 	return result;
 }
 
-void ViewportManager::apply_player_viewport(int player_num)
+void ViewportManager::apply_player_viewport(int player_num) const
 {
 	D3D11_VIEWPORT vp = this->calculate_d3d11_viewport(
         this->_layout, player_num, this->_resolution_manager->get_resolution_vec());

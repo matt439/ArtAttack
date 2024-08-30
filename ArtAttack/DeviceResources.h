@@ -68,7 +68,7 @@ namespace DX
         unsigned int            GetDeviceOptions() const noexcept       { return m_options; }
 
         // Performance events
-        void PIXBeginEvent(_In_z_ const wchar_t* name)
+        void PIXBeginEvent(_In_z_ const wchar_t* name) const
         {
             m_d3dAnnotation->BeginEvent(name);
         }
@@ -85,7 +85,7 @@ namespace DX
 
     private:
         void CreateFactory();
-        void GetHardwareAdapter(IDXGIAdapter1** ppAdapter);
+        void GetHardwareAdapter(IDXGIAdapter1** ppAdapter) const;
 
         // Direct3D objects.
         Microsoft::WRL::ComPtr<IDXGIFactory2>               m_dxgiFactory;

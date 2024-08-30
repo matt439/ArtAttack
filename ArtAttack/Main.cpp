@@ -119,12 +119,15 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 		level_settings.set_stage(level_stage::KING_OF_THE_HILL);
 		level_settings.set_screen_layout(screen_layout::ONE_PLAYER);
 
-		menu_player_settings player_settings;
-        player_settings.team = player_team::A;
-        player_settings.weapon = wep_type::SPRAYER;
-        player_settings.num = 0;
+		MenuPlayerSettings player_1_settings;
+        player_1_settings.team = player_team::A;
+        player_1_settings.weapon = wep_type::SPRAYER;
+        player_1_settings.num = 0;
 
-		level_settings.set_player_setting(0, player_settings);
+        MenuPlayerSettings player_2_settings;
+        player_2_settings.team = player_team::A;
+
+		level_settings.set_player_setting(0, player_1_settings);
 
 		g_game->transition_to(std::make_unique<GameLevel>(g_game_data.get(), level_settings));
     }

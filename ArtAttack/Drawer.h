@@ -12,9 +12,9 @@ public:
 	Drawer(DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const float* dt);
-	void set_spritebatch();
-	void set_resource_manager();
-	void set_dt();
+	void set_spritebatch(DirectX::SpriteBatch* sprite_batch);
+	void set_resource_manager(ResourceManager* resource_manager);
+	void set_dt(const float* dt);
 protected:
 	DirectX::SpriteBatch* get_sprite_batch() const;
 	ResourceManager* get_resource_manager() const;

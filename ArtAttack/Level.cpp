@@ -76,7 +76,7 @@ void Level::update(const std::vector<player_input>& player_inputs)
 
 	this->update_level_logic(player_inputs);
 }
-void Level::update_level_logic(const std::vector<player_input>& player_inputs)
+void Level::update_level_logic(const std::vector<player_input>& player_inputs) const
 {
 	// update collision objects
 	for (auto& object : *this->_collision_objects)

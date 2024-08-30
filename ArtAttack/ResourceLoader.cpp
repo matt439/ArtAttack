@@ -43,7 +43,7 @@ void ResourceLoader::load_all_resources()
 
 
 void ResourceLoader::load_texture(const std::string& texture_path,
-    const std::string& texture_name)
+    const std::string& texture_name) const
 {
     ComPtr<ID3D11ShaderResourceView> m_texture;
 

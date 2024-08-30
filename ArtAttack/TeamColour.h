@@ -9,7 +9,7 @@ struct team_colour
 	MattMath::Colour team_a = colour_consts::TEAM_BLUE;
 	MattMath::Colour team_b = colour_consts::TEAM_YELLOW;
 	
-	inline const MattMath::Colour& get_team_colour(player_team team)
+	inline const MattMath::Colour& get_team_colour(player_team team) const
 	{
 		switch (team)
 		{

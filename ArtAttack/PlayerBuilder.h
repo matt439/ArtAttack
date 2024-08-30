@@ -24,7 +24,7 @@ public:
 		DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		ViewportManager* viewport_manager,
-		const float* dt);
+		const float* dt) const;
 };
 
 #endif // !PLAYERBUILDER_H

@@ -537,7 +537,7 @@ void DeviceResources::CreateFactory()
 
 // This method acquires the first available hardware adapter.
 // If no such adapter can be found, *ppAdapter will be set to nullptr.
-void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
+void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter) const
 {
     *ppAdapter = nullptr;
 

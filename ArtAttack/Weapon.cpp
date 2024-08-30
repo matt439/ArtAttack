@@ -268,7 +268,7 @@ void Weapon::handle_shoot_sound(bool shooting_this_update, bool holding_shoot)
         this->_sound_bank->stop_effect(sound_name, true);
     }
 }
-void Weapon::stop_sounds()
+void Weapon::stop_sounds() const
 {
     const std::string& sound_name = this->get_sound_effect_instance_name();
     

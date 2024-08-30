@@ -11,13 +11,13 @@ class MenuLevelSettings
 {
 private:
 	level_mode _game_mode = level_mode::STANDARD_MODE;
-	std::vector<menu_player_settings> _player_settings;
+	std::vector<MenuPlayerSettings> _player_settings;
 	int _player_count = 0;
 	level_stage _stage = level_stage::KING_OF_THE_HILL;
 	screen_layout _screen_layout = screen_layout::ONE_PLAYER;
 public:
-	MenuLevelSettings() {}
-	std::vector<menu_player_settings> get_player_settings() const { return this->_player_settings; }
+	MenuLevelSettings() = default;
+	std::vector<MenuPlayerSettings> get_player_settings() const { return this->_player_settings; }
 	void set_player_count(int player_count);
 	int get_player_count() const { return this->_player_count; }
 	void set_game_mode(level_mode game_mode) { this->_game_mode = game_mode; }
@@ -27,7 +27,7 @@ public:
 	screen_layout get_screen_layout() const { return this->_screen_layout; }
 	void set_screen_layout(screen_layout screen_layout) { this->_screen_layout = screen_layout; }
 
-	inline void set_player_setting(int player_index, menu_player_settings player_settings)
+	inline void set_player_setting(int player_index, MenuPlayerSettings player_settings)
 	{
 		this->_player_settings[player_index] = player_settings;
 	}

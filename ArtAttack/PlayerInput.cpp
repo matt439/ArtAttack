@@ -14,7 +14,7 @@ PlayerInput::PlayerInput(GamePad* gamepad) :
     }
 }
 
-raw_player_input PlayerInput::get_raw_input(int gamepad_num)
+raw_player_input PlayerInput::get_raw_input(int gamepad_num) const
 {
     raw_player_input result = raw_player_input();
     auto pad = this->_gamepad->GetState(gamepad_num, GamePad::DEAD_ZONE_CIRCULAR);

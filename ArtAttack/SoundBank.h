@@ -32,7 +32,7 @@ public:
 	DirectX::SoundState get_effect_state(const std::string& effect_name);
 	bool is_effect_looping(const std::string& effect_name);
 
-	DirectX::SoundEffectInstance* get_sound_effect_instance(const std::string& instance_name);
+	DirectX::SoundEffectInstance* get_sound_effect_instance(const std::string& instance_name) const;
 	DirectX::SoundEffectInstance* get_sei(const std::string& instance_name);
 
 	void reset_all_instances();

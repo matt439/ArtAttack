@@ -11,7 +11,7 @@ SoundBankObject::SoundBankObject(std::string sound_bank_name,
 {
 
 }
-SoundBank* SoundBankObject::get_sound_bank()
+SoundBank* SoundBankObject::get_sound_bank() const
 {
 	return this->_resource_manager->get_sound_bank(this->_sound_bank_name);
 }

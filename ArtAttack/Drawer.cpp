@@ -13,14 +13,27 @@ Drawer::Drawer(DirectX::SpriteBatch* sprite_batch,
 {
 }
 
+void Drawer::set_spritebatch(SpriteBatch* sprite_batch)
+{
+    this->_sprite_batch = sprite_batch;
+}
+
+void Drawer::set_resource_manager(ResourceManager* resource_manager)
+{
+    this->_resource_manager = resource_manager;
+}
+void Drawer::set_dt(const float* dt)
+{
+    this->_dt = dt;
+}
+
 SpriteBatch* Drawer::get_sprite_batch() const
 {
     return this->_sprite_batch;
 }
-
 ResourceManager* Drawer::get_resource_manager() const
 {
-	return this->_resource_manager;
+    return this->_resource_manager;
 }
 
 float Drawer::get_dt() const
@@ -63,3 +76,4 @@ Vector2F Drawer::calculate_sprite_origin(
 		return Vector2F::ZERO;
     }
 }
+

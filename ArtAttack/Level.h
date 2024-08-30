@@ -91,7 +91,7 @@ private:
 	float get_dt() const;
 	bool is_object_out_of_bounds(const ICollisionGameObject* object) const;
 
-	void update_level_logic(const std::vector<player_input>& player_inputs);
+	void update_level_logic(const std::vector<player_input>& player_inputs) const;
 
 	void draw_active_level();
 

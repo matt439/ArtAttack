@@ -36,7 +36,7 @@ public:
         _common_states(game_data->get_common_states()) {}
 
     void set_window(HWND window) { this->_window = window; }
-    HWND get_window() { return this->_window; }
+    HWND get_window() const { return this->_window; }
     void set_resolution_manager(ResolutionManager* resolution_manager) { this->_resolution_manager = resolution_manager; }
     ResolutionManager* get_resolution_manager() { return this->_resolution_manager; }
     float* get_dt() { return this->_dt; }

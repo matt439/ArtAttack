@@ -8,7 +8,7 @@ class State
 private:
 	StateContext* _context = nullptr;
 protected:
-	StateContext* get_context();
+	StateContext* get_context() const;
 public:
 	State() {}
 	virtual ~State() {}

@@ -521,7 +521,7 @@ player_collision_type Player::calculate_collision_type(const ICollisionGameObjec
 		throw std::exception("Invalid collision type.");
 	}
 }
-void Player::update_weapon_position()
+void Player::update_weapon_position() const
 {
     this->_primary->set_player_center(this->get_center());
 }

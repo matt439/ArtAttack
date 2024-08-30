@@ -150,7 +150,7 @@ public:
 	float get_ammo() const { return this->_ammo; }
 	void reset_ammo() { this->_ammo = weapon_consts::STARTING_AMMO; }
 	void set_player_center(const MattMath::Vector2F& player_center) { this->_player_center = player_center; }
-	void stop_sounds();
+	void stop_sounds() const;
 };
 
 

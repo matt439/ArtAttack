@@ -45,7 +45,7 @@ private:
     void update(DX::StepTimer const& timer);
     void render();
 
-    void clear();
+    void clear() const;
 
     void create_device_dependent_resources();
     void create_window_size_dependent_resources();

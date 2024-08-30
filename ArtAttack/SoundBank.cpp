@@ -71,7 +71,7 @@ bool SoundBank::is_effect_looping(const std::string& effect_name)
 {
 	return this->get_sound_effect_instance(effect_name)->IsLooped();
 }
-SoundEffectInstance* SoundBank::get_sound_effect_instance(const std::string& instance_name)
+SoundEffectInstance* SoundBank::get_sound_effect_instance(const std::string& instance_name) const
 {
 	try
 	{

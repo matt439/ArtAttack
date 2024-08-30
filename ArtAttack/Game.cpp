@@ -109,7 +109,7 @@ void Game::render()
 }
 
 // Helper method to clear the back buffers.
-void Game::clear()
+void Game::clear() const
 {
     _deviceResources->PIXBeginEvent(L"Clear");
 

@@ -31,7 +31,7 @@ class PlayerInput
 {
 private:
 	raw_player_input _prev_inputs[4];
-	raw_player_input get_raw_input(int gamepad_num);
+	raw_player_input get_raw_input(int gamepad_num) const;
 	player_input calculate_player_input(const raw_player_input& current,
 		const raw_player_input& previous);
 	DirectX::GamePad* _gamepad = nullptr;
