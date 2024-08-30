@@ -15,24 +15,18 @@
 #include "TextDropShadow.h"
 #include "SoundBank.h"
 
-enum class level_state
-{
-	START_COUNTDOWN,
-	ACTIVE,
-	ZOOM_OUT,
-	OVERVIEW,
-	FINISHED,
-};
-
 class Level
 {
 private:
 	std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>>
 		_non_collision_objects = nullptr;
+
 	std::unique_ptr<std::vector<std::unique_ptr<ICollisionGameObject>>>
 		_collision_objects = nullptr;
+
 	std::unique_ptr<std::vector<std::unique_ptr<Player>>>
 		_player_objects = nullptr;
+
 	std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>>
 		_viewport_dividers = nullptr;
 
@@ -52,20 +46,15 @@ private:
 
 	bool _first_update = true;
 
-	MattMath::Camera _zoom_out_camera = MattMath::Camera::DEFAULT_CAMERA;
-
 	team_colour _team_colours = team_colour();
 	level_stage _stage = level_stage::KING_OF_THE_HILL;
 
 	MattMath::RectangleF _out_of_bounds = MattMath::RectangleF::ZERO;
 	MattMath::RectangleF _camera_bounds = MattMath::RectangleF::ZERO;
-	MattMath::RectangleF _zoom_out_start_bounds = MattMath::RectangleF::ZERO;
-	MattMath::RectangleF _zoom_out_finish_bounds = MattMath::RectangleF::ZERO;
 
 	std::vector<MattMath::Vector2F> _team_a_spawns = std::vector<MattMath::Vector2F>();
 	std::vector<MattMath::Vector2F> _team_b_spawns = std::vector<MattMath::Vector2F>();
 
-	level_state _state = level_state::START_COUNTDOWN; 
 	const float* _dt = nullptr;
 	DirectX::SpriteBatch* _sprite_batch = nullptr;
 	ID3D11SamplerState* _sampler_state = nullptr;
@@ -92,8 +81,6 @@ public:
 		const team_colour& team_colours,
 		const MattMath::RectangleF& out_of_bounds,
 		const MattMath::RectangleF& camera_bounds,
-		const MattMath::RectangleF& zoom_out_start_bounds,
-		const MattMath::RectangleF& zoom_out_finish_bounds,
 		const std::vector<MattMath::Vector2F>& team_a_spawns,
 		const std::vector<MattMath::Vector2F>& team_b_spawns,
 		const std::string& sound_bank_name,
@@ -109,9 +96,6 @@ public:
 
 	void update(const std::vector<player_input>& player_inputs);
 	void draw();
-
-	level_state get_state() const;
-	void set_state(level_state state);
 
 	void stop_music() const;
 };

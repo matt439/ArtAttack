@@ -12,8 +12,6 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	const team_colour& team_colours,
 	const RectangleF& out_of_bounds,
 	const RectangleF& camera_bounds,
-	const RectangleF& zoom_out_start_bounds,
-	const RectangleF& zoom_out_finish_bounds,
 	const std::vector<Vector2F>& team_a_spawns,
 	const std::vector<Vector2F>& team_b_spawns,
 	const std::string& sound_bank_name,
@@ -34,8 +32,6 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	_team_colours(team_colours),
 	_out_of_bounds(out_of_bounds),
 	_camera_bounds(camera_bounds),
-	_zoom_out_start_bounds(zoom_out_start_bounds),
-	_zoom_out_finish_bounds(zoom_out_finish_bounds),
 	_team_a_spawns(team_a_spawns),
 	_team_b_spawns(team_b_spawns),
 	_music_name(music_name),
@@ -75,7 +71,6 @@ void Level::update(const std::vector<player_input>& player_inputs)
 			object->set_camera(camera);
 		}
 		this->_first_update = false;
-		this->set_state(level_state::ACTIVE);
 	}
 
 	this->update_level_logic(player_inputs);
@@ -286,10 +281,7 @@ void Level::draw_active_level()
 		}
 	}
 }
-level_state Level::get_state() const
-{
-	return this->_state;
-}
+
 
 int Level::count_projectiles() const
 {
@@ -327,9 +319,4 @@ bool Level::is_object_out_of_bounds(const ICollisionGameObject* object) const
 	bool object_in_bounds =
 		this->_out_of_bounds.intersects(object->get_shape()->get_bounding_box());
 	return !object_in_bounds;
-}
-
-void Level::set_state(level_state state)
-{
-	this->_state = state;
 }
