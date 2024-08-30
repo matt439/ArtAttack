@@ -18,7 +18,6 @@ Text::Text(const std::string& text,
 	TextObject(text, font_name, position, sprite_batch, resource_manager,
 		color, scale, rotation, origin, effects, layer_depth)
 {
-
 }
 void Text::set_text(const std::string& text)
 {

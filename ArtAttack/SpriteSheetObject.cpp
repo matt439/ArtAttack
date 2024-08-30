@@ -18,7 +18,6 @@ SpriteSheetObject::SpriteSheetObject(const std::string& sheet_name,
 	_sheet_name(sheet_name),
 	_element_name(element_name)
 {
-
 }
 
 const std::string& SpriteSheetObject::get_sprite_sheet_name() const

@@ -17,6 +17,22 @@ namespace viewport_consts
 
 class ViewportManager
 {
+public:
+	ViewportManager(ResolutionManager* resolution_manager,
+		DirectX::SpriteBatch* sprite_batch,
+		DX::DeviceResources* device_resources);
+
+	void set_layout(screen_layout layout);
+	screen_layout get_layout() const { return _layout; }
+	void apply_player_viewport(int player_num) const;
+	MattMath::Viewport get_player_viewport(int player_num) const;
+	std::vector<MattMath::Viewport> get_all_viewports() const;
+
+	MattMath::RectangleF get_camera_adjusted_player_viewport_rect(
+		int player_num, const MattMath::Camera& camera) const;
+
+	std::vector<MattMath::RectangleF> get_viewport_dividers() const;
+
 private:
 	ResolutionManager* _resolution_manager = nullptr;
 	DirectX::SpriteBatch* _sprite_batch = nullptr;
@@ -33,24 +49,6 @@ private:
 
 	MattMath::Viewport get_fullscreen_viewport() const;
 	D3D11_VIEWPORT get_fullscreen_d3d11_viewport() const;
-public:
-	ViewportManager(ResolutionManager* resolution_manager,
-		DirectX::SpriteBatch* sprite_batch,
-		DX::DeviceResources* device_resources) :
-		_resolution_manager(resolution_manager),
-		_sprite_batch(sprite_batch),
-		_device_resources(device_resources) {}
-
-	void set_layout(screen_layout layout);
-	screen_layout get_layout() const { return _layout; }
-	void apply_player_viewport(int player_num) const;
-	MattMath::Viewport get_player_viewport(int player_num) const;
-	std::vector<MattMath::Viewport> get_all_viewports() const;
-
-	MattMath::RectangleF get_camera_adjusted_player_viewport_rect(
-		int player_num, const MattMath::Camera& camera) const;
-
-	std::vector<MattMath::RectangleF> get_viewport_dividers() const;
 };
 
 #endif // !VIEWPORT_H

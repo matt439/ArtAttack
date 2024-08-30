@@ -78,7 +78,7 @@ std::unique_ptr<ICollisionGameObject>
 		{
 			throw std::exception("Invalid collision type");
 		}
-		paintable_faces faces;
+		PaintableFaces faces;
 		faces.left = json["paintable_faces"]["left"].GetBool();
 		faces.top = json["paintable_faces"]["top"].GetBool();
 		faces.right = json["paintable_faces"]["right"].GetBool();

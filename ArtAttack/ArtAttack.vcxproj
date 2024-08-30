@@ -254,7 +254,6 @@
     <ClInclude Include="TextDropShadow.h" />
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="TextureObject.h" />
-    <ClInclude Include="Updater.h" />
     <ClInclude Include="ViewportManager.h" />
     <ClInclude Include="Visual.h" />
     <ClInclude Include="Weapon.h" />

@@ -4,6 +4,23 @@
 using namespace DirectX;
 using namespace MattMath;
 
+Structure::Structure(const std::string& sheet_name,
+	const std::string& frame_name,
+	const MattMath::RectangleF& rectangle,
+	DirectX::SpriteBatch* sprite_batch,
+	ResourceManager* resource_manager,
+	collision_object_type collision_type,
+	const MattMath::Colour& color,
+	float rotation,
+	const MattMath::Vector2F& origin,
+	DirectX::SpriteEffects effects,
+	float layer_depth) :
+	TextureObject(sheet_name, frame_name,
+		sprite_batch, resource_manager,
+		color, rotation, origin, effects, layer_depth),
+	_rectangle(rectangle),
+	_collision_type(collision_type) {}
+
 void Structure::update()
 {
 	return;

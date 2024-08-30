@@ -9,7 +9,7 @@ class StateContext
 private:
 	std::unique_ptr<State> _state = nullptr;
 public:
-	StateContext() {}
+	StateContext() = default;
 	void update() const;
 	void draw() const;
 	void transition_to(std::unique_ptr<State> state);

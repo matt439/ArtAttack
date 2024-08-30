@@ -5,10 +5,19 @@ using namespace DirectX;
 using namespace MattMath;
 using namespace viewport_consts;
 
+ViewportManager::ViewportManager(ResolutionManager* resolution_manager,
+    SpriteBatch* sprite_batch,
+    DX::DeviceResources* device_resources) :
+    _resolution_manager(resolution_manager),
+    _sprite_batch(sprite_batch),
+    _device_resources(device_resources)
+{
+}
+
 Viewport ViewportManager::get_fullscreen_viewport() const
 {
     Vector2F res = this->_resolution_manager->get_resolution_vec();
-    return Viewport(0.0f, 0.0f, res.x, res.y);
+    return {0.0f, 0.0f, res.x, res.y};
 }
 
 D3D11_VIEWPORT ViewportManager::get_fullscreen_d3d11_viewport() const
@@ -24,7 +33,7 @@ RectangleF ViewportManager::get_camera_adjusted_player_viewport_rect(
     const float scale = camera.scale;
     const Vector2F& translation = camera.translation;
 
-    RectangleF result = RectangleF(
+	auto result = RectangleF(
 		translation.x,
 		translation.y,
 		vp.width * scale,
@@ -151,6 +160,8 @@ Viewport ViewportManager::calculate_viewport(screen_layout layout,
             result.width = screen_size.x;
             result.height = screen_size.y / 2.0f;
             return result;
+        default:
+            break;
         }
     case screen_layout::THREE_PLAYER:
         switch (player_num)
@@ -173,6 +184,8 @@ Viewport ViewportManager::calculate_viewport(screen_layout layout,
             result.width = screen_size.x / 2.0f;
             result.height = screen_size.y / 2.0f;
             return result;
+        default:
+            break;
         }
     case screen_layout::FOUR_PLAYER:
         switch (player_num)
@@ -201,6 +214,8 @@ Viewport ViewportManager::calculate_viewport(screen_layout layout,
             result.width = screen_size.x / 2.0f;
             result.height = screen_size.y / 2.0f;
             return result;
+        default:
+            break;
         }
     default: //1P screen
         result.x = 0.0f;

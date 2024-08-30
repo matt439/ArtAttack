@@ -14,7 +14,7 @@ namespace structure_paintable_consts
 	constexpr float SOUND_VOLUME = 0.1f;
 }
 
-struct paintable_faces
+struct PaintableFaces
 {
 	bool left = false;
 	bool top = false;
@@ -22,7 +22,7 @@ struct paintable_faces
 	bool bottom = false;
 };
 
-class StructurePaintable : public Structure, public IPaintableGameObject
+class StructurePaintable final : public Structure, public IPaintableGameObject
 {
 public:
 	StructurePaintable() = default;
@@ -33,7 +33,7 @@ public:
 		ResourceManager* resource_manager,
 		collision_object_type collision_type,
 		const team_colour& team_colours,
-		const paintable_faces& faces,
+		const PaintableFaces& faces,
 		const float* dt,
 		const MattMath::Colour& color = colour_consts::WHITE,
 		float rotation = 0.0f,
@@ -41,22 +41,20 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f);
 
-	virtual void update() override;
-	virtual void draw(const MattMath::Camera& camera) override;
-	virtual void draw() override;
-	virtual void on_collision(const ICollisionGameObject* other) override;
+	void update() override;
+	void draw(const MattMath::Camera& camera) override;
+	void draw() override;
+	void on_collision(const ICollisionGameObject* other) override;
 
 	PaintTotal get_paint_total() const override;
-protected:
 
 private:
 	std::vector<PaintTile> _paint_tiles = std::vector<PaintTile>();
 	team_colour _team_colours = team_colour();
-	paintable_faces _faces = paintable_faces();
+	PaintableFaces _faces = PaintableFaces();
 	const float* _dt = nullptr;
 	std::vector<PaintTile> generate_paint_tiles() const;
 	SoundBank* _sound_bank = nullptr;
-
 
 };
 #endif // !STRUCTUREPAINTABLE_H

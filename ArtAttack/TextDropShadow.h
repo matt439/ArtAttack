@@ -3,7 +3,7 @@
 
 #include "Text.h"
 
-class TextDropShadow : public Text
+class TextDropShadow final : public Text
 {
 public:
 	TextDropShadow() = default;

@@ -4,25 +4,14 @@
 #include "SpriteFrame.h"
 #include "Colour.h"
 #include "rapidjson/document.h"
-#include <cstdio>
 #include <map>
 #include "AnimationStrip.h"
 
 class SpriteSheet
 {
-private:
-	std::map<std::string, SpriteFrame> _sprite_frames;
-	std::map<std::string, std::unique_ptr<AnimationStrip>> _animation_strips;
-	ID3D11ShaderResourceView* _texture = nullptr;
-
-	std::map<std::string, SpriteFrame>
-		decode_sprite_frames_json(const rapidjson::Value& json);
-	std::map<std::string, std::unique_ptr<AnimationStrip>>
-		decode_animation_strips_json(const rapidjson::Value& json);
-	
 public:
-	SpriteSheet(ID3D11ShaderResourceView* texture) :
-		_texture(texture) {}
+	SpriteSheet() = default;
+	SpriteSheet(ID3D11ShaderResourceView* texture);
 
 	const AnimationStrip* get_animation_strip(const std::string& name) const;
 	
@@ -69,5 +58,16 @@ public:
 		MattMath::Vector2F::ZERO,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f) const;
+
+private:
+	std::map<std::string, SpriteFrame> _sprite_frames;
+	std::map<std::string, std::unique_ptr<AnimationStrip>> _animation_strips;
+	ID3D11ShaderResourceView* _texture = nullptr;
+
+	std::map<std::string, SpriteFrame>
+		decode_sprite_frames_json(const rapidjson::Value& json);
+	std::map<std::string, std::unique_ptr<AnimationStrip>>
+		decode_animation_strips_json(const rapidjson::Value& json);
+
 };
 #endif // !SPRITESHEET_H

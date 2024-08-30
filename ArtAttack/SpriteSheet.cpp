@@ -6,6 +6,10 @@ using namespace DirectX;
 using namespace MattMath;
 using namespace rapidjson;
 
+SpriteSheet::SpriteSheet(ID3D11ShaderResourceView* texture) :
+	_texture(texture)
+{
+}
 
 const AnimationStrip* SpriteSheet::get_animation_strip(const std::string& name) const
 {

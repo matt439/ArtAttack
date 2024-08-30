@@ -53,8 +53,9 @@ namespace team_colour_consts
 class TeamColour
 {
 public:
-	TeamColour() {}
-	inline team_colour generate_random_team_colour()
+	TeamColour() = default;
+
+	static team_colour generate_random_team_colour()
 	{
 		int enum_max = static_cast<int>(team_colour_enum::MAX);
 		int random = rand() % enum_max;
@@ -70,7 +71,8 @@ public:
 			return team_colour_consts::BLUE_ORANGE;
 		}
 	}
-	inline team_colour get_team_colours(team_colour_enum team_colour)
+
+	static team_colour get_team_colours(const team_colour_enum& team_colour)
 	{
 		switch (team_colour)
 		{
@@ -84,8 +86,9 @@ public:
 			return team_colour_consts::BLUE_ORANGE;
 		}
 	}
-	inline MattMath::Colour get_team_colour(team_colour team_colours,
-		player_team team)
+
+	static MattMath::Colour get_team_colour(const team_colour& team_colours,
+	                                        player_team team)
 	{
 		switch (team)
 		{
