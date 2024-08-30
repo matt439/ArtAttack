@@ -39,7 +39,7 @@ public:
 		ResourceManager* resource_manager);
 
 	void update(const std::vector<player_input>& player_inputs);
-	void draw();
+	void draw() const;
 	void stop_music() const;
 
 private:

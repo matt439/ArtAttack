@@ -12,7 +12,7 @@ class Game final : public DX::IDeviceNotify, public StateContext
 {
 public:
     Game() noexcept(false);
-    ~Game();
+    ~Game() override;
 
     Game(Game&&) = default;
     Game& operator= (Game&&) = default;

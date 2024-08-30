@@ -227,11 +227,9 @@
     <ClInclude Include="ProjectileBuilder.h" />
     <ClInclude Include="ProjectileJet.h" />
     <ClInclude Include="ProjectileMist.h" />
-    <ClInclude Include="ProjectileRolling.h" />
     <ClInclude Include="ProjectileSpray.h" />
     <ClInclude Include="projectile_consts.h" />
     <ClInclude Include="projectile_details.h" />
-    <ClInclude Include="RectangleObject.h" />
     <ClInclude Include="ResolutionManager.h" />
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -301,9 +299,7 @@
     <ClCompile Include="ProjectileBuilder.cpp" />
     <ClCompile Include="ProjectileJet.cpp" />
     <ClCompile Include="ProjectileMist.cpp" />
-    <ClCompile Include="ProjectileRolling.cpp" />
     <ClCompile Include="ProjectileSpray.cpp" />
-    <ClCompile Include="RectangleObject.cpp" />
     <ClCompile Include="ResolutionManager.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

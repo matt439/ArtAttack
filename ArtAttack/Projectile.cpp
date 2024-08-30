@@ -28,7 +28,6 @@ Projectile::Projectile(const Vector2F& velocity,
     _team(team),
     _dt(dt)
 {
-
 }
 
 DiffusingProjectile::DiffusingProjectile(
@@ -53,8 +52,8 @@ DiffusingProjectile::DiffusingProjectile(
         origin, effects, layer_depth),
     _diffusion_details(diffusion_details)
 {
-
 }
+
 const Vector2F& DiffusingProjectile::get_base_size() const
 {
 	return this->get_details().size;
@@ -90,8 +89,6 @@ Vector2F DiffusingProjectile::calculate_diffusion_size() const
 
     return base_size * multiple;
 }
-
-
 
 bool Projectile::is_matching_collision_object_type(
     const ICollisionGameObject* other) const

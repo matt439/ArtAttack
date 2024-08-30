@@ -146,20 +146,19 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 	for (auto& object : *this->_collision_objects)
 	{
 		// check collision object collisions with players
-			for (auto& player : *this->_player_objects)
+		for (auto& player : *this->_player_objects)
+		{
+			if (object->get_for_deletion() || player->get_for_deletion())
 			{
-				if (object->get_for_deletion() || player->get_for_deletion())
-				{
-					continue;
-				}
-				if (object->is_colliding(player.get()))
-				{
-					object->on_collision(player.get());
-					player->on_collision(object.get());
-				}
+				continue;
 			}
-		
-		
+			if (object->is_colliding(player.get()))
+			{
+				object->on_collision(player.get());
+				player->on_collision(object.get());
+			}
+		}
+
 		// check collision object collisions with other collision objects
 		for (auto& object_2 : *this->_collision_objects)
 		{
@@ -215,7 +214,7 @@ void Level::stop_player_sounds() const
 	}
 
 }
-void Level::draw()
+void Level::draw() const
 {		
 	this->draw_active_level();
 }

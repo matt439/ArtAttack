@@ -3,12 +3,8 @@
 
 #include "Projectile.h"
 
-class ProjectileMist : public DiffusingProjectile
+class ProjectileMist final : public DiffusingProjectile
 {
-private:
-	MattMath::RectangleF _rectangle = MattMath::RectangleF::ZERO;
-protected:
-
 public:
 	ProjectileMist() = default;
 	ProjectileMist(const MattMath::RectangleF& rectangle,
@@ -24,12 +20,15 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f);
 
-	virtual void update() override;
-	virtual void draw(const MattMath::Camera& camera) override;
-	virtual void draw() override;
-	virtual bool is_visible_in_viewport(const MattMath::RectangleF& view) const override;
+	void update() override;
+	void draw(const MattMath::Camera& camera) override;
+	void draw() override;
+	bool is_visible_in_viewport(const MattMath::RectangleF& view) const override;
 
-	virtual bool is_colliding(const ICollisionGameObject* other) const override;
-	virtual const MattMath::Shape* get_shape() const override;
+	bool is_colliding(const ICollisionGameObject* other) const override;
+	const MattMath::Shape* get_shape() const override;
+
+private:
+	MattMath::RectangleF _rectangle = MattMath::RectangleF::ZERO;
 };
 #endif // !PROJECTILEMIST_H

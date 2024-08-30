@@ -9,6 +9,7 @@ class StateContext
 private:
 	std::unique_ptr<State> _state = nullptr;
 public:
+	virtual ~StateContext() = default;
 	StateContext() = default;
 	void update() const;
 	void draw() const;

@@ -36,15 +36,15 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f);
 
-	virtual void update() = 0;
-	virtual void draw(const MattMath::Camera& camera) = 0;
-	virtual bool is_visible_in_viewport(const MattMath::RectangleF& view) const = 0;
+	void update() override = 0;
+	void draw(const MattMath::Camera& camera) override = 0;
+	bool is_visible_in_viewport(const MattMath::RectangleF& view) const override = 0;
 
-	virtual bool is_colliding(const ICollisionGameObject* other) const = 0;
-	virtual void on_collision(const ICollisionGameObject* other) override;
-	virtual collision_object_type get_collision_object_type() const override;
-	virtual const MattMath::Shape* get_shape() const = 0;
-	virtual bool get_for_deletion() const override;
+	bool is_colliding(const ICollisionGameObject* other) const override = 0;
+	void on_collision(const ICollisionGameObject* other) override;
+	collision_object_type get_collision_object_type() const override;
+	const MattMath::Shape* get_shape() const override = 0;
+	bool get_for_deletion() const override;
 
 	float get_delete_timer() const { return this->_details.delete_timer; }
 	MattMath::Vector2F get_col_rect_size() const { return this->_details.col_rect_size; }
@@ -56,8 +56,7 @@ protected:
 	player_team get_team() const;
 	void set_for_deletion(bool for_deletion);
 
-	virtual bool is_matching_collision_object_type(
-		const ICollisionGameObject* other) const;
+	virtual bool is_matching_collision_object_type(const ICollisionGameObject* other) const;
 
 	int get_player_num() const;
 	const MattMath::Colour& get_team_colour() const;
@@ -102,7 +101,6 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f);
 	~DiffusingProjectile() override = default;
-
 
 	void update() override = 0;
 	void draw(const MattMath::Camera& camera) override = 0;

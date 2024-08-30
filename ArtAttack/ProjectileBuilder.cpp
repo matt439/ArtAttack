@@ -4,7 +4,6 @@
 #include "ProjectileJet.h"
 #include "ProjectileBall.h"
 #include "ProjectileMist.h"
-#include "ProjectileRolling.h"
 
 using namespace MattMath;
 using namespace DirectX;
@@ -53,25 +52,6 @@ std::vector<std::unique_ptr<ICollisionGameObject>>
 		projectiles.push_back(
 			std::make_unique<ProjectileJet>(
 				RectangleF(position, DETAILS_JET.col_rect_size),
-				velocity,
-				team,
-				player_num,
-				team_colour,
-				dt,
-				sprite_batch,
-				resource_manager,
-				rotation,
-				origin,
-				effects,
-				layer_depth));
-		return projectiles;
-	}
-	case ROLLING:
-	{
-		std::vector<std::unique_ptr<ICollisionGameObject>> projectiles;
-		projectiles.push_back(
-			std::make_unique<ProjectileRolling>(
-				RectangleF(position, DETAILS_ROLLING.col_rect_size),
 				velocity,
 				team,
 				player_num,
