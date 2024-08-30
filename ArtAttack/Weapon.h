@@ -1,7 +1,6 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
-//#include "Projectile.h"
 #include "player_team.h"
 #include "wep_type.h"
 #include "weapon_details.h"
@@ -9,8 +8,6 @@
 #include "player_input.h"
 #include "Colour.h"
 #include <cmath>
-//#include "IGameObject.h"
-//#include "RectangleTexture.h"
 #include "TextureObject.h"
 #include "ProjectileBuilder.h"
 #include "SoundBank.h"
@@ -31,8 +28,6 @@ private:
 	DirectX::SpriteBatch* _sprite_batch = nullptr;
 	ResourceManager* _resource_manager = nullptr;
 
-	
-	//std::unique_ptr<std::vector<Projectile>> _projectiles;
 	float _ammo = weapon_consts::STARTING_AMMO;
 	float _shoot_timer = 0.0f;
 	float _rotation = 0.0f;
@@ -47,8 +42,6 @@ private:
 	MattMath::Colour _team_colour = colour_consts::GRAY;
 	wep_type _type = wep_type::NONE;
 	MattMath::Vector2F _player_center = { 0.0f, 0.0f };
-
-	
 
 	MattMath::Vector2F get_wep_rotation_origin_offset(
 		bool facing_left) const;
@@ -76,9 +69,7 @@ protected:
 	const MattMath::Vector2F& get_nozzle_offset() const { return this->_details.nozzle_offset; }
 	float get_shoot_interval() const { return this->_details.shoot_interval; }
 	float get_starting_vel_length() const { return this->_details.starting_vel_length; }
-	//wep_movement get_movement() const { return this->_details.movement; }
 	float get_ammo_usage() const { return this->_details.ammo_usage; }
-	//float get_player_vel_amount() const { return this->_details.player_vel_amount; }
 
 	float get_rotation() const { return this->_rotation; }
 	void set_rotation(float rotation) { this->_rotation = rotation; }
@@ -98,7 +89,6 @@ protected:
 	float get_ammo_timer() const { return this->_ammo_timer; }
 	void set_ammo_timer(float ammo_timer) { this->_ammo_timer = ammo_timer; }
 	void alter_ammo_timer(float dt) { this->_ammo_timer += dt; }
-
 
 	MattMath::Vector2F get_draw_pos() const;
 	MattMath::Vector2F get_nozzle_pos() const;
@@ -147,9 +137,7 @@ public:
 		const MattMath::Vector2F& origin = MattMath::Vector2F::ZERO,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f);
-	//virtual ~Weapon() = default;
 
-	//virtual void update(const weapon_update& update) = 0;
 	virtual void draw(const MattMath::Camera& camera, bool debug = false);
 	virtual void draw(bool debug = false);
 
@@ -171,9 +159,6 @@ public:
 class RelativeVelocityWeapon : public Weapon
 {
 private:
-	//add_player_velocity _add_player_vel = add_player_velocity::NONE;
-	//float _player_vel_amount = 1.0f;
-
 	relative_weapon_details _rel_details = weapon_consts::DETAILS_RELATIVE_DEFAULT;
 protected:
 	virtual MattMath::Vector2F calculate_projectile_launch_velocity(
@@ -208,7 +193,6 @@ public:
 			const MattMath::Vector2F& player_center,
 			const MattMath::Vector2F& player_velocity,
 			bool player_facing_right) override;
-
 };
 
 #endif // !WEAPON_H

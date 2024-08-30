@@ -1,7 +1,6 @@
 #ifndef TEAMCOLOUR_H
 #define TEAMCOLOUR_H
-//#include <glm/glm.hpp>
-//#include "colour.h"
+
 #include "player_team.h"
 #include "colour.h"
 

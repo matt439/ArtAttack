@@ -4,18 +4,6 @@
 #include "MattMath.h"
 #include "Projectile.h"
 
-//enum class wep_movement
-//{
-//	FREE_ROTATE,
-//	ON_GROUND
-//};
-
-//enum class shoot_pattern
-//{
-//	SINGLE,
-//	MIST
-//};
-
 enum class add_player_velocity
 {
 	X_AND_Y,

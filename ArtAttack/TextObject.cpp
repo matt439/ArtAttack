@@ -22,7 +22,6 @@ TextObject::TextObject(const std::string& text,
 	_position(position),
 	_scale(scale)
 {
-
 }
 
 void TextObject::draw(const Camera& camera) const

@@ -1,22 +1,11 @@
 #ifndef TEXTUREOBJECT_H
 #define TEXTUREOBJECT_H
 
-//#include "DrawObject.h"
-//#include <string>
 #include "SpriteSheetObject.h"
 
 class TextureObject : public SpriteSheetObject
 {
-private:
-	//std::string _sheet_name = "";
-	//std::string _frame_name = "";
 protected:
-	//virtual const std::string& get_sprite_sheet_name() const;
-	//virtual const std::string& get_sprite_frame_name() const;
-	//virtual SpriteSheet* get_sprite_sheet() const;
-	//virtual void set_sprite_sheet_name(const std::string& sheet_name);
-	//virtual void set_sprite_frame_name(const std::string& frame_name);
-
 	virtual void draw(const MattMath::RectangleI& destination_rectangle) const;
 	virtual void draw(const MattMath::RectangleF& destination_rectangle) const;
 	virtual void draw(const MattMath::Vector2F& position, float scale = 1.0f) const;

@@ -30,7 +30,6 @@ public:
 	virtual void update() override;
 	virtual void draw(const MattMath::Camera& camera) override;
 	virtual void draw() override;
-	//virtual void draw(const MattMath::Viewport& viewport);
 	virtual bool is_visible_in_viewport(
 		const MattMath::RectangleF& view) const override;
 };
