@@ -3,11 +3,9 @@
 
 #include "player_team.h"
 #include "projectile_consts.h"
-//#include "Colour.h"
 #include "AnimationObject.h"
 #include "MovingObject.h"
 #include "ICollisionGameObject.h"
-//#include <cmath>
 
 enum projectile_type
 {
@@ -18,7 +16,7 @@ enum projectile_type
 	BALL
 };
 
-class Projectile : public MovingObject, //public CollisionObject,
+class Projectile : public MovingObject,
 	public AnimationObject, public ICollisionGameObject
 {
 private:
@@ -34,11 +32,7 @@ private:
 	const float* _dt = nullptr;
 
 protected:
-	//void set_details(const projectile_details& details) { this->_details = details; }
 	const projectile_details& get_details() const { return this->_details; }
-	//float get_time() const { return this->_time; }
-	//DirectX::SimpleMath::Vector2 get_base_size() const { return this->_details.size; }
-
 
 	player_team get_team() const;
 	void set_for_deletion(bool for_deletion);
@@ -82,64 +76,17 @@ public:
 	virtual const MattMath::Shape* get_shape() const = 0;
 	virtual bool get_for_deletion() const override;
 
-
-
-	//rotation_origin get_rotation_origin() const { return this->_details.rotat_origin; }
-	//float get_gravity() const { return this->_details.gravity; }
-	//float get_wind_resistance() const { return this->_details.wind_resistance; }
 	float get_delete_timer() const { return this->_details.delete_timer; }
 	MattMath::Vector2F get_col_rect_size() const { return this->_details.col_rect_size; }
 	float get_player_damage() const { return this->_details.player_damage; }
-	//float get_colour_power() const { return this->_details.colour_power; }
-
-	//float get_rotation() const { return this->_rotation; }
-	//void set_rotation(float rotation) { this->_rotation = rotation; }
-
-	//bool get_for_deletion() const { return this->_for_deletion; }
-	//void set_for_deletion(bool for_deletion) { this->_for_deletion = for_deletion; }
-
-
-
-	//bool get_collided() const { return this->_collided; }
-	//void set_collided(bool collided) { this->_collided = collided; }
-
-	//virtual MattMath::RectangleF get_collision_rectangle() const;
-
 };
-
-//class Jet : public Projectile
-//{
-//private:
-//
-//public:
-//	Jet(const projectile_info& info);
-//};
-//
-//class Rolling : public Projectile
-//{
-//private:
-//
-//public:
-//	Rolling(const projectile_info& info);
-//};
-//
-//class Ball : public Projectile
-//{
-//private:
-//
-//public:
-//	Ball(const projectile_info& info);
-//};
 
 class DiffusingProjectile : public Projectile
 {
 private:
 	diffusion_details _diffusion_details = diffusion_details();
-	//diffusion_type get_diffusion_type() const { return this->_diffusion_details.type; }
-	//MattMath::Vector2F calculate_diffusion_col_rect_size() const;
 	const MattMath::Vector2F& get_base_size() const;
 protected:
-	//void set_diffusion_details(const diffusion_details& details) { this->_diffusion_details = details; }
 	MattMath::Vector2F calculate_diffusion_size() const;
 public:
 	DiffusingProjectile(const MattMath::Vector2F& velocity,
@@ -166,25 +113,6 @@ public:
 
 	virtual bool is_colliding(const ICollisionGameObject* other) const = 0;
 	virtual const MattMath::Shape* get_shape() const = 0;
-
-	//DirectX::SimpleMath::Vector2 get_size() const;
-	//MattMath::RectangleF get_collision_rectangle() const;
 };
-
-//class Spray : public DiffusingProjectile
-//{
-//private:
-//
-//public:
-//	Spray(const projectile_info& info);
-//};
-
-//class Mist : public DiffusingProjectile
-//{
-//private:
-//
-//public:
-//	Mist(const projectile_info& info);
-//};
 
 #endif // !PROJECTILE_H

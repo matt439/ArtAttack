@@ -7,15 +7,6 @@
 
 class RectangleAnimation : public AnimationObject, public RectangleObject
 {
-private:
-	//MattMath::RectangleF _rectangle = MattMath::RectangleF::ZERO;
-	//const float* _dt = nullptr;
-	//std::unique_ptr<AnimatedSprite> _animated_sprite = nullptr;
-protected:
-	//const MattMath::RectangleF& get_rectangle() const;
-	//const MattMath::RectangleI get_rectangle_i() const;
-
-	//void set_rectangle(const MattMath::RectangleF& rectangle);
 public:
 	RectangleAnimation() = default;
 	RectangleAnimation(const float* dt,
@@ -25,7 +16,6 @@ public:
 		DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const MattMath::Colour& color = colour_consts::WHITE,
-		//float rotation = 0.0f,
 		const MattMath::Vector2F& origin = MattMath::Vector2F::ZERO,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f) :

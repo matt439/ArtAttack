@@ -2,11 +2,8 @@
 #define RESOLUTIONMANAGER_H
 
 #include <string>
-//#include "SimpleMath.h"
 #include "MattMath.h"
 #include "screen_resolution.h"
-
-
 
 class ResolutionManager
 {
@@ -36,7 +33,6 @@ public:
     void set_resolution(const MattMath::Vector2I& resolution);
     std::string convert_resolution_to_string(
         screen_resolution resolution) const;
-
 
 };
 #endif // !RESOLUTION_H
