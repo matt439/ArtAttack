@@ -9,6 +9,7 @@
 #include "GameData.h"
 #include "GameStates.h"
 #include "MattMath.h"
+#include "MenuLevelSettings.h"
 
 using namespace DirectX;
 
@@ -209,7 +210,22 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         //g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
         g_game->Initialize(g_game_data.get());
-        g_game->transition_to(std::make_unique<GameMenu>(g_game_data.get()));
+
+		MenuLevelSettings level_settings;
+		level_settings.set_player_count(1);
+		level_settings.set_game_mode(level_mode::STANDARD_MODE);
+		level_settings.set_stage(level_stage::KING_OF_THE_HILL);
+		level_settings.set_screen_layout(screen_layout::ONE_PLAYER);
+
+		menu_player_settings player_settings;
+        player_settings.team = player_team::A;
+        player_settings.weapon = wep_type::SPRAYER;
+        player_settings.num = 0;
+
+		level_settings.set_player_setting(0, player_settings);
+
+        //g_game->transition_to(std::make_unique<GameMenu>(g_game_data.get()));
+		g_game->transition_to(std::make_unique<GameLevel>(g_game_data.get(), level_settings));
     }
 
     // Main message loop
