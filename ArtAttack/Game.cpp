@@ -10,21 +10,21 @@ using Microsoft::WRL::ComPtr;
 Game::Game() noexcept(false)
 {
     // Renders only 2D, so no need for a depth buffer.
-    m_deviceResources = std::make_unique<DX::DeviceResources>(
+    _deviceResources = std::make_unique<DX::DeviceResources>(
         DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_FORMAT_UNKNOWN);
 
     //m_deviceResources = std::make_unique<DX::DeviceResources>();
     // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
     //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
-    m_deviceResources->RegisterDeviceNotify(this);
+    _deviceResources->RegisterDeviceNotify(this);
 }
 
 Game::~Game()
 {
-    if (m_audio_engine)
+    if (_audio_engine)
     {
-        m_audio_engine->Suspend();
+        _audio_engine->Suspend();
     }
 }
 
@@ -33,22 +33,22 @@ void Game::Initialize(GameData* game_data)
 {
     this->_data = game_data;
 
-    this->_data->set_device_resources(m_deviceResources.get());
+    this->_data->set_device_resources(_deviceResources.get());
 
     MattMath::Vector2I window_size = this->_data->get_resolution_manager()->get_resolution_ivec();
-    m_deviceResources->SetWindow(this->_data->get_window(),
+    _deviceResources->SetWindow(this->_data->get_window(),
         window_size.x, window_size.y);
 
     AUDIO_ENGINE_FLAGS eflags = AudioEngine_Default;
 #ifdef _DEBUG
     eflags |= AudioEngine_Debug;
 #endif
-    m_audio_engine = std::make_unique<AudioEngine>(eflags);
+    _audio_engine = std::make_unique<AudioEngine>(eflags);
 
-    m_deviceResources->CreateDeviceResources();
+    _deviceResources->CreateDeviceResources();
     CreateDeviceDependentResources();
 
-    m_deviceResources->CreateWindowSizeDependentResources();
+    _deviceResources->CreateWindowSizeDependentResources();
     CreateWindowSizeDependentResources();
 
     this->_gamepad = std::make_unique<GamePad>();
@@ -78,7 +78,7 @@ void Game::Update(DX::StepTimer const& timer)
     *this->_dt = elapsedTime;
     this->update();
     // TODO: Add your game logic here.
-    if (!m_audio_engine->Update())
+    if (!_audio_engine->Update())
     {
         // more about this below...
     }
@@ -99,33 +99,33 @@ void Game::Render()
 
     Clear();
 
-    m_deviceResources->PIXBeginEvent(L"Render");
+    _deviceResources->PIXBeginEvent(L"Render");
 
     this->draw();
 
-    m_deviceResources->PIXEndEvent();
+    _deviceResources->PIXEndEvent();
 
     // Show the new frame.
-    m_deviceResources->Present();
+    _deviceResources->Present();
 }
 
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
-    m_deviceResources->PIXBeginEvent(L"Clear");
+    _deviceResources->PIXBeginEvent(L"Clear");
 
     // Clear the views.
-    auto context = m_deviceResources->GetD3DDeviceContext();
-    auto renderTarget = m_deviceResources->GetRenderTargetView();
+    auto context = _deviceResources->GetD3DDeviceContext();
+    auto renderTarget = _deviceResources->GetRenderTargetView();
 
     context->ClearRenderTargetView(renderTarget, Colors::Black);
     context->OMSetRenderTargets(1, &renderTarget, nullptr);
 
     // Set the viewport.
-    auto const viewport = m_deviceResources->GetScreenViewport();
+    auto const viewport = _deviceResources->GetScreenViewport();
     context->RSSetViewports(1, &viewport);
 
-    m_deviceResources->PIXEndEvent();
+    _deviceResources->PIXEndEvent();
 }
 #pragma endregion
 
@@ -149,31 +149,31 @@ void Game::OnSuspending()
 {
     // TODO: Game is being power-suspended (or minimized).
     this->_gamepad->Suspend();
-    m_audio_engine->Suspend();
+    _audio_engine->Suspend();
 }
 
 void Game::OnResuming()
 {
     m_timer.ResetElapsedTime();
     this->_gamepad->Resume();
-    m_audio_engine->Resume();
+    _audio_engine->Resume();
     // TODO: Game is being power-resumed (or returning from minimize).
 }
 
 void Game::OnWindowMoved()
 {
-    auto const r = m_deviceResources->GetOutputSize();
-    m_deviceResources->WindowSizeChanged(r.right, r.bottom);
+    auto const r = _deviceResources->GetOutputSize();
+    _deviceResources->WindowSizeChanged(r.right, r.bottom);
 }
 
 void Game::OnDisplayChange()
 {
-    m_deviceResources->UpdateColorSpace();
+    _deviceResources->UpdateColorSpace();
 }
 
 void Game::OnWindowSizeChanged(int width, int height)
 {
-    if (!m_deviceResources->WindowSizeChanged(width, height))
+    if (!_deviceResources->WindowSizeChanged(width, height))
         return;
 
     CreateWindowSizeDependentResources();
@@ -187,17 +187,17 @@ void Game::OnWindowSizeChanged(int width, int height)
 // These are the resources that depend on the device.
 void Game::CreateDeviceDependentResources()
 {
-    auto device = m_deviceResources->GetD3DDevice();
+    auto device = _deviceResources->GetD3DDevice();
 
     // TODO: Initialize device dependent objects here (independent of window size).
-    auto context = m_deviceResources->GetD3DDeviceContext();
-    m_spriteBatch = std::make_unique<SpriteBatch>(context);
-    this->_data->set_sprite_batch(m_spriteBatch.get());
+    auto context = _deviceResources->GetD3DDeviceContext();
+    _spriteBatch = std::make_unique<SpriteBatch>(context);
+    this->_data->set_sprite_batch(_spriteBatch.get());
 
     this->_resource_manager = std::make_unique<ResourceManager>();
     this->_data->set_resource_manager(this->_resource_manager.get());
     this->_resource_loader = std::make_unique<ResourceLoader>(
-        this->_resource_manager.get(), device, this->m_audio_engine.get());
+        this->_resource_manager.get(), device, this->_audio_engine.get());
     this->_data->set_resource_loader(this->_resource_loader.get());
     this->_dt = std::make_unique<float>(0.f);
     this->_data->set_dt(this->_dt.get());
@@ -207,8 +207,8 @@ void Game::CreateDeviceDependentResources()
         this->_data->get_device_resources());
     this->_data->set_viewport_manager(this->_viewport_manager.get());
 
-    m_states = std::make_unique<CommonStates>(device);
-    this->_data->set_common_states(m_states.get());
+    _states = std::make_unique<CommonStates>(device);
+    this->_data->set_common_states(_states.get());
 
     this->_resource_loader->load_all_resources();
 }
@@ -216,14 +216,14 @@ void Game::CreateDeviceDependentResources()
 // Allocate all memory resources that change on a window SizeChanged event.
 void Game::CreateWindowSizeDependentResources()
 {
-    auto size = m_deviceResources->GetOutputSize();
+    auto size = _deviceResources->GetOutputSize();
 }
 
 void Game::OnDeviceLost()
 {
     // TODO: Add Direct3D resource cleanup here.
-    m_spriteBatch.reset();
-    m_states.reset();
+    _spriteBatch.reset();
+    _states.reset();
     this->_resource_manager->reset_all_textures();
     this->_resource_manager->reset_all_sprite_fonts();
     this->_resource_manager->reset_all_sounds();

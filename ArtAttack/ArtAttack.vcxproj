@@ -213,15 +213,8 @@
     <ClInclude Include="level_mode.h" />
     <ClInclude Include="level_stage.h" />
     <ClInclude Include="MattMath.h" />
-    <ClInclude Include="MenuData.h" />
-    <ClInclude Include="MenuHighlight.h" />
-    <ClInclude Include="MenuInput.h" />
     <ClInclude Include="MenuLevelSettings.h" />
-    <ClInclude Include="MenuPage.h" />
-    <ClInclude Include="menu_element.h" />
-    <ClInclude Include="menu_input_action.h" />
     <ClInclude Include="menu_player_settings.h" />
-    <ClInclude Include="Mh.h" />
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="PaintTile.h" />
     <ClInclude Include="pch.h" />
@@ -248,7 +241,6 @@
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="rotation_origin.h" />
-    <ClInclude Include="Save.h" />
     <ClInclude Include="screen_layout.h" />
     <ClInclude Include="screen_resolution.h" />
     <ClInclude Include="shape_type.h" />
@@ -300,11 +292,7 @@
     <ClCompile Include="LevelObjectBuilder.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MattMath.cpp" />
-    <ClCompile Include="MenuHighlight.cpp" />
-    <ClCompile Include="MenuInput.cpp" />
     <ClCompile Include="MenuLevelSettings.cpp" />
-    <ClCompile Include="MenuPage.cpp" />
-    <ClCompile Include="Mh.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="PaintTile.cpp" />
     <ClCompile Include="pch.cpp">
@@ -330,7 +318,6 @@
     <ClCompile Include="ResolutionManager.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="Save.cpp" />
     <ClCompile Include="SoundBank.cpp" />
     <ClCompile Include="SoundBankObject.cpp" />
     <ClCompile Include="SpriteFrame.cpp" />

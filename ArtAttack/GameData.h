@@ -2,7 +2,6 @@
 #define GAMEDATA_H
 
 #include "ResolutionManager.h"
-#include "Save.h"
 #include "ResourceLoader.h"
 #include "ResourceManager.h"
 #include "DeviceResources.h"
@@ -11,7 +10,6 @@
 class GameData
 {
 private:
-    Save* _save = nullptr;
     ResolutionManager* _resolution_manager = nullptr;
     HWND _window = nullptr;
     float* _dt = nullptr;
@@ -26,7 +24,6 @@ private:
 public:
     GameData() {}
     GameData(GameData* game_data) :
-        _save(game_data->get_save()),
         _resolution_manager(game_data->get_resolution_manager()),
         _window(game_data->get_window()),
         _dt(game_data->get_dt()),
@@ -46,8 +43,6 @@ public:
     void set_dt(float* dt) { this->_dt = dt; }
     DirectX::SpriteBatch* get_sprite_batch() { return this->_sprite_batch; }
     void set_sprite_batch(DirectX::SpriteBatch* sprite_batch) { this->_sprite_batch = sprite_batch; }
-    void set_save(Save* save) { this->_save = save; }
-    Save* get_save() { return this->_save; }
     void set_resource_loader(ResourceLoader* texture_loader) { this->_resource_loader = texture_loader; }
     ResourceLoader* get_resource_loader() { return this->_resource_loader; }
     void set_resource_manager(ResourceManager* resource_manager) { this->_resource_manager = resource_manager; }
