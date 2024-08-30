@@ -2,7 +2,7 @@
 #define PLAYER_INPUT_H
 
 #include "connection_state.h"
-#include "direction_lock.h"
+//#include "direction_lock.h"
 #include "MattMath.h"
 
 struct player_input

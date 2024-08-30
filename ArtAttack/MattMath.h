@@ -720,16 +720,6 @@ namespace MattMath
 
 		static const Camera DEFAULT_CAMERA;
 	};
-
-	
-
-
-	//struct RotatedRectangle
-	//{
-	//	MattMath::Point2F c; // OBB center point
-	//	MattMath::Vector2F u[2]; // Local x-, y-, and z-axes
-	//	MattMath::Vector2F e; // Positive halfwidth extents of OBB along each axis
-	//};
 }
 
 #endif // !MATTMATH_H

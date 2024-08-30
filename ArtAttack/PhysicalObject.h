@@ -2,7 +2,7 @@
 #define PHYSICALOBJECT_H
 
 #include "MattMath.h"
-#include "IPhysical.h"
+//#include "IPhysical.h"
 
 class PhysicalObject
 {
