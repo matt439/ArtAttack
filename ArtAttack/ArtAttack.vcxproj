@@ -216,7 +216,6 @@
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="PaintTile.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PhysicalObject.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerBuilder.h" />
     <ClInclude Include="PlayerInput.h" />
@@ -298,7 +297,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="PhysicalObject.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerBuilder.cpp" />
     <ClCompile Include="PlayerInput.cpp" />

@@ -140,9 +140,7 @@ void PaintTile::on_collision(const ICollisionGameObject* other)
 		throw std::exception("PaintTile::on_collision() - other_type is not a projectile");
 	}
 	this->_team = other_team;
-	//this->_splash_timer = 0.0f;
 	this->_splash.reset_and_play();
-	//this->_sound_bank->play_wave(SOUND_NAME, SOUND_VOLUME);
 }
 collision_object_type PaintTile::get_collision_object_type() const
 {

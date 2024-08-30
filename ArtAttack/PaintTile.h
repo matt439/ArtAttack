@@ -1,11 +1,11 @@
 #ifndef PAINTTILE_H
 #define PAINTTILE_H
 
-#include "player_team.h"
-#include "TextureObject.h"
-#include "TeamColour.h"
-#include "ICollisionGameObject.h"
 #include "AnimationObject.h"
+#include "ICollisionGameObject.h"
+#include "player_team.h"
+#include "TeamColour.h"
+#include "TextureObject.h"
 
 namespace paint_tile_consts
 {
@@ -20,7 +20,7 @@ namespace paint_tile_consts
 	const static MattMath::RectangleF SPLASH_RECTANGLE = { 0.0f, 0.0f, THICKNESS * 2.0f, THICKNESS * 2.0f };
 }
 
-class PaintTileSplash : public AnimationObject, public IGameObject
+class PaintTileSplash final : public AnimationObject, public IGameObject
 {
 public:
 	PaintTileSplash() = default;
@@ -42,7 +42,7 @@ public:
 
 	void set_rectangle_center(const MattMath::Vector2F& center);
 	void reset_and_play();
-	void set_colour(const MattMath::Colour& colour);
+	void set_colour(const MattMath::Colour& colour) override;
 
 	void update() override;
 	void draw(const MattMath::Camera& camera) override;
@@ -53,7 +53,7 @@ private:
 };
 
 
-class PaintTile : public TextureObject, public ICollisionGameObject
+class PaintTile final : public TextureObject, public ICollisionGameObject
 {
 public:
 	PaintTile() = default;

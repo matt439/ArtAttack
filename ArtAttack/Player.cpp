@@ -263,8 +263,8 @@ void Player::on_structure_jump_through_collision(const ICollisionGameObject* oth
 	{
         MovingObject::set_velocity_y(0.0f);
 
-        const RectangleF& other_rect = other->get_shape()->get_bounding_box();
-        this->_rectangle.set_position_y_from_bottom(other_rect.get_top());
+        const RectangleF& rect = other->get_shape()->get_bounding_box();
+        this->_rectangle.set_position_y_from_bottom(rect.get_top());
         this->set_move_state(player_move_state::ON_DROP_DOWN_GROUND);
 	}
 	else
@@ -667,8 +667,8 @@ void Player::update_movement()
     //If accelerating in the opposite direction as currently moving. right
     else if (MovingObject::get_velocity_x() > 0.0f && x_input < 0.0f)
     {
-        MovingObject::alter_velocity_x(X_DEACCELERATION * dt * x_input);
-        MovingObject::alter_velocity_x(X_ACCELERATION * dt * x_input);
+	    MovingObject::alter_velocity_x(X_DEACCELERATION * dt * x_input);
+	    MovingObject::alter_velocity_x(X_ACCELERATION * dt * x_input);
     }
     //If accelerating in the opposite direction as currently moving. left
     else if (MovingObject::get_velocity_x() < 0.0f && x_input > 0.0f)

@@ -15,7 +15,7 @@ private:
 	const AnimationStrip* get_animation_strip() const;
 	const RECT* get_source_rectangle() const;
 protected:
-	void update();
+	virtual void update();
 	void reset();
 	void stop();
 	void play();

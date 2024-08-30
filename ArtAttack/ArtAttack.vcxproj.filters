@@ -50,7 +50,6 @@
     <ClInclude Include="MenuLevelSettings.h" />
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="PaintTile.h" />
-    <ClInclude Include="PhysicalObject.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="player_consts.h" />
     <ClInclude Include="player_input.h" />
@@ -127,7 +126,6 @@
     <ClCompile Include="MattMath.cpp" />
     <ClCompile Include="MenuLevelSettings.cpp" />
     <ClCompile Include="MovingObject.cpp" />
-    <ClCompile Include="PhysicalObject.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerBuilder.cpp" />
     <ClCompile Include="PlayerInput.cpp" />
