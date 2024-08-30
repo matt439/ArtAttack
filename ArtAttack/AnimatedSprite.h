@@ -8,7 +8,6 @@ class AnimatedSprite
 private:
 	const float* _dt = nullptr;
 	SpriteSheet* _sprite_sheet = nullptr;
-	//std::string _animation_strip_name = "";
 	const AnimationStrip* _animation_strip = nullptr;
 
 	int _frame_index = 0;
