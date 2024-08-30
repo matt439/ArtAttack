@@ -197,9 +197,6 @@
     <ClInclude Include="directory_consts.h" />
     <ClInclude Include="Drawer.h" />
     <ClInclude Include="DrawObject.h" />
-    <ClInclude Include="EndMenu.h" />
-    <ClInclude Include="EndMenuData.h" />
-    <ClInclude Include="end_menu_action.h" />
     <ClInclude Include="EricsonMath.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameData.h" />
@@ -215,8 +212,6 @@
     <ClInclude Include="level_end_info.h" />
     <ClInclude Include="level_mode.h" />
     <ClInclude Include="level_stage.h" />
-    <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="MainMenuData.h" />
     <ClInclude Include="MattMath.h" />
     <ClInclude Include="MenuData.h" />
     <ClInclude Include="MenuHighlight.h" />
@@ -229,9 +224,6 @@
     <ClInclude Include="Mh.h" />
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="PaintTile.h" />
-    <ClInclude Include="PauseMenu.h" />
-    <ClInclude Include="PauseMenuData.h" />
-    <ClInclude Include="pause_menu_action.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PhysicalObject.h" />
     <ClInclude Include="Player.h" />
@@ -255,9 +247,6 @@
     <ClInclude Include="ResolutionManager.h" />
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="ResultsMenu.h" />
-    <ClInclude Include="ResultsMenuData.h" />
-    <ClInclude Include="results_menu_action.h" />
     <ClInclude Include="rotation_origin.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="screen_layout.h" />
@@ -301,7 +290,6 @@
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Drawer.cpp" />
     <ClCompile Include="DrawObject.cpp" />
-    <ClCompile Include="EndMenu.cpp" />
     <ClCompile Include="EricsonMath.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameStates.cpp" />
@@ -311,7 +299,6 @@
     <ClCompile Include="LevelLoadedInfo.cpp" />
     <ClCompile Include="LevelObjectBuilder.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MattMath.cpp" />
     <ClCompile Include="MenuHighlight.cpp" />
     <ClCompile Include="MenuInput.cpp" />
@@ -320,7 +307,6 @@
     <ClCompile Include="Mh.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="PaintTile.cpp" />
-    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -344,7 +330,6 @@
     <ClCompile Include="ResolutionManager.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="ResultsMenu.cpp" />
     <ClCompile Include="Save.cpp" />
     <ClCompile Include="SoundBank.cpp" />
     <ClCompile Include="SoundBankObject.cpp" />
