@@ -132,10 +132,23 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 		g_game->transition_to(std::make_unique<GameLevel>(g_game_data.get(), level_settings));
     }
 
+	constexpr double GAME_RUN_TIME = 5.0;
+	std::chrono::high_resolution_clock::time_point start_time = std::chrono::high_resolution_clock::now();
+
     // Main message loop
     MSG msg = {};
     while (WM_QUIT != msg.message)
     {
+		if (GAME_RUN_TIME > 0.0)
+		{
+			std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(now - start_time);
+			if (time_span.count() > GAME_RUN_TIME)
+			{
+				break;
+			}
+		}
+        
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
             TranslateMessage(&msg);
