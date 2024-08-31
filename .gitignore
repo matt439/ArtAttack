@@ -366,3 +366,6 @@ FodyWeavers.xsd
 *.wav
 *.xwb
 *.mp3
+
+# Statistic files
+stats.txt
