@@ -97,6 +97,7 @@
     <ClInclude Include="wep_type.h" />
     <ClInclude Include="screen_resolution.h" />
     <ClInclude Include="PerformanceStatistics.h" />
+    <ClInclude Include="ThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="WeaponSprayer.cpp" />
     <ClCompile Include="PaintTile.cpp" />
     <ClCompile Include="PerformanceStatistics.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
