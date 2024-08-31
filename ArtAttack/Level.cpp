@@ -23,7 +23,8 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	const std::string& level_name,
 	const ResolutionManager* resolution_manager,
 	ViewportManager* viewport_manager,
-	ResourceManager* resource_manager) :
+	ResourceManager* resource_manager,
+	ThreadPool* thread_pool) :
 	_non_collision_objects(std::move(non_collision_objects)),
 	_collision_objects(std::move(collision_objects)),
 	_player_objects(std::move(player_objects)),
@@ -42,7 +43,8 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	_team_b_spawns(team_b_spawns),
 	_dt(dt),
 	_sprite_batch(sprite_batch),
-	_sampler_state(sampler_state)
+	_sampler_state(sampler_state),
+	_thread_pool(thread_pool)
 {
 	this->_debug_text = std::make_unique<DebugText>(sprite_batch,
 		resource_manager, dt, resolution_manager);

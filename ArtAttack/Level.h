@@ -12,6 +12,7 @@
 #include "TeamColour.h"
 #include "TextDropShadow.h"
 #include "ViewportManager.h"
+#include "ThreadPool.h"
 
 class Level final
 {
@@ -36,7 +37,8 @@ public:
 		const std::string& level_name,
 		const ResolutionManager* resolution_manager,
 		ViewportManager* viewport_manager,
-		ResourceManager* resource_manager);
+		ResourceManager* resource_manager,
+		ThreadPool* thread_pool);
 
 	void update(const std::vector<player_input>& player_inputs);
 	void draw() const;
@@ -56,6 +58,8 @@ private:
 		_viewport_dividers = nullptr;
 
 	SoundBank* _sound_bank = nullptr;
+
+	ThreadPool* _thread_pool = nullptr;
 
 	std::string _music_name = "";
 	float _music_volume = 0.0f;

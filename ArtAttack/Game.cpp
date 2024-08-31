@@ -212,6 +212,9 @@ void Game::create_device_dependent_resources()
     this->_performance_statistics =
         std::make_unique<PerformanceStatistics>(TARGET_FPS, NUM_THREADS);
 
+	this->_thread_pool = std::make_unique<ThreadPool>(NUM_THREADS);
+	this->_data->set_thread_pool(this->_thread_pool.get());
+
     this->_resource_manager = std::make_unique<ResourceManager>();
     this->_data->set_resource_manager(this->_resource_manager.get());
     this->_resource_loader = std::make_unique<ResourceLoader>(
