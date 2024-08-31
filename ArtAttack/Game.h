@@ -6,7 +6,9 @@
 #include "GameData.h"
 #include "ResourceManager.h"
 #include "StateContext.h"
+#include "PerformanceStatistics.h"
 #include <Audio.h>
+#include <chrono>
 
 class Game final : public DX::IDeviceNotify, public StateContext
 {
@@ -62,6 +64,9 @@ private:
     std::unique_ptr<ViewportManager> _viewport_manager = nullptr;
     GameData* _data = nullptr;
     std::unique_ptr<DirectX::AudioEngine> _audio_engine = nullptr;
+	std::unique_ptr<PerformanceStatistics> _performance_statistics = nullptr;
+    std::chrono::high_resolution_clock::time_point _last_time;
+	int _stats_start_countdown = 2;
 };
 
 #endif // !GAME_H

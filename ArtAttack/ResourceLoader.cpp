@@ -32,6 +32,7 @@ void ResourceLoader::load_level_info() const
     this->load_level_info_from_directory(LEVEL_DIRECTORY, "king_of_the_hill", level_stage::KING_OF_THE_HILL);
     this->load_level_info_from_directory(LEVEL_DIRECTORY, "turbulence", level_stage::TURBULENCE);
     this->load_level_info_from_directory(LEVEL_DIRECTORY, "close_quarters", level_stage::CLOSE_QUARTERS);
+	this->load_level_info_from_directory(LEVEL_DIRECTORY, "sit315", level_stage::SIT315);
 }
 
 void ResourceLoader::load_all_resources()
@@ -41,7 +42,6 @@ void ResourceLoader::load_all_resources()
     this->load_level_info();
     this->load_sounds();
 }
-
 
 void ResourceLoader::load_texture(const std::string& texture_path,
     const std::string& texture_name) const

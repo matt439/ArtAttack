@@ -14,6 +14,54 @@ PlayerInput::PlayerInput(GamePad* gamepad) :
     }
 }
 
+std::vector<player_input> PlayerInput::get_test_player_inputs()
+{
+	std::vector<player_input> result;
+
+	player_input input_1;
+	input_1.connection = connection_state::CONNECTED;
+	Vector2F direction_1 = { 1.0f, -3.0f };
+    direction_1.normalize();
+    input_1.shoot_angle = direction_1.angle();
+    input_1.shoot_direction = direction_1;
+    input_1.shoot_direction_requested = true;
+	input_1.primary_shoot = true;
+
+	player_input input_2;
+	input_2.connection = connection_state::CONNECTED;
+	Vector2F direction_2 = { 1.0f, -1.0f };
+	direction_2.normalize();
+	input_2.shoot_angle = direction_2.angle();
+	input_2.shoot_direction = direction_2;
+	input_2.shoot_direction_requested = true;
+	input_2.primary_shoot = true;
+
+	player_input input_3;
+	input_3.connection = connection_state::CONNECTED;
+	Vector2F direction_3 = { 1.0f, -2.0f };
+	direction_3.normalize();
+	input_3.shoot_angle = direction_3.angle();
+	input_3.shoot_direction = direction_3;
+	input_3.shoot_direction_requested = true;
+	input_3.primary_shoot = true;
+
+	player_input input_4;
+	input_4.connection = connection_state::CONNECTED;
+	Vector2F direction_4 = { 1.0f, -0.5f };
+	direction_4.normalize();
+	input_4.shoot_angle = direction_4.angle();
+	input_4.shoot_direction = direction_4;
+	input_4.shoot_direction_requested = true;
+	input_4.primary_shoot = true;
+
+	result.push_back(input_1);
+	result.push_back(input_2);
+	result.push_back(input_3);
+	result.push_back(input_4);
+
+	return result;
+}
+
 RawPlayerInput PlayerInput::get_raw_input(int gamepad_num) const
 {
     RawPlayerInput result = RawPlayerInput();

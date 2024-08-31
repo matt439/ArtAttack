@@ -113,21 +113,21 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         g_game->initialize(g_game_data.get());
 
-		MenuLevelSettings level_settings;
-		level_settings.set_player_count(1);
-		level_settings.set_game_mode(level_mode::STANDARD_MODE);
-		level_settings.set_stage(level_stage::KING_OF_THE_HILL);
-		level_settings.set_screen_layout(screen_layout::ONE_PLAYER);
+		MenuPlayerSettings player_1_settings = { player_team::A, wep_type::SPRAYER, 0 };
+		MenuPlayerSettings player_2_settings = { player_team::A, wep_type::MISTER, 1 };
+		MenuPlayerSettings player_3_settings = { player_team::B, wep_type::SPRAYER, 2 };
+		MenuPlayerSettings player_4_settings = { player_team::B, wep_type::MISTER, 3 };
 
-		MenuPlayerSettings player_1_settings;
-        player_1_settings.team = player_team::A;
-        player_1_settings.weapon = wep_type::SPRAYER;
-        player_1_settings.num = 0;
-
-        MenuPlayerSettings player_2_settings;
-        player_2_settings.team = player_team::A;
+        MenuLevelSettings level_settings;
+        level_settings.set_player_count(4);
+        level_settings.set_game_mode(level_mode::STANDARD_MODE);
+        level_settings.set_stage(level_stage::SIT315);
+        level_settings.set_screen_layout(screen_layout::FOUR_PLAYER);
 
 		level_settings.set_player_setting(0, player_1_settings);
+		level_settings.set_player_setting(1, player_2_settings);
+		level_settings.set_player_setting(2, player_3_settings);
+		level_settings.set_player_setting(3, player_4_settings);
 
 		g_game->transition_to(std::make_unique<GameLevel>(g_game_data.get(), level_settings));
     }

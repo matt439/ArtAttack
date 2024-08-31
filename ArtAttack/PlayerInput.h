@@ -31,6 +31,7 @@ public:
 	PlayerInput() = default;
 	PlayerInput(DirectX::GamePad* gamepad);
 	std::vector<player_input> update_and_get_player_inputs();
+	std::vector<player_input> get_test_player_inputs();
 
 private:
 	RawPlayerInput _prev_inputs[4];

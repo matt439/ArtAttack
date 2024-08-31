@@ -6,6 +6,7 @@ enum class level_stage
     KING_OF_THE_HILL,
     TURBULENCE,
     CLOSE_QUARTERS,
+    SIT315,
     RANDOM,
     MAX_STAGE = RANDOM,
 };

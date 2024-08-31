@@ -4,6 +4,7 @@
 extern void ExitGame() noexcept;
 
 using namespace DirectX;
+using namespace std::chrono;
 
 using Microsoft::WRL::ComPtr;
 
@@ -17,6 +18,7 @@ Game::Game() noexcept(false)
     // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
     //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
+
     _deviceResources->RegisterDeviceNotify(this);
 }
 
@@ -26,6 +28,10 @@ Game::~Game()
     {
         _audio_engine->Suspend();
     }
+
+	auto stats = this->_performance_statistics->calculate_statistics();
+	auto game_stats = this->_performance_statistics->calculate_game_statistics(stats);
+	int x = 0;
 }
 
 // Initialize the Direct3D resources required to run.
@@ -54,10 +60,8 @@ void Game::initialize(GameData* game_data)
     this->_gamepad = std::make_unique<GamePad>();
     this->_data->set_gamepad(this->_gamepad.get());
 
-    // TODO: Change the timer settings if you want something other than the default variable timestep mode.
-    // e.g. for 60 FPS fixed timestep update logic, call:
     m_timer.SetFixedTimeStep(true);
-    m_timer.SetTargetElapsedSeconds(1.0 / 60);
+    m_timer.SetTargetElapsedSeconds(1.0 / 75);
 }
 
 #pragma region Frame Update
@@ -68,21 +72,31 @@ void Game::tick()
             update(m_timer);
         });
 
+	high_resolution_clock::time_point now = high_resolution_clock::now();
+	duration<double> time_span = duration_cast<duration<double>>(now - _last_time);
+
+	if (this->_stats_start_countdown > 0)
+	{
+		this->_stats_start_countdown--;
+	}
+	else
+	{
+		this->_performance_statistics->add_frame_time(time_span.count());
+	}
+	_last_time = now;
+
     render();
 }
 
 // Updates the world.
 void Game::update(DX::StepTimer const& timer) const
 {
-    float elapsedTime = float(timer.GetElapsedSeconds());
+    float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
     *this->_dt = elapsedTime;
 	this->StateContext::update();
-    // TODO: Add your game logic here.
     if (!_audio_engine->Update())
     {
-        // more about this below...
     }
-
 }
 #pragma endregion
 
@@ -192,6 +206,8 @@ void Game::create_device_dependent_resources()
     auto context = _deviceResources->GetD3DDeviceContext();
     _spriteBatch = std::make_unique<SpriteBatch>(context);
     this->_data->set_sprite_batch(_spriteBatch.get());
+
+    this->_performance_statistics = std::make_unique<PerformanceStatistics>();
 
     this->_resource_manager = std::make_unique<ResourceManager>();
     this->_data->set_resource_manager(this->_resource_manager.get());

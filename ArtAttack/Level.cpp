@@ -272,7 +272,8 @@ void Level::draw_active_level() const
 		this->_sprite_batch->End();
 
 		// draw debug info
-		if (player->get_showing_debug())
+		//if (player->get_showing_debug())
+		if (true)
 		{
 			int num_projectiles = this->count_projectiles();
 			this->_debug_text->draw_debug_info(player.get(), num_projectiles);

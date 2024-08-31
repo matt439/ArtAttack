@@ -532,27 +532,27 @@ void Player::on_projectile_collision(const ICollisionGameObject* other)
     if (other_type == collision_object_type::PROJECTILE_SPRAY_TEAM_A ||
         other_type == collision_object_type::PROJECTILE_SPRAY_TEAM_B)
     {
-		this->_health -= SPRAY_DAMAGE;
+		//this->_health -= SPRAY_DAMAGE;
 	}
 	else if (other_type == collision_object_type::PROJECTILE_JET_TEAM_A ||
 		other_type == collision_object_type::PROJECTILE_JET_TEAM_B)
 	{
-		this->_health -= JET_DAMAGE;
+		//this->_health -= JET_DAMAGE;
 	}
 	else if (other_type == collision_object_type::PROJECTILE_ROLLING_TEAM_A ||
 		other_type == collision_object_type::PROJECTILE_ROLLING_TEAM_B)
 	{
-		this->_health -= ROLLING_DAMAGE;
+		//this->_health -= ROLLING_DAMAGE;
 	}
 	else if (other_type == collision_object_type::PROJECTILE_BALL_TEAM_A ||
 		other_type == collision_object_type::PROJECTILE_BALL_TEAM_B)
 	{
-		this->_health -= BALL_DAMAGE;
+		//this->_health -= BALL_DAMAGE;
 	}
 	else if (other_type == collision_object_type::PROJECTILE_MIST_TEAM_A ||
 		other_type == collision_object_type::PROJECTILE_MIST_TEAM_B)
 	{
-		this->_health -= MIST_DAMAGE;
+		//this->_health -= MIST_DAMAGE;
 	}
 	else
 	{

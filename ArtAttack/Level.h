@@ -13,7 +13,7 @@
 #include "TextDropShadow.h"
 #include "ViewportManager.h"
 
-class Level
+class Level final
 {
 public:
 	Level() = default;
