@@ -132,7 +132,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 		g_game->transition_to(std::make_unique<GameLevel>(g_game_data.get(), level_settings));
     }
 
-	constexpr double GAME_RUN_TIME = 5.0;
+	constexpr double GAME_RUN_TIME = 10.0;
 	std::chrono::high_resolution_clock::time_point start_time = std::chrono::high_resolution_clock::now();
 
     // Main message loop

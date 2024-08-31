@@ -2,6 +2,7 @@
 #define PERFORMANCE_STATISTICS_H
 
 #include <vector>
+#include <string>
 
 struct Statistics
 {
@@ -23,15 +24,18 @@ struct GameStatistics
 class PerformanceStatistics
 {
 public:
-	PerformanceStatistics() = default;
+	PerformanceStatistics(int target_fps, int num_threads);
 	void add_frame_time(double frame_time);
-	Statistics calculate_statistics() const;
-	GameStatistics calculate_game_statistics(const Statistics& frame_time_stats) const;
-	void print_statistics(const Statistics& statistics) const;
+	void write_statistics_to_file(const std::string& file_name) const;
 private:
 	std::vector<double> _frame_times;
+	int _target_fps;
+	int _num_threads;
 	double calculate_median() const;
 	double calculate_standard_deviation(double mean) const;
+	Statistics calculate_statistics() const;
+	GameStatistics calculate_game_statistics() const;
+	void print_statistics(const Statistics& statistics) const;
 };
 
 #endif // !PERFORMANCE_STATISTICS_H

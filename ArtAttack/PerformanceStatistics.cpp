@@ -1,11 +1,46 @@
 #include "pch.h"
 #include "PerformanceStatistics.h"
 #include <iostream>
+#include <fstream>
+
+PerformanceStatistics::PerformanceStatistics(
+	int target_fps, int num_threads) :
+	_target_fps(target_fps), _num_threads(num_threads)
+{
+}
 
 void PerformanceStatistics::add_frame_time(double frame_time)
 {
 	this->_frame_times.push_back(frame_time);
 }
+
+void PerformanceStatistics::write_statistics_to_file(const std::string& file_name) const
+{
+	std::ofstream file(file_name);
+	if (file.is_open())
+	{
+		GameStatistics game_stats = this->calculate_game_statistics();
+		file << "##### Performance Statistics #####" << std::endl;
+		file << "Target FPS: " << this->_target_fps << std::endl;
+		file << "Number of Threads: " << this->_num_threads << std::endl << std::endl;
+		file << "### FPS Statistics ###" << std::endl;
+		file << "Min: " << game_stats.fps.min << std::endl;
+		file << "Max: " << game_stats.fps.max << std::endl;
+		file << "Mean: " << game_stats.fps.mean << std::endl;
+		file << "Std Dev: " << game_stats.fps.standard_deviation << std::endl;
+		file << "Median: " << game_stats.fps.median << std::endl << std::endl;
+		file << "### Frame Time Statistics ###" << std::endl;
+		file << "Min: " << game_stats.frame_time.min << std::endl;
+		file << "Max: " << game_stats.frame_time.max << std::endl;
+		file << "Mean: " << game_stats.frame_time.mean << std::endl;
+		file << "Std Dev: " << game_stats.frame_time.standard_deviation << std::endl;
+		file << "Median: " << game_stats.frame_time.median << std::endl;
+		file << "Total: " << game_stats.frame_time.total << std::endl << std::endl;
+		file << "# End of Performance Statistics #" << std::endl;
+		file.close();
+	}
+}
+
 
 void PerformanceStatistics::print_statistics(const Statistics& statistics) const
 {
@@ -46,8 +81,10 @@ Statistics PerformanceStatistics::calculate_statistics() const
 	return stats;
 }
 
-GameStatistics PerformanceStatistics::calculate_game_statistics(const Statistics& frame_time_stats) const
+GameStatistics PerformanceStatistics::calculate_game_statistics() const
 {
+	Statistics frame_time_stats = this->calculate_statistics();
+	
 	GameStatistics stats;
 	stats.frame_time = frame_time_stats;
 	stats.fps.mean = 1.0 / frame_time_stats.mean;

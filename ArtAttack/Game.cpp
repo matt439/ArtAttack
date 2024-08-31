@@ -29,9 +29,11 @@ Game::~Game()
         _audio_engine->Suspend();
     }
 
-	auto stats = this->_performance_statistics->calculate_statistics();
-	auto game_stats = this->_performance_statistics->calculate_game_statistics(stats);
-	int x = 0;
+	this->_performance_statistics->write_statistics_to_file(STATS_FILE);
+
+	//auto stats = this->_performance_statistics->calculate_statistics();
+	//auto game_stats = this->_performance_statistics->calculate_game_statistics(stats);
+	//int x = 0;
 }
 
 // Initialize the Direct3D resources required to run.
@@ -61,7 +63,7 @@ void Game::initialize(GameData* game_data)
     this->_data->set_gamepad(this->_gamepad.get());
 
     m_timer.SetFixedTimeStep(true);
-    m_timer.SetTargetElapsedSeconds(1.0 / 75);
+    m_timer.SetTargetElapsedSeconds(1.0 / TARGET_FPS);
 }
 
 #pragma region Frame Update
@@ -207,7 +209,8 @@ void Game::create_device_dependent_resources()
     _spriteBatch = std::make_unique<SpriteBatch>(context);
     this->_data->set_sprite_batch(_spriteBatch.get());
 
-    this->_performance_statistics = std::make_unique<PerformanceStatistics>();
+    this->_performance_statistics =
+        std::make_unique<PerformanceStatistics>(TARGET_FPS, NUM_THREADS);
 
     this->_resource_manager = std::make_unique<ResourceManager>();
     this->_data->set_resource_manager(this->_resource_manager.get());
