@@ -11,7 +11,10 @@ ThreadPool::ThreadPool(int num_threads)
 
 ThreadPool::~ThreadPool()
 {
-	this->_stop = true;
+	{
+		std::scoped_lock lock(this->_mutex);
+		this->_stop = true;
+	}
 	this->_condition.notify_all();
 	for (auto& thread : this->_threads)
 	{
@@ -24,8 +27,10 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::add_task(std::function<void()> task)
 {
-	std::scoped_lock lock(this->_mutex);
-	this->_tasks.push(task);
+	{
+		std::scoped_lock lock(this->_mutex);
+		this->_tasks.push(task);
+	}
 	this->_condition.notify_one();
 }
 
@@ -35,15 +40,20 @@ void ThreadPool::wait_for_tasks_to_complete()
 	this->_condition.wait(lock, [this] { return this->_tasks.empty(); });
 }
 
+int ThreadPool::get_num_threads() const
+{
+	return static_cast<int>(this->_threads.size());
+}
+
 void ThreadPool::thread_loop()
 {
-	while (!this->_stop)
+	while (true)
 	{
 		std::function<void()> task;
 		{
 			std::unique_lock lock(this->_mutex);
 			this->_condition.wait(lock, [this] { return this->_stop || !this->_tasks.empty(); });
-			if (this->_stop)
+			if (this->_stop && this->_tasks.empty())
 			{
 				return;
 			}
@@ -53,4 +63,3 @@ void ThreadPool::thread_loop()
 		task();
 	}
 }
-

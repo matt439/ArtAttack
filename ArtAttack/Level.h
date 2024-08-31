@@ -13,6 +13,7 @@
 #include "TextDropShadow.h"
 #include "ViewportManager.h"
 #include "ThreadPool.h"
+#include "Partitioner.h"
 
 class Level final
 {
@@ -100,6 +101,8 @@ private:
 	void draw_active_level() const;
 
 	void stop_player_sounds() const;
+
+	void update_collision_objects(int start, int end) const;
 };
 
 #endif

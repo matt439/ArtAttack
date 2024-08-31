@@ -14,6 +14,7 @@ public:
 	~ThreadPool();
 	void add_task(std::function<void()> task);
 	void wait_for_tasks_to_complete();
+	int get_num_threads() const;
 private:
 	std::vector<std::jthread> _threads;
 	std::queue<std::function<void()>> _tasks;

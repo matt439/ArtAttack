@@ -78,13 +78,29 @@ void Level::update(const std::vector<player_input>& player_inputs)
 
 	this->update_level_logic(player_inputs);
 }
+void Level::update_collision_objects(int start, int end) const
+{
+	for (int i = start; i < end; i++)
+	{
+		this->_collision_objects->at(i)->update();
+	}
+}
+
 void Level::update_level_logic(const std::vector<player_input>& player_inputs) const
 {
+	int num_threads = this->_thread_pool->get_num_threads();
+	
 	// update collision objects
-	for (auto& object : *this->_collision_objects)
+	auto partitioned = Partitioner::partition(this->_collision_objects->size(), num_threads);
+ 	for (int i = 0; i < partitioned.size(); i++)
 	{
-		object->update();
+		this->_thread_pool->add_task([this, i, partitioned, player_inputs]()
+			{
+				this->update_collision_objects(partitioned[i].first, partitioned[i].second);
+			});
 	}
+
+	//this->_thread_pool->wait_for_tasks_to_complete();
 	
 	// update player objects
 	int player_index = 0;

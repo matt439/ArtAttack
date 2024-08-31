@@ -217,6 +217,7 @@
     <ClInclude Include="menu_player_settings.h" />
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="PaintTile.h" />
+    <ClInclude Include="Partitioner.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PerformanceStatistics.h" />
     <ClInclude Include="Player.h" />
@@ -289,6 +290,7 @@
     <ClCompile Include="MenuLevelSettings.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="PaintTile.cpp" />
+    <ClCompile Include="Partitioner.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

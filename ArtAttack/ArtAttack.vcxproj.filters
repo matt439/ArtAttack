@@ -98,6 +98,7 @@
     <ClInclude Include="screen_resolution.h" />
     <ClInclude Include="PerformanceStatistics.h" />
     <ClInclude Include="ThreadPool.h" />
+    <ClInclude Include="Partitioner.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="PaintTile.cpp" />
     <ClCompile Include="PerformanceStatistics.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
+    <ClCompile Include="Partitioner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
