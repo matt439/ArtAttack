@@ -133,14 +133,17 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 				other_object->on_collision(player.get());
 			}
 		}
+		// update some player things after collisions have possible altered position
+		player->update_weapon_position();
+		player->update_prev_rectangle();
 	}
 
-	// update some player things after collisions have possible altered position
-	for (auto& object : *this->_player_objects)
-	{
-		object->update_weapon_position();
-		object->update_prev_rectangle();
-	}
+	//// update some player things after collisions have possible altered position
+	//for (auto& player : *this->_player_objects)
+	//{
+	//	player->update_weapon_position();
+	//	player->update_prev_rectangle();
+	//}
 
 	// check collision objects collisions
 	for (auto& object : *this->_collision_objects)
