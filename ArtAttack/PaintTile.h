@@ -69,6 +69,7 @@ public:
 		const MattMath::Vector2F& origin = MattMath::Vector2F::ZERO,
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f);
+
 	void draw(const MattMath::Camera& camera) override;
 	void draw() override;
 	void update() override;
@@ -81,12 +82,14 @@ public:
 	collision_object_type get_collision_object_type() const override;
 	bool get_for_deletion() const override;
 	bool is_visible_in_viewport(const MattMath::RectangleF& view) const override;
+	std::mutex& get_mutex() override;
 private:
 	MattMath::RectangleF _rectangle = MattMath::RectangleF::ZERO;
 	player_team _team = player_team::NONE;
 	team_colour _team_colours = team_colour();
 	const float* _dt = nullptr;
 	PaintTileSplash _splash;
+	std::mutex _mutex;
 };
 
 #endif // !PAINTTILE_H

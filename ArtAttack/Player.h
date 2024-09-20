@@ -129,6 +129,7 @@ public:
     void update_weapon_position() const;
     void update_prev_rectangle();
     void stop_sounds() const;
+	std::mutex& get_mutex() override;
 
 protected:
 
@@ -203,6 +204,8 @@ private:
     const float* _dt = nullptr;
 
     float _health_regen_timer = 0.0f;
+
+	std::mutex _mutex;
 
     const MattMath::RectangleF* get_collision_rectangle() const;
 

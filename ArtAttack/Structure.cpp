@@ -61,3 +61,7 @@ const RectangleF& Structure::get_rectangle() const
 {
 	return this->_rectangle;
 }
+std::mutex& Structure::get_mutex()
+{
+	return this->_mutex;
+}

@@ -159,13 +159,13 @@ void Level::check_out_of_bounds_objects(int start, int end) const
 	}
 }
 
-void Level::check_player_collisions(int start, int end, std::vector<std::mutex>& mutexes) const
+void Level::check_player_collisions(int start, int end) const
 {
 	for (int i = start; i < end; i++)
 	{
 		for (int j = 0; j < this->_collision_objects->size(); j++)
 		{
-			std::scoped_lock lock(mutexes[j]);
+			std::scoped_lock lock(this->_collision_objects->at(j)->get_mutex());
 			
 			if (this->_collision_objects->at(j)->get_for_deletion())
 			{
@@ -181,6 +181,85 @@ void Level::check_player_collisions(int start, int end, std::vector<std::mutex>&
 		this->_player_objects->at(i)->update_weapon_position();
 		this->_player_objects->at(i)->update_prev_rectangle();
 	}
+}
+
+void Level::check_collision_object_collisions(int start, int end) const
+{
+	for (int i = start; i < end; i++)
+	{
+		// check collision object collisions with players
+		for (int j = 0; j < this->_player_objects->size(); j++)
+		{
+			std::scoped_lock lock(this->_player_objects->at(j)->get_mutex());
+
+			if (this->_collision_objects->at(i)->get_for_deletion() ||
+				this->_player_objects->at(j)->get_for_deletion())
+			{
+				continue;
+			}
+			if (this->_collision_objects->at(i)->is_colliding(this->_player_objects->at(j).get()))
+			{
+				this->_collision_objects->at(i)->on_collision(this->_player_objects->at(j).get());
+				this->_player_objects->at(j)->on_collision(this->_collision_objects->at(i).get());
+			}
+		}
+
+		// check collision object collisions with other collision objects
+		for (int j = 0; j < this->_collision_objects->size(); j++)
+		{
+			std::scoped_lock lock(this->_collision_objects->at(j)->get_mutex());
+
+			if (i == j)
+			{
+				continue;
+			}
+			if (this->_collision_objects->at(i)->get_for_deletion() ||
+				this->_collision_objects->at(j)->get_for_deletion())
+			{
+				continue;
+			}
+			if (this->_collision_objects->at(i)->is_colliding(this->_collision_objects->at(j).get()))
+			{
+				this->_collision_objects->at(i)->on_collision(this->_collision_objects->at(j).get());
+				this->_collision_objects->at(j)->on_collision(this->_collision_objects->at(i).get());
+			}
+		}
+	}
+	
+	//for (auto& object : *this->_collision_objects)
+	//{
+	//	// check collision object collisions with players
+	//	for (auto& player : *this->_player_objects)
+	//	{
+	//		if (object->get_for_deletion() || player->get_for_deletion())
+	//		{
+	//			continue;
+	//		}
+	//		if (object->is_colliding(player.get()))
+	//		{
+	//			object->on_collision(player.get());
+	//			player->on_collision(object.get());
+	//		}
+	//	}
+
+	//	// check collision object collisions with other collision objects
+	//	for (auto& object_2 : *this->_collision_objects)
+	//	{
+	//		if (object->get_for_deletion() || object_2->get_for_deletion())
+	//		{
+	//			continue;
+	//		}
+	//		if (object == object_2)
+	//		{
+	//			continue;
+	//		}
+	//		if (object->is_colliding(object_2.get()))
+	//		{
+	//			object->on_collision(object_2.get());
+	//			object_2->on_collision(object.get());
+	//		}
+	//	}
+	//}
 }
 
 void Level::update_level_logic(const std::vector<player_input>& player_inputs) const
@@ -228,7 +307,7 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 					partitioned_players[i].second, player_inputs);
 			});
 	}
-	
+
 	// create vector to hold new projectiles
 	std::vector<std::vector<std::unique_ptr<ICollisionGameObject>>>
 		new_projs(partitioned_players.size());
@@ -254,78 +333,29 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 		}
 	}
 
-	// create mutexes for each collision object
-	std::vector<std::mutex> mutexes(this->_collision_objects->size());
-
 	// check player collisions
 	for (int i = 0; i < partitioned_players.size(); i++)
 	{
-		this->_thread_pool->add_task([this, i, partitioned_players, &mutexes]()
+		this->_thread_pool->add_task([this, i, partitioned_players]()
 			{
 				this->check_player_collisions(partitioned_players[i].first,
-				partitioned_players[i].second, mutexes);
+					partitioned_players[i].second);
+			});
+	}
+
+	//this->_thread_pool->wait_for_tasks_to_complete();
+
+	// check collision objects collisions
+	for (int i = 0; i < partitioned_coll_objs.size(); i++)
+	{
+		this->_thread_pool->add_task([this, i, partitioned_coll_objs]()
+			{
+				this->check_collision_object_collisions(partitioned_coll_objs[i].first,
+					partitioned_coll_objs[i].second);
 			});
 	}
 
 	this->_thread_pool->wait_for_tasks_to_complete();
-
-
-
-	//for (auto& player : *this->_player_objects)
-	//{
-	//	// check player collisions with collision objects
-	//	for (auto& other_object : *this->_collision_objects)
-	//	{	
-	//		if (other_object->get_for_deletion())
-	//		{
-	//			continue;
-	//		}
-	//		if (player->is_colliding(other_object.get()))
-	//		{
-	//			player->on_collision(other_object.get());
-	//			other_object->on_collision(player.get());
-	//		}
-	//	}
-	//	// update some player things after collisions have possible altered position
-	//	player->update_weapon_position();
-	//	player->update_prev_rectangle();
-	//}
-
-	// check collision objects collisions
-	for (auto& object : *this->_collision_objects)
-	{
-		// check collision object collisions with players
-		for (auto& player : *this->_player_objects)
-		{
-			if (object->get_for_deletion() || player->get_for_deletion())
-			{
-				continue;
-			}
-			if (object->is_colliding(player.get()))
-			{
-				object->on_collision(player.get());
-				player->on_collision(object.get());
-			}
-		}
-
-		// check collision object collisions with other collision objects
-		for (auto& object_2 : *this->_collision_objects)
-		{
-			if (object->get_for_deletion() || object_2->get_for_deletion())
-			{
-				continue;
-			}
-			if (object == object_2)
-			{
-				continue;
-			}
-			if (object->is_colliding(object_2.get()))
-			{
-				object->on_collision(object_2.get());
-				object_2->on_collision(object.get());
-			}
-		}
-	}
 
 	// check for deletable objects
 	for (size_t i = 0; i < this->_collision_objects->size(); i++)

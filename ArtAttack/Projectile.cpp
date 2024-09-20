@@ -242,6 +242,10 @@ const ProjectileDetails& Projectile::get_details() const
 {
 	return this->_details;
 }
+std::mutex& Projectile::get_mutex()
+{
+	return this->_mutex;
+}
 
 DiffusingProjectile::DiffusingProjectile(
     const Vector2F& velocity,

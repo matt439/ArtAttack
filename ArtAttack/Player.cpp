@@ -923,3 +923,7 @@ void Player::stop_sounds() const
 {
     this->_primary->stop_sounds();
 }
+std::mutex& Player::get_mutex()
+{
+	return this->_mutex;
+}

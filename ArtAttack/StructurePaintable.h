@@ -49,11 +49,13 @@ public:
 	PaintTotal get_paint_total() const override;
 
 private:
-	std::vector<PaintTile> _paint_tiles = std::vector<PaintTile>();
+	std::vector<std::unique_ptr<PaintTile>> _paint_tiles =
+		std::vector<std::unique_ptr<PaintTile>>();
+
 	team_colour _team_colours = team_colour();
 	PaintableFaces _faces = PaintableFaces();
 	const float* _dt = nullptr;
-	std::vector<PaintTile> generate_paint_tiles() const;
+	std::vector<std::unique_ptr<PaintTile>> generate_paint_tiles() const;
 	SoundBank* _sound_bank = nullptr;
 
 };

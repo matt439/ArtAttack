@@ -4,6 +4,7 @@
 #include "IGameObject.h"
 #include "collision_object_type.h"
 #include "MattMath.h"
+#include <mutex>
 
 class ICollisionGameObject : public IGameObject
 {
@@ -14,5 +15,6 @@ public:
 	virtual collision_object_type get_collision_object_type() const = 0;
 	virtual const MattMath::Shape* get_shape() const = 0;
 	virtual bool get_for_deletion() const = 0;
+	virtual std::mutex& get_mutex() = 0;
 };
 #endif // !ICOLLISIONGAMEOBJECT_H

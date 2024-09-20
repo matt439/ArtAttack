@@ -49,6 +49,7 @@ public:
 	float get_delete_timer() const;
 	MattMath::Vector2F get_col_rect_size() const;
 	float get_player_damage() const;
+	std::mutex& get_mutex() override;
 
 protected:
 	const ProjectileDetails& get_details() const;
@@ -79,6 +80,7 @@ private:
 	bool _for_deletion = false;
 
 	const float* _dt = nullptr;
+	std::mutex _mutex;
 };
 
 class DiffusingProjectile : public Projectile

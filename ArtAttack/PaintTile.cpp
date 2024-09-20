@@ -154,6 +154,10 @@ bool PaintTile::is_visible_in_viewport(const RectangleF& view) const
 {
 	return this->_rectangle.intersects(view);
 }
+std::mutex& PaintTile::get_mutex()
+{
+	return this->_mutex;
+}
 
 void PaintTileSplash::set_rectangle_center(const Vector2F& center)
 {
