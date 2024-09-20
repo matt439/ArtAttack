@@ -27,7 +27,7 @@ public:
 		const MattMath::Colour& team_colour,
 		projectile_type type,
 		const float* dt,
-		DirectX::SpriteBatch* sprite_batch,
+		//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const ProjectileDetails& details,
 		const MattMath::Colour& color = colour_consts::WHITE,
@@ -37,7 +37,7 @@ public:
 		float layer_depth = 0.0f);
 
 	void update() override = 0;
-	void draw(const MattMath::Camera& camera) override = 0;
+	void draw(DirectX::SpriteBatch* sprite_batch, const MattMath::Camera& camera) override = 0;
 	bool is_visible_in_viewport(const MattMath::RectangleF& view) const override = 0;
 
 	bool is_colliding(const ICollisionGameObject* other) const override = 0;
@@ -92,7 +92,7 @@ public:
 		const MattMath::Colour& team_colour,
 		projectile_type type,
 		const float* dt,
-		DirectX::SpriteBatch* sprite_batch,
+		//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const ProjectileDetails& details,
 		const DiffusionDetails& diffusion_details,
@@ -104,7 +104,7 @@ public:
 	~DiffusingProjectile() override = default;
 
 	void update() override = 0;
-	void draw(const MattMath::Camera& camera) override = 0;
+	void draw(DirectX::SpriteBatch* sprite_batch, const MattMath::Camera& camera) override = 0;
 	bool is_visible_in_viewport(const MattMath::RectangleF& view) const override = 0;
 
 	bool is_colliding(const ICollisionGameObject* other) const override = 0;

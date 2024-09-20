@@ -18,7 +18,7 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	const std::string& music_name,
 	float music_volume,
 	const float* dt,
-	SpriteBatch* sprite_batch,
+	//SpriteBatch* sprite_batch,
 	ID3D11SamplerState* sampler_state,
 	const std::string& level_name,
 	const ResolutionManager* resolution_manager,
@@ -42,11 +42,11 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	_team_a_spawns(team_a_spawns),
 	_team_b_spawns(team_b_spawns),
 	_dt(dt),
-	_sprite_batch(sprite_batch),
+	//_sprite_batch(sprite_batch),
 	_sampler_state(sampler_state),
 	_thread_pool(thread_pool)
 {
-	this->_debug_text = std::make_unique<DebugText>(sprite_batch,
+	this->_debug_text = std::make_unique<DebugText>(
 		resource_manager, dt, resolution_manager);
 	this->_camera_tools = std::make_unique<CameraTools>();
 	this->_sound_bank = resource_manager->get_sound_bank(sound_bank_name);
@@ -403,11 +403,11 @@ void Level::stop_player_sounds() const
 	}
 
 }
-void Level::draw() const
+void Level::draw(std::vector<SpriteBatch*>* sprite_batches) const
 {		
-	this->draw_active_level();
+	this->draw_active_level(sprite_batches);
 }
-void Level::draw_active_level() const
+void Level::draw_active_level(std::vector<SpriteBatch*>* sprite_batches) const
 {
 	for (auto& player : *this->_player_objects)
 	{
@@ -422,14 +422,14 @@ void Level::draw_active_level() const
 			this->_viewport_manager->get_camera_adjusted_player_viewport_rect(
 				player_num, camera);
 
-		this->_sprite_batch->Begin(SpriteSortMode_Deferred, nullptr, this->_sampler_state);
+		sprite_batches->at(0)->Begin(SpriteSortMode_Deferred, nullptr, this->_sampler_state);
 
 		// draw non-collision objects
 		for (auto& object : *this->_non_collision_objects)
 		{
 			if (object->is_visible_in_viewport(camera_view))
 			{
-				object->draw(camera);
+				object->draw(sprite_batches->at(0), camera);
 			}
 		}
 		// draw collision objects
@@ -437,7 +437,7 @@ void Level::draw_active_level() const
 		{
 			if (object->is_visible_in_viewport(camera_view))
 			{
-				object->draw(camera);
+				object->draw(sprite_batches->at(0), camera);
 			}
 		}
 		// draw player objects
@@ -445,7 +445,7 @@ void Level::draw_active_level() const
 		{
 			if (object->is_visible_in_viewport(camera_view))
 			{
-				object->draw(camera);
+				object->draw(sprite_batches->at(0), camera);
 			}
 		}
 
@@ -455,17 +455,17 @@ void Level::draw_active_level() const
 		const Camera viewport_camera = Camera(player_vp);
 		for (auto& divider : *this->_viewport_dividers)
 		{
-			divider->draw(viewport_camera);
+			divider->draw(sprite_batches->at(0), viewport_camera);
 		}
 
-		this->_sprite_batch->End();
+		sprite_batches->at(0)->End();
 
 		// draw debug info
 		//if (player->get_showing_debug())
 		if (true)
 		{
 			int num_projectiles = this->count_projectiles();
-			this->_debug_text->draw_debug_info(player.get(), num_projectiles);
+			this->_debug_text->draw_debug_info(sprite_batches->at(0), player.get(), num_projectiles);
 		}
 	}
 }

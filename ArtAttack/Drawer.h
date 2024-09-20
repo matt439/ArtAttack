@@ -9,14 +9,14 @@
 class Drawer
 {
 public:
-	Drawer(DirectX::SpriteBatch* sprite_batch,
+	Drawer(//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const float* dt);
-	void set_spritebatch(DirectX::SpriteBatch* sprite_batch);
+	//void set_spritebatch(DirectX::SpriteBatch* sprite_batch);
 	void set_resource_manager(ResourceManager* resource_manager);
 	void set_dt(const float* dt);
 protected:
-	DirectX::SpriteBatch* get_sprite_batch() const;
+	//DirectX::SpriteBatch* get_sprite_batch() const;
 	ResourceManager* get_resource_manager() const;
 	float get_dt() const;
 	MattMath::RectangleI calculate_draw_rectangle(
@@ -30,7 +30,7 @@ protected:
 		const MattMath::Vector2F& size,
 		rotation_origin origin);
 private:
-	DirectX::SpriteBatch* _sprite_batch = nullptr;
+	//DirectX::SpriteBatch* _sprite_batch = nullptr;
 	ResourceManager* _resource_manager = nullptr;
 	const float* _dt = nullptr;
 };

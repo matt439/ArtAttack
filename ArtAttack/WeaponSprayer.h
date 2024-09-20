@@ -11,7 +11,7 @@ public:
 		const MattMath::Colour& team_colour,
 		wep_type type,
 		const MattMath::Vector2F& player_center,
-		DirectX::SpriteBatch* sprite_batch,
+		//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const float* dt,
 		const MattMath::Colour& color = colour_consts::WHITE,

@@ -7,16 +7,16 @@ using namespace MattMath;
 Structure::Structure(const std::string& sheet_name,
 	const std::string& frame_name,
 	const MattMath::RectangleF& rectangle,
-	DirectX::SpriteBatch* sprite_batch,
+	//DirectX::SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	collision_object_type collision_type,
-	const MattMath::Colour& color,
+	const Colour& color,
 	float rotation,
-	const MattMath::Vector2F& origin,
-	DirectX::SpriteEffects effects,
+	const Vector2F& origin,
+	SpriteEffects effects,
 	float layer_depth) :
 	TextureObject(sheet_name, frame_name,
-		sprite_batch, resource_manager,
+		resource_manager,
 		color, rotation, origin, effects, layer_depth),
 	_rectangle(rectangle),
 	_collision_type(collision_type) {}
@@ -25,13 +25,13 @@ void Structure::update()
 {
 	return;
 }
-void Structure::draw(const Camera& camera)
+void Structure::draw(SpriteBatch* sprite_batch, const Camera& camera)
 {
-	this->TextureObject::draw(this->_rectangle, camera);
+	this->TextureObject::draw(sprite_batch, this->_rectangle, camera);
 }
-void Structure::draw()
+void Structure::draw(SpriteBatch* sprite_batch)
 {
-	this->TextureObject::draw(this->_rectangle);
+	this->TextureObject::draw(sprite_batch, this->_rectangle);
 }
 bool Structure::is_visible_in_viewport(const RectangleF& view) const
 {

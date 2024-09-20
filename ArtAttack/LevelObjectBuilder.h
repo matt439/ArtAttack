@@ -12,7 +12,7 @@ class LevelObjectBuilder
 {
 public:
 	LevelObjectBuilder(ResourceManager* resource_manager,
-		DirectX::SpriteBatch* sprite_batch,
+		//DirectX::SpriteBatch* sprite_batch,
 		const float* dt);
 
 	std::unique_ptr<std::vector<std::unique_ptr<ICollisionGameObject>>> 
@@ -26,7 +26,7 @@ public:
 		build_viewport_dividers(const ViewportManager* viewport_manager) const;
 private:
 	ResourceManager* _resource_manager = nullptr;
-	DirectX::SpriteBatch* _sprite_batch = nullptr;
+	//DirectX::SpriteBatch* _sprite_batch = nullptr;
 	const float* _dt = nullptr;
 
 	std::unique_ptr<ICollisionGameObject>

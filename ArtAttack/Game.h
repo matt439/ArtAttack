@@ -72,6 +72,8 @@ private:
     std::unique_ptr<DirectX::AudioEngine> _audio_engine = nullptr;
 	std::unique_ptr<PerformanceStatistics> _performance_statistics = nullptr;
 	std::unique_ptr<ThreadPool> _thread_pool = nullptr;
+    std::vector<std::unique_ptr<DirectX::SpriteBatch>> _sprite_batches;
+	std::unique_ptr<std::vector<DirectX::SpriteBatch*>> _sprite_batches_ptr = nullptr;
     std::chrono::high_resolution_clock::time_point _last_time;
 	int _stats_start_countdown = 2;
 };

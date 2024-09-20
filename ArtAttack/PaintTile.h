@@ -28,7 +28,7 @@ public:
 		const MattMath::RectangleF& rectangle,
 		const std::string& sheet_name,
 		const std::string& animation_strip_name,
-		DirectX::SpriteBatch* sprite_batch,
+		//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const MattMath::Colour& color = colour_consts::WHITE,
 		float rotation = 0.0f,
@@ -36,7 +36,7 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f) :
 		AnimationObject(dt, sheet_name, animation_strip_name,
-			sprite_batch, resource_manager,
+			resource_manager,
 			color, rotation, origin, effects, layer_depth),
 		_rectangle(rectangle){}
 
@@ -45,8 +45,8 @@ public:
 	void set_colour(const MattMath::Colour& colour) override;
 
 	void update() override;
-	void draw(const MattMath::Camera& camera) override;
-	void draw() override;
+	void draw(DirectX::SpriteBatch* sprite_batch, const MattMath::Camera& camera) override;
+	void draw(DirectX::SpriteBatch* sprite_batch) override;
 	bool is_visible_in_viewport(const MattMath::RectangleF& view) const override;
 private:
 	MattMath::RectangleF _rectangle = MattMath::RectangleF::ZERO;
@@ -60,7 +60,7 @@ public:
 	PaintTile(const MattMath::RectangleF& rectangle,
 		const std::string& sheet_name,
 		const std::string& frame_name,
-		DirectX::SpriteBatch* sprite_batch,
+		//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const team_colour& team_colours,
 		const float* dt,
@@ -70,8 +70,8 @@ public:
 		DirectX::SpriteEffects effects = DirectX::SpriteEffects_None,
 		float layer_depth = 0.0f);
 
-	void draw(const MattMath::Camera& camera) override;
-	void draw() override;
+	void draw(DirectX::SpriteBatch* sprite_batch, const MattMath::Camera& camera) override;
+	void draw(DirectX::SpriteBatch* sprite_batch) override;
 	void update() override;
 	float get_area() const;
 	player_team get_team() const;

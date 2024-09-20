@@ -10,7 +10,7 @@ WeaponBucket::WeaponBucket(player_team team,
     const Colour& team_colour,
     wep_type type,
     const Vector2F& player_center,
-    SpriteBatch* sprite_batch,
+    //SpriteBatch* sprite_batch,
     ResourceManager* resource_manager,
     const float* dt,
     const Colour& color,
@@ -21,7 +21,7 @@ WeaponBucket::WeaponBucket(player_team team,
     RelativeVelocityWeapon(DETAILS_BUCKET,
         DETAILS_RELATIVE_BUCKET,
         team, player_num, team_colour, type, player_center,
-        sprite_batch, resource_manager, dt,
+        resource_manager, dt,
         color, rotation, origin, effects, layer_depth)
 {
 }

@@ -14,7 +14,7 @@ private:
     ResolutionManager* _resolution_manager = nullptr;
     HWND _window = nullptr;
     float* _dt = nullptr;
-    DirectX::SpriteBatch* _sprite_batch = nullptr;
+    std::vector<DirectX::SpriteBatch*>* _sprite_batches;
     ResourceLoader* _resource_loader = nullptr;
     ResourceManager* _resource_manager = nullptr;
     DirectX::GamePad* _gamepad = nullptr;
@@ -29,7 +29,7 @@ public:
         _resolution_manager(game_data->get_resolution_manager()),
         _window(game_data->get_window()),
         _dt(game_data->get_dt()),
-        _sprite_batch(game_data->get_sprite_batch()),
+        _sprite_batches(game_data->get_sprite_batches()),
         _resource_loader(game_data->get_resource_loader()),
         _resource_manager(game_data->get_resource_manager()),
         _gamepad(game_data->get_gamepad()),
@@ -44,8 +44,8 @@ public:
     ResolutionManager* get_resolution_manager() const { return this->_resolution_manager; }
     float* get_dt() const { return this->_dt; }
     void set_dt(float* dt) { this->_dt = dt; }
-    DirectX::SpriteBatch* get_sprite_batch() const { return this->_sprite_batch; }
-    void set_sprite_batch(DirectX::SpriteBatch* sprite_batch) { this->_sprite_batch = sprite_batch; }
+    std::vector<DirectX::SpriteBatch*>* get_sprite_batches() const { return this->_sprite_batches; }
+    void set_sprite_batches(std::vector<DirectX::SpriteBatch*>* sprite_batches) { this->_sprite_batches = sprite_batches; }
     void set_resource_loader(ResourceLoader* texture_loader) { this->_resource_loader = texture_loader; }
     ResourceLoader* get_resource_loader() const { return this->_resource_loader; }
     void set_resource_manager(ResourceManager* resource_manager) { this->_resource_manager = resource_manager; }
