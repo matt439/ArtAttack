@@ -1,65 +1,75 @@
 #include "pch.h"
 #include "ThreadPool.h"
 
-ThreadPool::ThreadPool(int num_threads)
+ThreadPool::ThreadPool(int min_num_threads, int max_num_threads) :
+	_min_num_threads(min_num_threads),
+	_max_num_threads(max_num_threads)
 {
-	for (int i = 0; i < num_threads; i++)
-	{
-		this->_threads.push_back(std::jthread(&ThreadPool::thread_loop, this));
-	}
+    InitializeThreadpoolEnvironment(&_callback_environment);
+    _pool = CreateThreadpool(nullptr);
+    if (!_pool)
+    {
+        throw std::runtime_error("Failed to create thread pool.");
+    }
+    SetThreadpoolThreadMaximum(_pool,
+        static_cast<DWORD>(max_num_threads)); // Set maximum number of threads
+
+    SetThreadpoolThreadMinimum(_pool,
+        static_cast<DWORD>(min_num_threads)); // Set minimum number of threads
+
+    _cleanup_group = CreateThreadpoolCleanupGroup();
+    if (!_cleanup_group)
+    {
+        CloseThreadpool(_pool);
+        throw std::runtime_error("Failed to create cleanup group.");
+    }
+    SetThreadpoolCallbackPool(&_callback_environment, _pool);
+    SetThreadpoolCallbackCleanupGroup(&_callback_environment, _cleanup_group, nullptr);
 }
 
 ThreadPool::~ThreadPool()
 {
-	{
-		std::scoped_lock lock(this->_mutex);
-		this->_stop = true;
-	}
-	this->_condition.notify_all();
-	for (auto& thread : this->_threads)
-	{
-		if (thread.joinable())
-		{
-			thread.join();
-		}
-	}
+    CloseThreadpoolCleanupGroupMembers(_cleanup_group, FALSE, nullptr);
+    CloseThreadpoolCleanupGroup(_cleanup_group);
+    CloseThreadpool(_pool);
+    DestroyThreadpoolEnvironment(&_callback_environment);
 }
 
 void ThreadPool::add_task(std::function<void()> task)
 {
-	{
-		std::scoped_lock lock(this->_mutex);
-		this->_tasks.push(task);
-	}
-	this->_condition.notify_one();
+    PTP_WORK work = CreateThreadpoolWork(work_callback,
+        new std::function<void()>(task), &_callback_environment);
+    if (!work)
+    {
+        throw std::runtime_error("Failed to create thread pool work object.");
+    }
+    _work_items.push_back(work);
+    SubmitThreadpoolWork(work);
 }
 
 void ThreadPool::wait_for_tasks_to_complete()
 {
-	std::unique_lock lock(this->_mutex);
-	this->_condition.wait(lock, [this] { return this->_tasks.empty(); });
+    for (PTP_WORK work : _work_items)
+    {
+        WaitForThreadpoolWorkCallbacks(work, FALSE);
+        CloseThreadpoolWork(work);
+    }
+    _work_items.clear();
 }
 
-int ThreadPool::get_num_threads() const
+void CALLBACK ThreadPool::work_callback(PTP_CALLBACK_INSTANCE instance, PVOID parameter, PTP_WORK work)
 {
-	return static_cast<int>(this->_threads.size());
+    std::function<void()>* task = static_cast<std::function<void()>*>(parameter);
+    (*task)();
+    delete task;
 }
 
-void ThreadPool::thread_loop()
+int ThreadPool::get_min_num_threads() const
 {
-	while (true)
-	{
-		std::function<void()> task;
-		{
-			std::unique_lock lock(this->_mutex);
-			this->_condition.wait(lock, [this] { return this->_stop || !this->_tasks.empty(); });
-			if (this->_stop && this->_tasks.empty())
-			{
-				return;
-			}
-			task = std::move(this->_tasks.front());
-			this->_tasks.pop();
-		}
-		task();
-	}
+	return this->_min_num_threads;
+}
+
+int ThreadPool::get_max_num_threads() const
+{
+	return this->_max_num_threads;
 }

@@ -1,27 +1,32 @@
 #ifndef THREAD_POOL_H
 #define THREAD_POOL_H
 
-#include <thread>
+#include <windows.h>
+#include <functional>
 #include <vector>
-#include <queue>
-#include <condition_variable>
+#include <iostream>
 
-
-class ThreadPool final
+class ThreadPool
 {
 public:
-	ThreadPool(int num_threads);
-	~ThreadPool();
-	void add_task(std::function<void()> task);
-	void wait_for_tasks_to_complete();
-	int get_num_threads() const;
+	ThreadPool(int min_num_threads, int max_num_threads);
+    ~ThreadPool();
+
+    void add_task(std::function<void()> task);
+    void wait_for_tasks_to_complete();
+
+	int get_min_num_threads() const;
+    int get_max_num_threads() const;
+
 private:
-	std::vector<std::jthread> _threads;
-	std::queue<std::function<void()>> _tasks;
-	std::condition_variable _condition;
-	std::mutex _mutex;
-	bool _stop = false;
-	void thread_loop();
+    static void CALLBACK work_callback(PTP_CALLBACK_INSTANCE instance, PVOID parameter, PTP_WORK work);
+	
+	int _min_num_threads = -1;
+	int _max_num_threads = -1;
+    std::vector<PTP_WORK> _work_items;
+	TP_CALLBACK_ENVIRON _callback_environment = {};
+	PTP_POOL _pool = nullptr;
+	PTP_CLEANUP_GROUP _cleanup_group = nullptr;
 };
 
 #endif // !THREAD_POOL_H

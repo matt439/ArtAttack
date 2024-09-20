@@ -210,9 +210,9 @@ void Game::create_device_dependent_resources()
     this->_data->set_sprite_batch(_spriteBatch.get());
 
     this->_performance_statistics =
-        std::make_unique<PerformanceStatistics>(TARGET_FPS, NUM_THREADS);
+        std::make_unique<PerformanceStatistics>(TARGET_FPS, NUM_THREADS_MAX);
 
-	this->_thread_pool = std::make_unique<ThreadPool>(NUM_THREADS);
+	this->_thread_pool = std::make_unique<ThreadPool>(NUM_THREADS_MIN, NUM_THREADS_MAX);
 	this->_data->set_thread_pool(this->_thread_pool.get());
 
     this->_resource_manager = std::make_unique<ResourceManager>();

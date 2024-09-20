@@ -13,7 +13,8 @@
 
 const std::string STATS_FILE = "stats.txt";
 constexpr int TARGET_FPS = 60;
-constexpr int NUM_THREADS = 4;
+constexpr int NUM_THREADS_MIN = 1;
+constexpr int NUM_THREADS_MAX = 4;
 
 class Game final : public DX::IDeviceNotify, public StateContext
 {
