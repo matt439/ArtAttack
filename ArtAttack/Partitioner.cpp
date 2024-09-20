@@ -7,7 +7,7 @@ std::vector<std::pair<int, int>> Partitioner::partition(int num_elements, int nu
 	int elements_per_partition = num_elements / num_partitions;
 	int remainder = num_elements % num_partitions;
 	int start = 0;
-	for (int i = 0; i < num_partitions; i++)
+	for (int i = 0; i < num_partitions && i < num_elements; i++)
 	{
 		int end = start + elements_per_partition;
 		if (remainder > 0)
@@ -19,4 +19,9 @@ std::vector<std::pair<int, int>> Partitioner::partition(int num_elements, int nu
 		start = end;
 	}
 	return result;
+}
+
+std::vector<std::pair<int, int>> Partitioner::partition(size_t num_elements, int num_partitions)
+{
+	return Partitioner::partition(static_cast<int>(num_elements), num_partitions);
 }

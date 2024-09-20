@@ -86,81 +86,207 @@ void Level::update_collision_objects(int start, int end) const
 	}
 }
 
+void Level::update_player_objects(int start, int end,
+	const std::vector<player_input>& player_inputs) const
+{
+	for (int i = start; i < end; i++)
+	{
+		this->_player_objects->at(i)->set_player_input(player_inputs[i]);
+		this->_player_objects->at(i)->update();
+
+		// update player camera
+		Camera camera = this->_camera_tools->calculate_camera(
+			this->_player_objects->at(i)->get_center(),
+			this->_viewport_manager->get_player_viewport(i).get_size(),
+			this->_player_objects->at(i)->get_camera(),
+			this->_camera_bounds);
+		this->_player_objects->at(i)->set_camera(camera);
+
+		//// update player weapon
+		//auto new_projs = this->_player_objects->at(i)->update_weapon_and_get_projectiles();
+
+		//// add new projectiles to collision objects
+		//for (auto& proj : new_projs)
+		//{
+		//	this->_collision_objects->push_back(std::move(proj));
+		//}
+	}
+}
+
+void Level::update_weapon_objects(int start, int end,
+	std::vector<std::unique_ptr<ICollisionGameObject>>& new_projs) const
+{
+	for (int i = start; i < end; i++)
+	{
+		// update player weapon
+		auto projs = this->_player_objects->at(i)->update_weapon_and_get_projectiles();
+
+		// add new projectiles to collision objects
+		for (auto& proj : projs)
+		{
+			new_projs.push_back(std::move(proj));
+		}
+	}
+}
+
+void Level::update_non_collision_objects(int start, int end) const
+{
+	for (int i = start; i < end; i++)
+	{
+		this->_non_collision_objects->at(i)->update();
+	}
+}
+
+void Level::check_out_of_bounds_players(int start, int end) const
+{
+	for (int i = start; i < end; i++)
+	{
+		if (this->is_object_out_of_bounds(this->_player_objects->at(i).get()))
+		{
+			throw std::exception("Player out of bounds");
+		}
+	}
+}
+
+void Level::check_out_of_bounds_objects(int start, int end) const
+{
+	for (int i = start; i < end; i++)
+	{
+		if (this->is_object_out_of_bounds(this->_collision_objects->at(i).get()))
+		{
+			throw std::exception("Collision object out of bounds");
+		}
+	}
+}
+
+void Level::check_player_collisions(int start, int end, std::vector<std::mutex>& mutexes) const
+{
+	for (int i = start; i < end; i++)
+	{
+		for (int j = 0; j < this->_collision_objects->size(); j++)
+		{
+			std::scoped_lock lock(mutexes[j]);
+			
+			if (this->_collision_objects->at(j)->get_for_deletion())
+			{
+				continue;
+			}
+			
+			if (this->_player_objects->at(i)->is_colliding(this->_collision_objects->at(j).get()))
+			{
+				this->_player_objects->at(i)->on_collision(this->_collision_objects->at(j).get());
+				this->_collision_objects->at(j)->on_collision(this->_player_objects->at(i).get());
+			}
+		}
+		this->_player_objects->at(i)->update_weapon_position();
+		this->_player_objects->at(i)->update_prev_rectangle();
+	}
+}
+
 void Level::update_level_logic(const std::vector<player_input>& player_inputs) const
 {
 	int num_threads = this->_thread_pool->get_max_num_threads();
 	
-	// update collision objects
-	auto partitioned = Partitioner::partition(this->_collision_objects->size(), num_threads);
- 	for (int i = 0; i < partitioned.size(); i++)
+	// partition non-collision objects
+	auto partioned_non_coll_objs =
+		Partitioner::partition(this->_non_collision_objects->size(), num_threads);
+
+	// update non-collision objects
+	for (int i = 0; i < partioned_non_coll_objs.size(); i++)
 	{
-		this->_thread_pool->add_task([this, i, partitioned]()
+		this->_thread_pool->add_task([this, i, partioned_non_coll_objs]()
 			{
-				update_collision_objects(partitioned[i].first, partitioned[i].second);
+				this->update_non_collision_objects(partioned_non_coll_objs[i].first,
+				partioned_non_coll_objs[i].second);
+			});
+	}
+
+	// partition collision objects
+	auto partitioned_coll_objs =
+		Partitioner::partition(this->_collision_objects->size(), num_threads);
+
+	// update collision objects
+ 	for (int i = 0; i < partitioned_coll_objs.size(); i++)
+	{
+		this->_thread_pool->add_task([this, i, partitioned_coll_objs]()
+			{
+				this->update_collision_objects(partitioned_coll_objs[i].first,
+					partitioned_coll_objs[i].second);
+			});
+	}
+
+	// partition player objects
+	auto partitioned_players =
+		Partitioner::partition(this->_player_objects->size(), num_threads);
+
+	// update player objects
+	for (int i = 0; i < partitioned_players.size(); i++)
+	{
+		this->_thread_pool->add_task([this, i, partitioned_players, player_inputs]()
+			{
+				this->update_player_objects(partitioned_players[i].first,
+					partitioned_players[i].second, player_inputs);
+			});
+	}
+	
+	// create vector to hold new projectiles
+	std::vector<std::vector<std::unique_ptr<ICollisionGameObject>>>
+		new_projs(partitioned_players.size());
+
+	// update weapon objects
+	for (int i = 0; i < partitioned_players.size(); i++)
+	{
+		this->_thread_pool->add_task([this, i, partitioned_players, &new_projs]()
+			{
+				this->update_weapon_objects(partitioned_players[i].first,
+				partitioned_players[i].second, new_projs[i]);
+			});
+	}
+
+	this->_thread_pool->wait_for_tasks_to_complete();
+
+	// add new projectiles to collision objects
+	for (auto& proj_vec : new_projs)
+	{
+		for (auto& proj : proj_vec)
+		{
+			this->_collision_objects->push_back(std::move(proj));
+		}
+	}
+
+	// create mutexes for each collision object
+	std::vector<std::mutex> mutexes(this->_collision_objects->size());
+
+	// check player collisions
+	for (int i = 0; i < partitioned_players.size(); i++)
+	{
+		this->_thread_pool->add_task([this, i, partitioned_players, &mutexes]()
+			{
+				this->check_player_collisions(partitioned_players[i].first,
+				partitioned_players[i].second, mutexes);
 			});
 	}
 
 	this->_thread_pool->wait_for_tasks_to_complete();
 
 
-	
-	// update player objects
-	int player_index = 0;
-	for (auto& object : *this->_player_objects)
-	{		
-		object->set_player_input(player_inputs[player_index]);
-		object->update();
 
-		// update player camera
-		Camera camera = this->_camera_tools->calculate_camera(
-			object->get_center(),
-			this->_viewport_manager->get_player_viewport(player_index).get_size(),
-			object->get_camera(),
-			this->_camera_bounds);
-		object->set_camera(camera);
-
-		// update player weapon
-		std::vector<std::unique_ptr<ICollisionGameObject>> new_projs =
-			object->update_weapon_and_get_projectiles();
-		// add new projectiles to collision objects
-		for (auto& proj : new_projs)
-		{
-			this->_collision_objects->push_back(std::move(proj));
-		}
-
-		player_index++;
-	}
-
-	// update non-collision objects
-	for (auto& object : *this->_non_collision_objects)
-	{
-		object->update();
-	}
-
-	// check player collisions
-	for (auto& player : *this->_player_objects)
-	{
-		// check player collisions with collision objects
-		for (auto& other_object : *this->_collision_objects)
-		{
-			if (other_object->get_for_deletion())
-			{
-				continue;
-			}
-			if (player->is_colliding(other_object.get()))
-			{
-				player->on_collision(other_object.get());
-				other_object->on_collision(player.get());
-			}
-		}
-		// update some player things after collisions have possible altered position
-		player->update_weapon_position();
-		player->update_prev_rectangle();
-	}
-
-	//// update some player things after collisions have possible altered position
 	//for (auto& player : *this->_player_objects)
 	//{
+	//	// check player collisions with collision objects
+	//	for (auto& other_object : *this->_collision_objects)
+	//	{	
+	//		if (other_object->get_for_deletion())
+	//		{
+	//			continue;
+	//		}
+	//		if (player->is_colliding(other_object.get()))
+	//		{
+	//			player->on_collision(other_object.get());
+	//			other_object->on_collision(player.get());
+	//		}
+	//	}
+	//	// update some player things after collisions have possible altered position
 	//	player->update_weapon_position();
 	//	player->update_prev_rectangle();
 	//}
@@ -213,21 +339,31 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 		}
 	}
 
+	// check for out of bounds players
+	for (int i = 0; i < partitioned_players.size(); i++)
+	{
+		this->_thread_pool->add_task([this, i, partitioned_players]()
+			{
+				this->check_out_of_bounds_players(partitioned_players[i].first,
+				partitioned_players[i].second);
+			});
+	}
+
+	// partition collision objects
+	auto partitioned_coll_objs_2 =
+		Partitioner::partition(this->_collision_objects->size(), num_threads);
+
 	// check for out of bounds objects
-	for (auto& player : *this->_player_objects)
+	for (int i = 0; i < partitioned_coll_objs_2.size(); i++)
 	{
-		if (this->is_object_out_of_bounds(player.get()))
-		{
-			throw std::exception("Player out of bounds");
-		}
+		this->_thread_pool->add_task([this, i, partitioned_coll_objs_2]()
+			{
+				this->check_out_of_bounds_objects(partitioned_coll_objs_2[i].first,
+				partitioned_coll_objs_2[i].second);
+			});
 	}
-	for (auto& object : *this->_collision_objects)
-	{
-		if (this->is_object_out_of_bounds(object.get()))
-		{
-			throw std::exception("Collision object out of bounds");
-		}
-	}
+
+	this->_thread_pool->wait_for_tasks_to_complete();
 }
 void Level::stop_player_sounds() const
 {

@@ -14,6 +14,7 @@
 #include "ViewportManager.h"
 #include "ThreadPool.h"
 #include "Partitioner.h"
+#include <mutex>
 
 class Level final
 {
@@ -103,6 +104,20 @@ private:
 	void stop_player_sounds() const;
 
 	void update_collision_objects(int start, int end) const;
+
+	void update_player_objects(int start, int end,
+		const std::vector<player_input>& player_inputs) const;
+
+	void update_weapon_objects(int start, int end,
+		std::vector<std::unique_ptr<ICollisionGameObject>>& new_projs) const;
+
+	void update_non_collision_objects(int start, int end) const;
+
+	void check_out_of_bounds_players(int start, int end) const;
+
+	void check_out_of_bounds_objects(int start, int end) const;
+
+	void check_player_collisions(int start, int end, std::vector<std::mutex>& mutexes) const;
 };
 
 #endif
