@@ -17,7 +17,7 @@ ViewportManager::ViewportManager(ResolutionManager* resolution_manager,
 Viewport ViewportManager::get_fullscreen_viewport() const
 {
     Vector2F res = this->_resolution_manager->get_resolution_vec();
-    return {0.0f, 0.0f, res.x, res.y};
+    return { 0.0f, 0.0f, res.x, res.y };
 }
 
 D3D11_VIEWPORT ViewportManager::get_fullscreen_d3d11_viewport() const
@@ -29,17 +29,35 @@ D3D11_VIEWPORT ViewportManager::get_fullscreen_d3d11_viewport() const
 RectangleF ViewportManager::get_camera_adjusted_player_viewport_rect(
     int player_num, const Camera& camera) const
 {
-	Viewport vp = this->get_player_viewport(player_num);
+    Viewport vp = this->get_player_viewport(player_num);
     const float scale = camera.scale;
     const Vector2F& translation = camera.translation;
 
-	auto result = RectangleF(
-		translation.x,
-		translation.y,
-		vp.width * scale,
-		vp.height * scale);
+    auto result = RectangleF(
+        translation.x,
+        translation.y,
+        vp.width * scale,
+        vp.height * scale);
 
-	return result;
+    return result;
+}
+
+void ViewportManager::apply_player_viewport(int player_num,
+    ID3D11DeviceContext* context) const
+{
+    D3D11_VIEWPORT vp = this->calculate_d3d11_viewport(
+        this->_layout, player_num, this->_resolution_manager->get_resolution_vec());
+    context->RSSetViewports(1, &vp);
+}
+
+void ViewportManager::apply_player_viewport(int player_num,
+    ID3D11DeviceContext* context,
+    SpriteBatch* sprite_batch) const
+{
+    D3D11_VIEWPORT vp = this->calculate_d3d11_viewport(
+        this->_layout, player_num, this->_resolution_manager->get_resolution_vec());
+    context->RSSetViewports(1, &vp);
+    sprite_batch->SetViewport(vp);
 }
 
 void ViewportManager::apply_player_viewport(int player_num) const

@@ -5,6 +5,7 @@
 #include "ResolutionManager.h"
 #include "MattMath.h"
 #include "Player.h"
+#include <mutex>
 
 namespace debug_text_consts
 {
@@ -21,17 +22,15 @@ namespace debug_text_consts
 class DebugText : public Drawer
 {
 public:
-	DebugText(//DirectX::SpriteBatch* sprite_batch,
-		ResourceManager* resource_manager,
+	DebugText(ResourceManager* resource_manager,
 		const float* dt,
-		const ResolutionManager* resolution_manager) :
-		Drawer(resource_manager, dt),
-		_resolution_manager(resolution_manager) {}
+		const ResolutionManager* resolution_manager);
 
 	void draw_debug_info(DirectX::SpriteBatch* sprite_batch, const Player* player, int num_projectiles) const;
 
 private:
 	const ResolutionManager* _resolution_manager = nullptr;
+	mutable std::mutex _mutex;
 };
 
 #endif // !DEBUGTEXT_H

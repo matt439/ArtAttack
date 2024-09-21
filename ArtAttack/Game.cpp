@@ -54,11 +54,15 @@ void Game::initialize(GameData* game_data)
     _audio_engine = std::make_unique<AudioEngine>(eflags);
 
     _deviceResources->CreateDeviceResources();
+
+    // create deferred contexts
+    _deviceResources->create_deferred_contexts(NUM_THREADS_MAX);
+
     create_device_dependent_resources();
 
     _deviceResources->CreateWindowSizeDependentResources();
     create_window_size_dependent_resources();
-
+   
     this->_gamepad = std::make_unique<GamePad>();
     this->_data->set_gamepad(this->_gamepad.get());
 
@@ -131,14 +135,26 @@ void Game::clear() const
 
     // Clear the views.
     auto context = _deviceResources->GetD3DDeviceContext();
+	auto deferred_contexts = _deviceResources->get_deferred_contexts();
     auto renderTarget = _deviceResources->GetRenderTargetView();
 
     context->ClearRenderTargetView(renderTarget, Colors::Black);
+
     context->OMSetRenderTargets(1, &renderTarget, nullptr);
+
+	for (auto& deferred_context : *deferred_contexts)
+	{
+		deferred_context->OMSetRenderTargets(1, &renderTarget, nullptr);
+	}
 
     // Set the viewport.
     auto const viewport = _deviceResources->GetScreenViewport();
     context->RSSetViewports(1, &viewport);
+
+	for (auto& deferred_context : *deferred_contexts)
+	{
+		deferred_context->RSSetViewports(1, &viewport);
+	}
 
     _deviceResources->PIXEndEvent();
 }
@@ -207,18 +223,17 @@ void Game::create_device_dependent_resources()
     // TODO: Initialize device dependent objects here (independent of window size).
     auto context = _deviceResources->GetD3DDeviceContext();
 
+	this->_sprite_batches.resize(NUM_THREADS_MAX);
+	this->_sprite_batches_ptrs.resize(NUM_THREADS_MAX);
 	for (int i = 0; i < NUM_THREADS_MAX; i++)
-    {
-		this->_sprite_batches.push_back(std::move(std::make_unique<SpriteBatch>(context)));
+	{
+		this->_sprite_batches[i] = std::move(
+			std::make_unique<SpriteBatch>(this->_deviceResources->get_deferred_context(i)));
+
+		this->_sprite_batches_ptrs[i] = this->_sprite_batches[i].get();
 	}
 
-	this->_sprite_batches_ptr = std::make_unique<std::vector<SpriteBatch*>>();
-    for (int i = 0; i < NUM_THREADS_MAX; i++)
-    {
-		this->_sprite_batches_ptr->push_back(this->_sprite_batches[i].get());
-    }
-
-	this->_data->set_sprite_batches(this->_sprite_batches_ptr.get());
+	this->_data->set_sprite_batches(&this->_sprite_batches_ptrs);
 
     this->_performance_statistics =
         std::make_unique<PerformanceStatistics>(TARGET_FPS, NUM_THREADS_MAX);
@@ -254,7 +269,7 @@ void Game::create_window_size_dependent_resources()
 void Game::on_device_lost()
 {
     // TODO: Add Direct3D resource cleanup here.
-    _spriteBatch.reset();
+    //_spriteBatch.reset();
     _states.reset();
     this->_resource_manager->reset_all_textures();
     this->_resource_manager->reset_all_sprite_fonts();

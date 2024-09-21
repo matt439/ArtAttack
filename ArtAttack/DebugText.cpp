@@ -5,6 +5,14 @@ using namespace DirectX;
 using namespace MattMath;
 using namespace debug_text_consts;
 
+DebugText::DebugText(ResourceManager* resource_manager,
+    const float* dt,
+    const ResolutionManager* resolution_manager) :
+    Drawer(resource_manager, dt),
+    _resolution_manager(resolution_manager)
+{
+}
+
 void DebugText::draw_debug_info(SpriteBatch* sprite_batch, const Player* player, int num_projectiles) const
 {
     const player_input& input = player->get_input();
@@ -112,6 +120,8 @@ void DebugText::draw_debug_info(SpriteBatch* sprite_batch, const Player* player,
 
     SpriteFont* sprite_font = this->get_resource_manager()->get_sprite_font(
         DEBUG_FONT);
+
+	std::scoped_lock lock(this->_mutex);
 
     sprite_batch->Begin();
 

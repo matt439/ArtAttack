@@ -60,7 +60,7 @@ private:
 
     std::unique_ptr<DX::DeviceResources> _deviceResources = nullptr;
     DX::StepTimer m_timer = DX::StepTimer();
-    std::unique_ptr<DirectX::SpriteBatch> _spriteBatch = nullptr;
+    //std::unique_ptr<DirectX::SpriteBatch> _spriteBatch = nullptr;
     std::unique_ptr<DirectX::CommonStates> _states = nullptr;
     std::unique_ptr<ResourceLoader> _resource_loader = nullptr;
     std::unique_ptr<ResourceManager> _resource_manager = nullptr;
@@ -73,7 +73,7 @@ private:
 	std::unique_ptr<PerformanceStatistics> _performance_statistics = nullptr;
 	std::unique_ptr<ThreadPool> _thread_pool = nullptr;
     std::vector<std::unique_ptr<DirectX::SpriteBatch>> _sprite_batches;
-	std::unique_ptr<std::vector<DirectX::SpriteBatch*>> _sprite_batches_ptr = nullptr;
+	std::vector<DirectX::SpriteBatch*> _sprite_batches_ptrs;
     std::chrono::high_resolution_clock::time_point _last_time;
 	int _stats_start_countdown = 2;
 };

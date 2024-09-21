@@ -43,7 +43,9 @@ public:
 		ThreadPool* thread_pool);
 
 	void update(const std::vector<player_input>& player_inputs);
-	void draw(std::vector<DirectX::SpriteBatch*>* sprite_batches) const;
+	void draw(std::vector<ID3D11DeviceContext*>* deferred_contexts,
+		std::vector<ID3D11CommandList*>* command_lists,
+		std::vector<DirectX::SpriteBatch*>* sprite_batches) const;
 	void stop_music() const;
 
 private:
@@ -99,7 +101,10 @@ private:
 
 	void update_level_logic(const std::vector<player_input>& player_inputs) const;
 
-	void draw_active_level(std::vector<DirectX::SpriteBatch*>* sprite_batches) const;
+	void draw_player_view_level(int start, int end,
+		std::vector<ID3D11DeviceContext*>* deferred_contexts,
+		std::vector<ID3D11CommandList*>* command_lists,
+		std::vector<DirectX::SpriteBatch*>* sprite_batches) const;
 
 	void stop_player_sounds() const;
 
