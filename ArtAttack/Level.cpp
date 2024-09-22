@@ -308,8 +308,6 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 			});
 	}
 
-	//this->_thread_pool->wait_for_tasks_to_complete();
-
 	// check collision objects collisions
 	for (int i = 0; i < partitioned_coll_objs.size(); i++)
 	{

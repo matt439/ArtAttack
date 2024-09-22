@@ -1,20 +1,20 @@
 ##### Performance Statistics #####
-Target FPS: 60
-Number of Threads: 4
+Target FPS: 120
+Number of Threads: 8
 
 ### FPS Statistics ###
-Min: 29.0513
-Max: 552.578
-Mean: 118.579
-Std Dev: 77.6
-Median: 118.926
+Min: 39.9369
+Max: 213.061
+Mean: 104.031
+Std Dev: 13.2625
+Median: 100.918
 
 ### Frame Time Statistics ###
-Min: 0.0018097
-Max: 0.0344219
-Mean: 0.00843323
-Std Dev: 0.00551886
-Median: 0.0084086
-Total: 9.73194
+Min: 0.0046935
+Max: 0.0250395
+Mean: 0.00961253
+Std Dev: 0.00122547
+Median: 0.009909
+Total: 9.98742
 
 # End of Performance Statistics #
