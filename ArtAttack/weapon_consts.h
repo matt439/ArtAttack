@@ -89,7 +89,7 @@ namespace weapon_consts
         { 20.0f, 0.0f },		//offset
         { 60.0f, 30.0f },	//size
         { projectile_consts::DETAILS_MIST.size.x / 2.0f, 0.0f },	//nozzle_offset
-        0.1f,						//shoot_interval
+        0.03f,						//shoot_interval
         300.0f,                     //starting_vel_length
         0.0f, //0.01f,                              //ammo_usage
         "sprite_sheet_1",               //sheet_name
