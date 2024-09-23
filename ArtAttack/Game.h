@@ -11,7 +11,7 @@
 #include <chrono>
 
 const std::string STATS_FILE = "stats.txt";
-constexpr int TARGET_FPS = 60;
+constexpr int TARGET_FPS = 120;
 constexpr int NUM_THREADS = 1;
 
 class Game final : public DX::IDeviceNotify, public StateContext
