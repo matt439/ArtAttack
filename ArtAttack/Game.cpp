@@ -66,8 +66,8 @@ void Game::initialize(GameData* game_data)
     this->_gamepad = std::make_unique<GamePad>();
     this->_data->set_gamepad(this->_gamepad.get());
 
-    m_timer.SetFixedTimeStep(false);
-    // m_timer.SetTargetElapsedSeconds(1.0 / TARGET_FPS);
+    m_timer.SetFixedTimeStep(true);
+    m_timer.SetTargetElapsedSeconds(1.0 / TARGET_FPS);
 }
 
 #pragma region Frame Update

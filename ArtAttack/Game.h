@@ -12,9 +12,9 @@
 #include <chrono>
 
 const std::string STATS_FILE = "stats.txt";
-constexpr int TARGET_FPS = 120;
+constexpr int TARGET_FPS = 240;
 constexpr int NUM_THREADS_MIN = 1;
-constexpr int NUM_THREADS_MAX = 8;
+constexpr int NUM_THREADS_MAX = 16;
 
 class Game final : public DX::IDeviceNotify, public StateContext
 {
