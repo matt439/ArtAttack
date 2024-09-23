@@ -7,12 +7,12 @@
 #include "ResourceManager.h"
 #include "StateContext.h"
 #include "PerformanceStatistics.h"
-#include "ThreadPool.h"
 #include <Audio.h>
 #include <chrono>
+#include <omp.h>
 
 const std::string STATS_FILE = "stats.txt";
-constexpr int TARGET_FPS = 60;
+constexpr int TARGET_FPS = 240;
 constexpr int NUM_THREADS_MIN = 1;
 constexpr int NUM_THREADS_MAX = 16;
 constexpr int STATS_START_COUNTDOWN = 2;
@@ -71,7 +71,6 @@ private:
     GameData* _data = nullptr;
     std::unique_ptr<DirectX::AudioEngine> _audio_engine = nullptr;
 	std::unique_ptr<PerformanceStatistics> _performance_statistics = nullptr;
-	std::unique_ptr<ThreadPool> _thread_pool = nullptr;
     std::vector<std::unique_ptr<DirectX::SpriteBatch>> _sprite_batches;
 	std::vector<DirectX::SpriteBatch*> _sprite_batches_ptrs;
     std::chrono::high_resolution_clock::time_point _last_time;

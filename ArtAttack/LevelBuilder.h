@@ -23,7 +23,6 @@ private:
 	std::unique_ptr<LevelObjectBuilder> _level_object_builder = nullptr;
 	ID3D11SamplerState* _sampler_state = nullptr;
 	ResolutionManager* _resolution_manager = nullptr;
-	ThreadPool* _thread_pool = nullptr;
 
 
 public:
@@ -31,10 +30,10 @@ public:
 		const float* dt,
 		ResourceManager* resource_manager,
 		ID3D11SamplerState* sampler_state,
-		ResolutionManager* resolution_manager,
-		ThreadPool* thread_pool);
+		ResolutionManager* resolution_manager);
 
-	std::unique_ptr<Level> build_level(const MenuLevelSettings& settings);
+	std::unique_ptr<Level> build_level(const MenuLevelSettings& settings,
+		int num_threads);
 };
 
 #endif // !LEVELBUILDER_H

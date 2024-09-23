@@ -15,14 +15,13 @@ void GameLevel::init()
         this->get_data()->get_dt(),
         this->get_data()->get_resource_manager(),
         this->get_data()->get_common_states()->PointClamp(),
-        this->get_data()->get_resolution_manager(),
-		this->get_data()->get_thread_pool());
+		this->get_data()->get_resolution_manager());
 
     this->get_data()->get_viewport_manager()->
         set_layout(this->_settings.get_screen_layout());
 
     this->_level = std::move(this->_level_builder->build_level(
-        this->_settings));
+        this->_settings, this->get_data()->get_num_threads()));
 }
 void GameLevel::update()
 {

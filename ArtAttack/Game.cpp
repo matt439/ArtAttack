@@ -15,6 +15,9 @@ Game::Game() noexcept(false)
         DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_FORMAT_UNKNOWN);
 
     _deviceResources->RegisterDeviceNotify(this);
+
+	// set number of threads for OpenMP
+	omp_set_num_threads(NUM_THREADS_MAX);
 }
 
 Game::~Game()
@@ -221,9 +224,6 @@ void Game::create_device_dependent_resources()
     this->_performance_statistics =
         std::make_unique<PerformanceStatistics>(TARGET_FPS, NUM_THREADS_MAX);
 
-	this->_thread_pool = std::make_unique<ThreadPool>(NUM_THREADS_MIN, NUM_THREADS_MAX);
-	this->_data->set_thread_pool(this->_thread_pool.get());
-
     this->_resource_manager = std::make_unique<ResourceManager>();
     this->_data->set_resource_manager(this->_resource_manager.get());
     this->_resource_loader = std::make_unique<ResourceLoader>(
@@ -239,6 +239,8 @@ void Game::create_device_dependent_resources()
 
     _states = std::make_unique<CommonStates>(device);
     this->_data->set_common_states(_states.get());
+
+	this->_data->set_num_threads(NUM_THREADS_MAX);
 
     this->_resource_loader->load_all_resources();
 }

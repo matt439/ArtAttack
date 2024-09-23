@@ -6,7 +6,6 @@
 #include "ResourceManager.h"
 #include "DeviceResources.h"
 #include "ViewportManager.h"
-#include "ThreadPool.h"
 
 class GameData
 {
@@ -21,7 +20,7 @@ private:
     DX::DeviceResources* _device_resources = nullptr;
     ViewportManager* _viewport_manager = nullptr;
     DirectX::CommonStates* _common_states = nullptr;
-	ThreadPool* _thread_pool = nullptr;
+	int _num_threads = -1;
 
 public:
     GameData() = default;
@@ -36,7 +35,9 @@ public:
         _device_resources(game_data->get_device_resources()),
         _viewport_manager(game_data->get_viewport_manager()),
         _common_states(game_data->get_common_states()),
-		_thread_pool(game_data->get_thread_pool()) {}
+        _num_threads(game_data->get_num_threads())
+	{
+	}
 
     void set_window(HWND window) { this->_window = window; }
     HWND get_window() const { return this->_window; }
@@ -58,8 +59,8 @@ public:
     ViewportManager* get_viewport_manager() const { return this->_viewport_manager; }
     void set_common_states(DirectX::CommonStates* common_states) { this->_common_states = common_states; }
     DirectX::CommonStates* get_common_states() const { return this->_common_states; }
-	void set_thread_pool(ThreadPool* thread_pool) { this->_thread_pool = thread_pool; }
-	ThreadPool* get_thread_pool() const { return this->_thread_pool; }
+	int get_num_threads() const { return this->_num_threads; }
+	void set_num_threads(int num_threads) { this->_num_threads = num_threads; }
 
     GameData* get_game_data() { return this; }
 };

@@ -23,7 +23,7 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	const ResolutionManager* resolution_manager,
 	ViewportManager* viewport_manager,
 	ResourceManager* resource_manager,
-	ThreadPool* thread_pool) :
+	int num_threads) :
 	_non_collision_objects(std::move(non_collision_objects)),
 	_collision_objects(std::move(collision_objects)),
 	_player_objects(std::move(player_objects)),
@@ -42,7 +42,7 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	_team_b_spawns(team_b_spawns),
 	_dt(dt),
 	_sampler_state(sampler_state),
-	_thread_pool(thread_pool)
+	_num_threads(num_threads)
 {
 	this->_debug_text = std::make_unique<DebugText>(
 		resource_manager, dt, resolution_manager);
@@ -76,276 +76,173 @@ void Level::update(const std::vector<player_input>& player_inputs)
 
 	this->update_level_logic(player_inputs);
 }
-void Level::update_collision_objects(int start, int end) const
-{
-	for (int i = start; i < end; i++)
-	{
-		this->_collision_objects->at(i)->update();
-	}
-}
-
-void Level::update_player_objects(int start, int end,
-	const std::vector<player_input>& player_inputs) const
-{
-	for (int i = start; i < end; i++)
-	{
-		this->_player_objects->at(i)->set_player_input(player_inputs[i]);
-		this->_player_objects->at(i)->update();
-
-		// update player camera
-		Camera camera = this->_camera_tools->calculate_camera(
-			this->_player_objects->at(i)->get_center(),
-			this->_viewport_manager->get_player_viewport(i).get_size(),
-			this->_player_objects->at(i)->get_camera(),
-			this->_camera_bounds);
-		this->_player_objects->at(i)->set_camera(camera);
-	}
-}
-
-void Level::update_weapon_objects(int start, int end,
-	std::vector<std::unique_ptr<ICollisionGameObject>>& new_projs) const
-{
-	for (int i = start; i < end; i++)
-	{
-		// update player weapon
-		auto projs = this->_player_objects->at(i)->update_weapon_and_get_projectiles();
-
-		// add new projectiles to collision objects
-		for (auto& proj : projs)
-		{
-			new_projs.push_back(std::move(proj));
-		}
-	}
-}
-
-void Level::update_non_collision_objects(int start, int end) const
-{
-	for (int i = start; i < end; i++)
-	{
-		this->_non_collision_objects->at(i)->update();
-	}
-}
-
-void Level::check_out_of_bounds_players(int start, int end) const
-{
-	for (int i = start; i < end; i++)
-	{
-		if (this->is_object_out_of_bounds(this->_player_objects->at(i).get()))
-		{
-			throw std::exception("Player out of bounds");
-		}
-	}
-}
-
-void Level::check_out_of_bounds_objects(int start, int end) const
-{
-	for (int i = start; i < end; i++)
-	{
-		if (this->is_object_out_of_bounds(this->_collision_objects->at(i).get()))
-		{
-			throw std::exception("Collision object out of bounds");
-		}
-	}
-}
-
-void Level::check_player_collisions(int start, int end) const
-{
-	for (int i = start; i < end; i++)
-	{
-		for (int j = 0; j < this->_collision_objects->size(); j++)
-		{
-			std::scoped_lock lock(this->_collision_objects->at(j)->get_mutex());
-			
-			if (this->_collision_objects->at(j)->get_for_deletion())
-			{
-				continue;
-			}
-			
-			if (this->_player_objects->at(i)->is_colliding(this->_collision_objects->at(j).get()))
-			{
-				this->_player_objects->at(i)->on_collision(this->_collision_objects->at(j).get());
-				this->_collision_objects->at(j)->on_collision(this->_player_objects->at(i).get());
-			}
-		}
-		this->_player_objects->at(i)->update_weapon_position();
-		this->_player_objects->at(i)->update_prev_rectangle();
-	}
-}
-
-void Level::check_collision_object_collisions(int start, int end) const
-{
-	for (int i = start; i < end; i++)
-	{
-		// check collision object collisions with players
-		for (int j = 0; j < this->_player_objects->size(); j++)
-		{
-			std::scoped_lock lock(this->_player_objects->at(j)->get_mutex());
-
-			if (this->_collision_objects->at(i)->get_for_deletion() ||
-				this->_player_objects->at(j)->get_for_deletion())
-			{
-				continue;
-			}
-			if (this->_collision_objects->at(i)->is_colliding(this->_player_objects->at(j).get()))
-			{
-				this->_collision_objects->at(i)->on_collision(this->_player_objects->at(j).get());
-				this->_player_objects->at(j)->on_collision(this->_collision_objects->at(i).get());
-			}
-		}
-
-		// check collision object collisions with other collision objects
-		for (int j = 0; j < this->_collision_objects->size(); j++)
-		{
-			std::scoped_lock lock(this->_collision_objects->at(j)->get_mutex());
-
-			if (i == j)
-			{
-				continue;
-			}
-			if (this->_collision_objects->at(i)->get_for_deletion() ||
-				this->_collision_objects->at(j)->get_for_deletion())
-			{
-				continue;
-			}
-			if (this->_collision_objects->at(i)->is_colliding(this->_collision_objects->at(j).get()))
-			{
-				this->_collision_objects->at(i)->on_collision(this->_collision_objects->at(j).get());
-				this->_collision_objects->at(j)->on_collision(this->_collision_objects->at(i).get());
-			}
-		}
-	}
-}
 
 void Level::update_level_logic(const std::vector<player_input>& player_inputs) const
-{
-	int num_threads = this->_thread_pool->get_max_num_threads();
-	
-	// partition non-collision objects
-	auto partioned_non_coll_objs =
-		Partitioner::partition(this->_non_collision_objects->size(), num_threads);
-
-	// update non-collision objects
-	for (int i = 0; i < partioned_non_coll_objs.size(); i++)
-	{
-		this->_thread_pool->add_task([this, i, partioned_non_coll_objs]()
-			{
-				this->update_non_collision_objects(partioned_non_coll_objs[i].first,
-				partioned_non_coll_objs[i].second);
-			});
-	}
-
-	// partition collision objects
-	auto partitioned_coll_objs =
-		Partitioner::partition(this->_collision_objects->size(), num_threads);
-
-	// update collision objects
- 	for (int i = 0; i < partitioned_coll_objs.size(); i++)
-	{
-		this->_thread_pool->add_task([this, i, partitioned_coll_objs]()
-			{
-				this->update_collision_objects(partitioned_coll_objs[i].first,
-					partitioned_coll_objs[i].second);
-			});
-	}
-
-	// partition player objects
-	auto partitioned_players =
-		Partitioner::partition(this->_player_objects->size(), num_threads);
-
-	// update player objects
-	for (int i = 0; i < partitioned_players.size(); i++)
-	{
-		this->_thread_pool->add_task([this, i, partitioned_players, player_inputs]()
-			{
-				this->update_player_objects(partitioned_players[i].first,
-					partitioned_players[i].second, player_inputs);
-			});
-	}
-
+{	
 	// create vector to hold new projectiles
-	std::vector<std::vector<std::unique_ptr<ICollisionGameObject>>>
-		new_projs(partitioned_players.size());
+	std::vector<std::vector<std::unique_ptr<ICollisionGameObject>>> new_projs(this->_player_objects->size());
 
-	// update weapon objects
-	for (int i = 0; i < partitioned_players.size(); i++)
+#pragma omp parallel num_threads(this->_num_threads)
 	{
-		this->_thread_pool->add_task([this, i, partitioned_players, &new_projs]()
-			{
-				this->update_weapon_objects(partitioned_players[i].first,
-				partitioned_players[i].second, new_projs[i]);
-			});
-	}
-
-	this->_thread_pool->wait_for_tasks_to_complete();
-
-	// add new projectiles to collision objects
-	for (auto& proj_vec : new_projs)
-	{
-		for (auto& proj : proj_vec)
+		// update non-collision objects
+		#pragma omp for
+		for (int i = 0; i < this->_non_collision_objects->size(); i++)
 		{
-			this->_collision_objects->push_back(std::move(proj));
+			this->_non_collision_objects->at(i)->update();
+		}
+
+		// update collision objects
+		#pragma omp for
+		for (int i = 0; i < this->_collision_objects->size(); i++)
+		{
+			this->_collision_objects->at(i)->update();
+		}
+
+		// update player objects
+		#pragma omp for
+		for (int i = 0; i < this->_player_objects->size(); i++)
+		{
+			this->_player_objects->at(i)->set_player_input(player_inputs[i]);
+			this->_player_objects->at(i)->update();
+
+			// update player camera
+			Camera camera = this->_camera_tools->calculate_camera(
+				this->_player_objects->at(i)->get_center(),
+				this->_viewport_manager->get_player_viewport(i).get_size(),
+				this->_player_objects->at(i)->get_camera(),
+				this->_camera_bounds);
+			this->_player_objects->at(i)->set_camera(camera);
+		}
+
+		#pragma omp barrier
+
+		// update weapon objects
+		#pragma omp for
+		for (int i = 0; i < this->_player_objects->size(); i++)
+		{
+			// update player weapon
+			auto projs = this->_player_objects->at(i)->update_weapon_and_get_projectiles();
+
+			// add new projectiles to collision objects
+			for (auto& proj : projs)
+			{
+				new_projs[i].push_back(std::move(proj));
+			}
+		}
+
+		#pragma omp barrier
+
+		// add new projectiles to collision objects
+		#pragma omp single
+		for (int i = 0; i < new_projs.size(); i++)
+		{
+			for (auto& proj : new_projs[i])
+			{
+				this->_collision_objects->push_back(std::move(proj));
+			}
+		}
+
+		// check player collisions
+		#pragma omp for
+		for (int i = 0; i < this->_player_objects->size(); i++)
+		{
+			for (int j = 0; j < this->_collision_objects->size(); j++)
+			{
+				std::scoped_lock lock(this->_collision_objects->at(j)->get_mutex());
+
+				if (this->_collision_objects->at(j)->get_for_deletion())
+				{
+					continue;
+				}
+
+				if (this->_player_objects->at(i)->is_colliding(this->_collision_objects->at(j).get()))
+				{
+					this->_player_objects->at(i)->on_collision(this->_collision_objects->at(j).get());
+					this->_collision_objects->at(j)->on_collision(this->_player_objects->at(i).get());
+				}
+			}
+			this->_player_objects->at(i)->update_weapon_position();
+			this->_player_objects->at(i)->update_prev_rectangle();
+		}
+
+		// check collision objects collisions
+		#pragma omp for
+		for (int i = 0; i < this->_collision_objects->size(); i++)
+		{
+			// check collision object collisions with players
+			for (int j = 0; j < this->_player_objects->size(); j++)
+			{
+				std::scoped_lock lock(this->_player_objects->at(j)->get_mutex());
+
+				if (this->_collision_objects->at(i)->get_for_deletion() ||
+					this->_player_objects->at(j)->get_for_deletion())
+				{
+					continue;
+				}
+				if (this->_collision_objects->at(i)->is_colliding(this->_player_objects->at(j).get()))
+				{
+					this->_collision_objects->at(i)->on_collision(this->_player_objects->at(j).get());
+					this->_player_objects->at(j)->on_collision(this->_collision_objects->at(i).get());
+				}
+			}
+
+			// check collision object collisions with other collision objects
+			for (int j = 0; j < this->_collision_objects->size(); j++)
+			{
+				std::scoped_lock lock(this->_collision_objects->at(j)->get_mutex());
+
+				if (i == j)
+				{
+					continue;
+				}
+				if (this->_collision_objects->at(i)->get_for_deletion() ||
+					this->_collision_objects->at(j)->get_for_deletion())
+				{
+					continue;
+				}
+				if (this->_collision_objects->at(i)->is_colliding(this->_collision_objects->at(j).get()))
+				{
+					this->_collision_objects->at(i)->on_collision(this->_collision_objects->at(j).get());
+					this->_collision_objects->at(j)->on_collision(this->_collision_objects->at(i).get());
+				}
+			}
+		}
+
+		#pragma omp barrier
+
+		// check for deletable objects
+		#pragma omp single
+		for (int i = 0; i < this->_collision_objects->size(); i++)
+		{
+			if (this->_collision_objects->at(i)->get_for_deletion())
+			{
+				this->_collision_objects->at(i) = std::move(
+					this->_collision_objects->back());
+				this->_collision_objects->pop_back();
+				i--;
+			}
+		}
+
+		// check for out of bounds players
+		#pragma omp for
+		for (int i = 0; i < this->_player_objects->size(); i++)
+		{
+			if (this->is_object_out_of_bounds(this->_player_objects->at(i).get()))
+			{
+				throw std::exception("Player out of bounds");
+			}
+		}
+
+		// check for out of bounds objects
+		#pragma omp for
+		for (int i = 0; i < this->_collision_objects->size(); i++)
+		{
+			if (this->is_object_out_of_bounds(this->_collision_objects->at(i).get()))
+			{
+				throw std::exception("Collision object out of bounds");
+			}
 		}
 	}
-
-	// check player collisions
-	for (int i = 0; i < partitioned_players.size(); i++)
-	{
-		this->_thread_pool->add_task([this, i, partitioned_players]()
-			{
-				this->check_player_collisions(partitioned_players[i].first,
-					partitioned_players[i].second);
-			});
-	}
-
-	// check collision objects collisions
-	for (int i = 0; i < partitioned_coll_objs.size(); i++)
-	{
-		this->_thread_pool->add_task([this, i, partitioned_coll_objs]()
-			{
-				this->check_collision_object_collisions(partitioned_coll_objs[i].first,
-					partitioned_coll_objs[i].second);
-			});
-	}
-
-	this->_thread_pool->wait_for_tasks_to_complete();
-
-	// check for deletable objects
-	for (size_t i = 0; i < this->_collision_objects->size(); i++)
-	{
-		if (this->_collision_objects->at(i)->get_for_deletion())
-		{
-			this->_collision_objects->at(i) = std::move(
-				this->_collision_objects->back());
-			this->_collision_objects->pop_back();
-			i--;
-		}
-	}
-
-	// check for out of bounds players
-	for (int i = 0; i < partitioned_players.size(); i++)
-	{
-		this->_thread_pool->add_task([this, i, partitioned_players]()
-			{
-				this->check_out_of_bounds_players(partitioned_players[i].first,
-				partitioned_players[i].second);
-			});
-	}
-
-	// partition collision objects
-	auto partitioned_coll_objs_2 =
-		Partitioner::partition(this->_collision_objects->size(), num_threads);
-
-	// check for out of bounds objects
-	for (int i = 0; i < partitioned_coll_objs_2.size(); i++)
-	{
-		this->_thread_pool->add_task([this, i, partitioned_coll_objs_2]()
-			{
-				this->check_out_of_bounds_objects(partitioned_coll_objs_2[i].first,
-				partitioned_coll_objs_2[i].second);
-			});
-	}
-
-	this->_thread_pool->wait_for_tasks_to_complete();
 }
 void Level::stop_player_sounds() const
 {
@@ -359,39 +256,15 @@ void Level::draw(std::vector<ID3D11DeviceContext*>* deferred_contexts,
 	std::vector<ID3D11CommandList*>* command_lists,
 	std::vector<SpriteBatch*>* sprite_batches) const
 {		
-	int num_threads = this->_thread_pool->get_max_num_threads();
-	
-	// partition player objects
-	auto partitioned_players =
-		Partitioner::partition(this->_player_objects->size(), num_threads);
-
-	// update player objects
-	for (int i = 0; i < partitioned_players.size(); i++)
-	{
-		this->_thread_pool->add_task([this, i, partitioned_players,
-			deferred_contexts, command_lists, sprite_batches]()
-			{
-				this->draw_player_view_level(partitioned_players[i].first,
-				partitioned_players[i].second,
-				deferred_contexts,
-				command_lists,
-				sprite_batches);
-			});
-	}
-	this->_thread_pool->wait_for_tasks_to_complete();
-}
-void Level::draw_player_view_level(int start, int end,
-	std::vector<ID3D11DeviceContext*>* deferred_contexts,
-	std::vector<ID3D11CommandList*>* command_lists,
-	std::vector<SpriteBatch*>* sprite_batches) const
-{
-	for (int i = start; i < end; i++)
+	// draw player objects
+	#pragma omp parallel for
+	for (int i = 0; i < this->_player_objects->size(); i++)
 	{
 		if (deferred_contexts->at(i)->GetType() != D3D11_DEVICE_CONTEXT_DEFERRED)
 		{
 			throw std::exception("Deferred context not created");
 		}
-		
+
 		const int player_num = this->_player_objects->at(i)->get_player_num();
 
 		this->_viewport_manager->apply_player_viewport(

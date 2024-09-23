@@ -15,6 +15,7 @@
 #include "ThreadPool.h"
 #include "Partitioner.h"
 #include <mutex>
+#include <omp.h>
 
 class Level final
 {
@@ -39,7 +40,7 @@ public:
 		const ResolutionManager* resolution_manager,
 		ViewportManager* viewport_manager,
 		ResourceManager* resource_manager,
-		ThreadPool* thread_pool);
+		int num_threads);
 
 	void update(const std::vector<player_input>& player_inputs);
 	void draw(std::vector<ID3D11DeviceContext*>* deferred_contexts,
@@ -61,8 +62,6 @@ private:
 		_viewport_dividers = nullptr;
 
 	SoundBank* _sound_bank = nullptr;
-
-	ThreadPool* _thread_pool = nullptr;
 
 	std::string _music_name = "";
 	float _music_volume = 0.0f;
@@ -92,6 +91,8 @@ private:
 
 	std::vector<player_input> _player_inputs;
 	std::unique_ptr<DebugText> _debug_text = nullptr;
+
+	int _num_threads = -1;
 
 	int count_projectiles() const;
 	float get_dt() const;
