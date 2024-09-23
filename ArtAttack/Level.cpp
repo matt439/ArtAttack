@@ -141,7 +141,7 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 				this->_collision_objects->push_back(std::move(proj));
 			}
 		}
-
+		
 		// check player collisions
 		#pragma omp for
 		for (int i = 0; i < this->_player_objects->size(); i++)
@@ -222,7 +222,7 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 				i--;
 			}
 		}
-
+		
 		// check for out of bounds players
 		#pragma omp for
 		for (int i = 0; i < this->_player_objects->size(); i++)
@@ -257,7 +257,7 @@ void Level::draw(std::vector<ID3D11DeviceContext*>* deferred_contexts,
 	std::vector<SpriteBatch*>* sprite_batches) const
 {		
 	// draw player objects
-	#pragma omp parallel for
+	#pragma omp parallel for num_threads(this->_num_threads)
 	for (int i = 0; i < this->_player_objects->size(); i++)
 	{
 		if (deferred_contexts->at(i)->GetType() != D3D11_DEVICE_CONTEXT_DEFERRED)
