@@ -14,11 +14,6 @@ Game::Game() noexcept(false)
     _deviceResources = std::make_unique<DX::DeviceResources>(
         DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_FORMAT_UNKNOWN);
 
-    //m_deviceResources = std::make_unique<DX::DeviceResources>();
-    // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
-    //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
-    //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
-
     _deviceResources->RegisterDeviceNotify(this);
 }
 
@@ -30,10 +25,6 @@ Game::~Game()
     }
 
 	this->_performance_statistics->write_statistics_to_file(STATS_FILE);
-
-	//auto stats = this->_performance_statistics->calculate_statistics();
-	//auto game_stats = this->_performance_statistics->calculate_game_statistics(stats);
-	//int x = 0;
 }
 
 // Initialize the Direct3D resources required to run.
@@ -164,21 +155,17 @@ void Game::clear() const
 // Message handlers
 void Game::on_activated()
 {
-    // TODO: Game is becoming active window.
-
     if (this->_gamepad)
         this->_gamepad->Resume();
 }
 
 void Game::on_deactivated()
 {
-    // TODO: Game is becoming background window.
     this->_gamepad->Suspend();
 }
 
 void Game::on_suspending()
 {
-    // TODO: Game is being power-suspended (or minimized).
     this->_gamepad->Suspend();
     _audio_engine->Suspend();
 }
@@ -188,7 +175,6 @@ void Game::on_resuming()
     m_timer.ResetElapsedTime();
     this->_gamepad->Resume();
     _audio_engine->Resume();
-    // TODO: Game is being power-resumed (or returning from minimize).
 }
 
 void Game::on_window_moved()
@@ -208,8 +194,6 @@ void Game::on_window_size_changed(int width, int height)
         return;
 
     create_window_size_dependent_resources();
-
-    // TODO: Game window is being resized.
 }
 
 #pragma endregion
@@ -220,7 +204,6 @@ void Game::create_device_dependent_resources()
 {
     auto device = _deviceResources->GetD3DDevice();
 
-    // TODO: Initialize device dependent objects here (independent of window size).
     auto context = _deviceResources->GetD3DDeviceContext();
 
 	this->_sprite_batches.resize(NUM_THREADS_MAX);
@@ -263,13 +246,15 @@ void Game::create_device_dependent_resources()
 // Allocate all memory resources that change on a window SizeChanged event.
 void Game::create_window_size_dependent_resources()
 {
-    //auto size = _deviceResources->GetOutputSize();
 }
 
 void Game::on_device_lost()
 {
-    // TODO: Add Direct3D resource cleanup here.
-    //_spriteBatch.reset();
+	for (auto& sprite_batch : this->_sprite_batches)
+	{
+		sprite_batch.reset();
+	}
+
     _states.reset();
     this->_resource_manager->reset_all_textures();
     this->_resource_manager->reset_all_sprite_fonts();

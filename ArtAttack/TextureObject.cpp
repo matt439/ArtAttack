@@ -6,7 +6,6 @@ using namespace MattMath;
 
 TextureObject::TextureObject(const std::string& sheet_name,
 	const std::string& frame_name,
-	//DirectX::SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	const Colour& color,
 	float rotation,

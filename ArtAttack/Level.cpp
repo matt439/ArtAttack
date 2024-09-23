@@ -18,7 +18,6 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	const std::string& music_name,
 	float music_volume,
 	const float* dt,
-	//SpriteBatch* sprite_batch,
 	ID3D11SamplerState* sampler_state,
 	const std::string& level_name,
 	const ResolutionManager* resolution_manager,
@@ -42,7 +41,6 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 	_team_a_spawns(team_a_spawns),
 	_team_b_spawns(team_b_spawns),
 	_dt(dt),
-	//_sprite_batch(sprite_batch),
 	_sampler_state(sampler_state),
 	_thread_pool(thread_pool)
 {
@@ -101,15 +99,6 @@ void Level::update_player_objects(int start, int end,
 			this->_player_objects->at(i)->get_camera(),
 			this->_camera_bounds);
 		this->_player_objects->at(i)->set_camera(camera);
-
-		//// update player weapon
-		//auto new_projs = this->_player_objects->at(i)->update_weapon_and_get_projectiles();
-
-		//// add new projectiles to collision objects
-		//for (auto& proj : new_projs)
-		//{
-		//	this->_collision_objects->push_back(std::move(proj));
-		//}
 	}
 }
 

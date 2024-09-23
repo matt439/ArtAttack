@@ -63,7 +63,6 @@ class Player final : public MovingObject, public ICollisionGameObject,
 public:
     Player(const MattMath::RectangleF& rectangle,
         const PlayerAnimationInfo& animation_info,
-        //DirectX::SpriteBatch* sprite_batch,
         ResourceManager* resource_manager,
         int player_num,
         player_team team,

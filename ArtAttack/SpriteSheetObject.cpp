@@ -6,7 +6,6 @@ using namespace MattMath;
 
 SpriteSheetObject::SpriteSheetObject(const std::string& sheet_name,
 	const std::string& element_name,
-	//SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	const Colour& color,
 	float rotation,

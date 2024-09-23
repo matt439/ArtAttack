@@ -34,7 +34,6 @@ public:
 		const std::string& music_name,
 		float music_volume,
 		const float* dt,
-		//DirectX::SpriteBatch* sprite_batch,
 		ID3D11SamplerState* sampler_state,
 		const std::string& level_name,
 		const ResolutionManager* resolution_manager,
@@ -89,7 +88,6 @@ private:
 	std::vector<MattMath::Vector2F> _team_b_spawns;
 
 	const float* _dt = nullptr;
-	//DirectX::SpriteBatch* _sprite_batch = nullptr;
 	ID3D11SamplerState* _sampler_state = nullptr;
 
 	std::vector<player_input> _player_inputs;

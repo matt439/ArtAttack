@@ -4,10 +4,6 @@
 using namespace DirectX;
 using namespace MattMath;
 
-//SpriteBatch* DrawObject::get_sprite_batch() const
-//{
-//	return this->_sprite_batch;
-//}
 ResourceManager* DrawObject::get_resource_manager() const
 {
 	return this->_resource_manager;

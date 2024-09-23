@@ -10,7 +10,6 @@ StructurePaintable::StructurePaintable(
 	const std::string& sheet_name,
 	const std::string& frame_name,
 	const RectangleF& rectangle,
-	//SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	collision_object_type collision_type,
 	const team_colour& team_colours,

@@ -8,7 +8,6 @@ using namespace colour_consts;
 
 Player::Player(const RectangleF& rectangle,
     const PlayerAnimationInfo& animation_info,
-    //SpriteBatch* sprite_batch,
     ResourceManager* resource_manager,
     int player_num,
     player_team team,

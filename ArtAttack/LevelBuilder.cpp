@@ -7,13 +7,11 @@ using namespace rapidjson;
 
 LevelBuilder::LevelBuilder(ViewportManager* viewport_manager,
 	const float* dt,
-	//SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	ID3D11SamplerState* sampler_state,
 	ResolutionManager* resolution_manager,
 	ThreadPool* thread_pool) :
 	_resource_manager(resource_manager),
-	//_sprite_batch(sprite_batch),
 	_dt(dt),
 	_viewport_manager(viewport_manager),
 	_sampler_state(sampler_state),
@@ -49,7 +47,6 @@ std::unique_ptr<Level>
 		this->_level_object_builder->build_non_collision_objects(non_collision_objects_json);
 
 	std::unique_ptr<std::vector<std::unique_ptr<Player>>> players =
-		//this->build_players(settings, load_info, team_colours);
 		this->_player_builder->build_players(settings, load_info, team_colours,
 			this->_resource_manager, this->_viewport_manager,
 			this->_dt);

@@ -15,6 +15,7 @@ const std::string STATS_FILE = "stats.txt";
 constexpr int TARGET_FPS = 240;
 constexpr int NUM_THREADS_MIN = 1;
 constexpr int NUM_THREADS_MAX = 16;
+constexpr int STATS_START_COUNTDOWN = 2;
 
 class Game final : public DX::IDeviceNotify, public StateContext
 {
@@ -60,7 +61,6 @@ private:
 
     std::unique_ptr<DX::DeviceResources> _deviceResources = nullptr;
     DX::StepTimer m_timer = DX::StepTimer();
-    //std::unique_ptr<DirectX::SpriteBatch> _spriteBatch = nullptr;
     std::unique_ptr<DirectX::CommonStates> _states = nullptr;
     std::unique_ptr<ResourceLoader> _resource_loader = nullptr;
     std::unique_ptr<ResourceManager> _resource_manager = nullptr;
@@ -75,7 +75,7 @@ private:
     std::vector<std::unique_ptr<DirectX::SpriteBatch>> _sprite_batches;
 	std::vector<DirectX::SpriteBatch*> _sprite_batches_ptrs;
     std::chrono::high_resolution_clock::time_point _last_time;
-	int _stats_start_countdown = 2;
+	int _stats_start_countdown = STATS_START_COUNTDOWN;
 };
 
 #endif // !GAME_H

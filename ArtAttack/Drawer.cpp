@@ -4,19 +4,12 @@
 using namespace DirectX;
 using namespace MattMath;
 
-Drawer::Drawer(//DirectX::SpriteBatch* sprite_batch,
-    ResourceManager* resource_manager,
+Drawer::Drawer(ResourceManager* resource_manager,
     const float* dt) :
-    //_sprite_batch(sprite_batch),
     _resource_manager(resource_manager),
     _dt(dt)
 {
 }
-
-//void Drawer::set_spritebatch(SpriteBatch* sprite_batch)
-//{
-//    this->_sprite_batch = sprite_batch;
-//}
 
 void Drawer::set_resource_manager(ResourceManager* resource_manager)
 {
@@ -27,10 +20,6 @@ void Drawer::set_dt(const float* dt)
     this->_dt = dt;
 }
 
-//SpriteBatch* Drawer::get_sprite_batch() const
-//{
-//    return this->_sprite_batch;
-//}
 ResourceManager* Drawer::get_resource_manager() const
 {
     return this->_resource_manager;

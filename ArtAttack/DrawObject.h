@@ -8,8 +8,7 @@ class DrawObject
 {
 public:
 	DrawObject() = default;
-	DrawObject(//DirectX::SpriteBatch* sprite_batch,
-		ResourceManager* resource_manager,
+	DrawObject(ResourceManager* resource_manager,
 		const MattMath::Colour& color = colour_consts::WHITE,
 		float rotation = 0.0f,
 		const MattMath::Vector2F& origin = MattMath::Vector2F::ZERO,
@@ -24,7 +23,6 @@ public:
 		_layer_depth(layer_depth) {}
 	virtual ~DrawObject() = default;
 protected:
-	// DirectX::SpriteBatch* get_sprite_batch() const;
 	virtual ResourceManager* get_resource_manager() const;
 	virtual const MattMath::Colour& get_colour() const;
 	virtual float get_draw_rotation() const;
@@ -38,7 +36,6 @@ protected:
 	virtual void set_effects(DirectX::SpriteEffects effects);
 	virtual void set_layer_depth(float layer_depth);
 private:
-	//DirectX::SpriteBatch* _sprite_batch = nullptr;
 	ResourceManager* _resource_manager = nullptr;
 	MattMath::Colour _colour = colour_consts::WHITE;
 	float _draw_rotation = 0.0f;

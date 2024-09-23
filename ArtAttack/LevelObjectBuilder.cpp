@@ -5,14 +5,10 @@ using namespace rapidjson;
 using namespace MattMath;
 
 LevelObjectBuilder::LevelObjectBuilder(ResourceManager* resource_manager,
-	//DirectX::SpriteBatch* sprite_batch,
 	const float* dt) :
-	_resource_manager(resource_manager),
-	//_sprite_batch(sprite_batch),
-	_dt(dt)
+	_resource_manager(resource_manager), _dt(dt)
 {
 }
-
 
 std::unique_ptr<ICollisionGameObject>
 	LevelObjectBuilder::build_collision_object(const Value& json,
@@ -61,7 +57,6 @@ std::unique_ptr<ICollisionGameObject>
 			json["sheet_name"].GetString(),
 			json["frame_name"].GetString(),
 			rectangle,
-			//this->_sprite_batch,
 			this->_resource_manager,
 			col_type,
 			colour_consts::colour_from_name(json["colour"].GetString()));
@@ -109,7 +104,6 @@ std::unique_ptr<ICollisionGameObject>
 			json["sheet_name"].GetString(),
 			json["frame_name"].GetString(),
 			rectangle,
-			//this->_sprite_batch,
 			this->_resource_manager,
 			col_type,
 			team_colours,
@@ -134,7 +128,6 @@ std::unique_ptr<IGameObject>
 				json["rectangle"]["y"].GetFloat(),
 				json["rectangle"]["width"].GetFloat(),
 				json["rectangle"]["height"].GetFloat()),
-			//this->_sprite_batch,
 			this->_resource_manager,
 			colour_consts::colour_from_name(json["colour"].GetString()));
 	}
@@ -183,7 +176,6 @@ std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>>
 			viewport_consts::DIVIDER_SHEET_NAME,
 			viewport_consts::DIVIDER_FRAME_NAME,
 			rectangle,
-			//this->_sprite_batch,
 			this->_resource_manager,
 			viewport_consts::DIVIDER_COLOUR));
 	}

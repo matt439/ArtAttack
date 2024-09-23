@@ -7,7 +7,6 @@ using namespace MattMath;
 TextObject::TextObject(const std::string& text,
 	const std::string& font_name,
 	const Vector2F& position,
-	//SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	const Colour& color,
 	float scale,

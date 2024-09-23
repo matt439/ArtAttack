@@ -7,7 +7,6 @@ using namespace DirectX;
 TextDropShadow::TextDropShadow(const std::string& text,
 	const std::string& font_name,
 	const Vector2F& position,
-	//SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	const Colour& color,
 	const Colour& shadow_color,

@@ -8,7 +8,6 @@ using namespace paint_tile_consts;
 PaintTile::PaintTile(const RectangleF& rectangle,
 	const std::string& sheet_name,
 	const std::string& frame_name,
-	//SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	const team_colour& team_colours,
 	const float* dt,

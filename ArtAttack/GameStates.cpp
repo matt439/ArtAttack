@@ -38,7 +38,6 @@ void GameLevel::update()
     case game_level_state::ACTIVE:
     {
         std::vector<player_input> player_inputs =
-            //this->_player_input->update_and_get_player_inputs();
 			this->_player_input->get_test_player_inputs();
         this->_level->update(player_inputs);
         break;

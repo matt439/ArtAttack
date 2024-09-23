@@ -14,7 +14,6 @@ std::unique_ptr<std::vector<std::unique_ptr<Player>>> PlayerBuilder::build_playe
 	const MenuLevelSettings& settings,
 	const LevelLoadedInfo* load_info,
 	const team_colour& team_colours,
-	//SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	const ViewportManager* viewport_manager,
 	const float* dt) const

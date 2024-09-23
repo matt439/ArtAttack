@@ -7,7 +7,6 @@ using namespace DirectX;
 Visual::Visual(const std::string& sheet_name,
 	const std::string& frame_name,
 	const RectangleF& rectangle,
-	//DirectX::SpriteBatch* sprite_batch,
 	ResourceManager* resource_manager,
 	const Colour& color,
 	float rotation,

@@ -42,7 +42,6 @@ public:
 	AnimationObject(const float* dt,
 		const std::string& sheet_name,
 		const std::string& animation_strip_name,
-		//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const MattMath::Colour& color = colour_consts::WHITE,
 		float rotation = 0.0f,

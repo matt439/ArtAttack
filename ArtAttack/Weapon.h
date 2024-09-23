@@ -28,7 +28,6 @@ public:
 		const MattMath::Colour& team_colour,
 		wep_type type,
 		const MattMath::Vector2F& player_center,
-		//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const float* dt,
 		const MattMath::Colour& color = colour_consts::WHITE,
@@ -121,14 +120,12 @@ protected:
 	ProjectileBuilder* get_projectile_builder() const { return this->_proj_builder.get(); }
 	const float* get_dt_ptr() const { return this->_dt; }
 	float get_dt() const { return *this->_dt; }
-	//DirectX::SpriteBatch* get_sprite_batch() const override { return this->_sprite_batch; }
 	ResourceManager* get_resource_manager() const override { return this->_resource_manager; }
 	const std::string& get_sound_effect_instance_name() const;
 
 private:
 	std::unique_ptr<ProjectileBuilder> _proj_builder = nullptr;
 	const float* _dt = nullptr;
-	//DirectX::SpriteBatch* _sprite_batch = nullptr;
 	ResourceManager* _resource_manager = nullptr;
 
 	float _ammo = weapon_consts::STARTING_AMMO;
@@ -160,7 +157,6 @@ public:
 		const MattMath::Colour& team_colour,
 		wep_type type,
 		const MattMath::Vector2F& player_center,
-		//DirectX::SpriteBatch* sprite_batch,
 		ResourceManager* resource_manager,
 		const float* dt,
 		const MattMath::Colour& color = colour_consts::WHITE,
