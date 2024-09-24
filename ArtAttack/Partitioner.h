@@ -8,10 +8,10 @@ class Partitioner
 public:
 	Partitioner() = default;
 
-	static std::vector<std::pair<int, int>>
-		partition(int num_elements, int num_partitions);
+	std::vector<std::pair<int, int>>
+		partition(int num_elements, int num_partitions) const;
 
-	static std::vector<std::pair<int, int>>
-		partition(size_t num_elements, int num_partitions);
+	std::vector<std::pair<int, int>>
+		partition(size_t num_elements, int num_partitions) const;
 };
 #endif // !PARTITIONER_H

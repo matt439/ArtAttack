@@ -93,6 +93,8 @@ private:
 	std::vector<player_input> _player_inputs;
 	std::unique_ptr<DebugText> _debug_text = nullptr;
 
+	std::unique_ptr<Partitioner> _partitioner = nullptr;
+
 	int count_projectiles() const;
 	float get_dt() const;
 	bool is_object_out_of_bounds(const ICollisionGameObject* object) const;

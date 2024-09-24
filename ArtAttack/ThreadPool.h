@@ -19,7 +19,8 @@ public:
     int get_max_num_threads() const;
 
 private:
-    static void CALLBACK work_callback(PTP_CALLBACK_INSTANCE instance, PVOID parameter, PTP_WORK work);
+    static void CALLBACK work_callback(PTP_CALLBACK_INSTANCE instance,
+		PVOID parameter, PTP_WORK work);
 	
 	int _min_num_threads = -1;
 	int _max_num_threads = -1;

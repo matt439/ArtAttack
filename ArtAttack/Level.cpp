@@ -48,6 +48,7 @@ Level::Level(std::unique_ptr<std::vector<std::unique_ptr<IGameObject>>> non_coll
 		resource_manager, dt, resolution_manager);
 	this->_camera_tools = std::make_unique<CameraTools>();
 	this->_sound_bank = resource_manager->get_sound_bank(sound_bank_name);
+	this->_partitioner = std::make_unique<Partitioner>();
 }
 void Level::stop_music() const
 {
@@ -222,7 +223,7 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 	
 	// partition non-collision objects
 	auto partioned_non_coll_objs =
-		Partitioner::partition(this->_non_collision_objects->size(), num_threads);
+		this->_partitioner->partition(this->_non_collision_objects->size(), num_threads);
 
 	// update non-collision objects
 	for (int i = 0; i < partioned_non_coll_objs.size(); i++)
@@ -236,7 +237,7 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 
 	// partition collision objects
 	auto partitioned_coll_objs =
-		Partitioner::partition(this->_collision_objects->size(), num_threads);
+		this->_partitioner->partition(this->_collision_objects->size(), num_threads);
 
 	// update collision objects
  	for (int i = 0; i < partitioned_coll_objs.size(); i++)
@@ -250,7 +251,7 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 
 	// partition player objects
 	auto partitioned_players =
-		Partitioner::partition(this->_player_objects->size(), num_threads);
+		this->_partitioner->partition(this->_player_objects->size(), num_threads);
 
 	// update player objects
 	for (int i = 0; i < partitioned_players.size(); i++)
@@ -333,7 +334,7 @@ void Level::update_level_logic(const std::vector<player_input>& player_inputs) c
 
 	// partition collision objects
 	auto partitioned_coll_objs_2 =
-		Partitioner::partition(this->_collision_objects->size(), num_threads);
+		this->_partitioner->partition(this->_collision_objects->size(), num_threads);
 
 	// check for out of bounds objects
 	for (int i = 0; i < partitioned_coll_objs_2.size(); i++)
@@ -363,7 +364,7 @@ void Level::draw(std::vector<ID3D11DeviceContext*>* deferred_contexts,
 	
 	// partition player objects
 	auto partitioned_players =
-		Partitioner::partition(this->_player_objects->size(), num_threads);
+		this->_partitioner->partition(this->_player_objects->size(), num_threads);
 
 	// update player objects
 	for (int i = 0; i < partitioned_players.size(); i++)

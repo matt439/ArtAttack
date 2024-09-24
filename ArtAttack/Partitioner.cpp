@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Partitioner.h"
 
-std::vector<std::pair<int, int>> Partitioner::partition(int num_elements, int num_partitions)
+std::vector<std::pair<int, int>> Partitioner::partition(int num_elements, int num_partitions) const
 {
 	std::vector<std::pair<int, int>> result;
 	int elements_per_partition = num_elements / num_partitions;
@@ -21,7 +21,7 @@ std::vector<std::pair<int, int>> Partitioner::partition(int num_elements, int nu
 	return result;
 }
 
-std::vector<std::pair<int, int>> Partitioner::partition(size_t num_elements, int num_partitions)
+std::vector<std::pair<int, int>> Partitioner::partition(size_t num_elements, int num_partitions) const
 {
 	return Partitioner::partition(static_cast<int>(num_elements), num_partitions);
 }
