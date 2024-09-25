@@ -18,7 +18,7 @@ void SoundBank::play_wave(const std::string& wave_name, float volume, float pitc
 	this->clamp_levels(volume, pitch, pan);
 	try
 	{
-		this->_wave_bank->Play(wave_name.c_str(), volume, pitch, pan);
+		//this->_wave_bank->Play(wave_name.c_str(), volume, pitch, pan);
 	}
 	catch (const std::out_of_range& e)
 	{
