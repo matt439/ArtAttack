@@ -10,7 +10,6 @@
 #include "LevelObjectBuilder.h"
 #include "rapidjson/document.h"
 #include "ViewportManager.h"
-#include "ThreadPool.h"
 
 class LevelBuilder
 {
@@ -23,7 +22,6 @@ private:
 	std::unique_ptr<LevelObjectBuilder> _level_object_builder = nullptr;
 	ID3D11SamplerState* _sampler_state = nullptr;
 	ResolutionManager* _resolution_manager = nullptr;
-
 
 public:
 	LevelBuilder(ViewportManager* viewport_manager,

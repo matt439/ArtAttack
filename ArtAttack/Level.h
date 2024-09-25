@@ -12,7 +12,6 @@
 #include "TeamColour.h"
 #include "TextDropShadow.h"
 #include "ViewportManager.h"
-#include "ThreadPool.h"
 #include "Partitioner.h"
 #include <mutex>
 #include <omp.h>
