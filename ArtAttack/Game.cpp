@@ -14,11 +14,6 @@ Game::Game() noexcept(false)
     _deviceResources = std::make_unique<DX::DeviceResources>(
         DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_FORMAT_UNKNOWN);
 
-    //m_deviceResources = std::make_unique<DX::DeviceResources>();
-    // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
-    //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
-    //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
-
     _deviceResources->RegisterDeviceNotify(this);
 }
 
@@ -30,10 +25,6 @@ Game::~Game()
     }
 
 	this->_performance_statistics->write_statistics_to_file(STATS_FILE);
-
-	//auto stats = this->_performance_statistics->calculate_statistics();
-	//auto game_stats = this->_performance_statistics->calculate_game_statistics(stats);
-	//int x = 0;
 }
 
 // Initialize the Direct3D resources required to run.
@@ -63,7 +54,7 @@ void Game::initialize(GameData* game_data)
     this->_data->set_gamepad(this->_gamepad.get());
 
     m_timer.SetFixedTimeStep(true);
-    m_timer.SetTargetElapsedSeconds(1.0 / TARGET_FPS);
+    m_timer.SetTargetElapsedSeconds(1.0 / TARGET_LUPS);
 }
 
 #pragma region Frame Update
@@ -210,7 +201,7 @@ void Game::create_device_dependent_resources()
     this->_data->set_sprite_batch(_spriteBatch.get());
 
     this->_performance_statistics =
-        std::make_unique<PerformanceStatistics>(TARGET_FPS, NUM_THREADS);
+        std::make_unique<PerformanceStatistics>(TARGET_LUPS, NUM_THREADS);
 
     this->_resource_manager = std::make_unique<ResourceManager>();
     this->_data->set_resource_manager(this->_resource_manager.get());
