@@ -11,7 +11,7 @@ using namespace EricsonMath;
 
 namespace MattMathTests
 {
-	constexpr float EPSILON = 0.000001f;
+	constexpr float EPSILON_F = 0.000001f;
 
 	TEST_CLASS(EricsonMathTests)
 	{
@@ -51,6 +51,39 @@ namespace MattMathTests
 			closest_pt_point_AABB(p, a, closest);
 			Assert::IsTrue(closest == Point2F(10.0f, 10.0f));
 		}
+		TEST_METHOD(test_signed_2D_tri_area)
+		{
+			Point2F a(0.0f, 0.0f);
+			Point2F b(10.0f, 0.0f);
+			Point2F c(0.0f, 10.0f);
+
+			// a, b, c are in counter-clockwise order
+			Assert::IsTrue(signed_2D_tri_area(a, b, c) == 100.0f);
+
+			// a, b, c are in clockwise order
+			Assert::IsTrue(signed_2D_tri_area(a, c, b) == -100.0f);
+
+			// a, b, c are collinear
+			Assert::IsTrue(signed_2D_tri_area(a, b, Point2F(20.0f, 0.0f)) == 0.0f);
+		}
+		TEST_METHOD(test_test_2D_segment_segment)
+		{
+			float t;
+			Point2F p;
+			Segment s1(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f));
+			Segment s2(Point2F(5.0f, -5.0f), Point2F(5.0f, 5.0f));
+
+			// s1 and s2 intersect
+			Assert::IsTrue(test_2D_segment_segment(s1.point_0, s1.point_1,
+				s2.point_0, s2.point_1, t, p));
+			Assert::IsTrue(p == Point2F(5.0f, 5.0f));
+			Assert::IsTrue(t == 0.5f);
+
+		}
+		TEST_METHOD(test_test_segment_AABB)
+		{
+
+		}
 	};
 
 	TEST_CLASS(MattMathTests)
@@ -64,11 +97,11 @@ namespace MattMathTests
 			Assert::IsTrue(rectangles_intersect(a, b));
 
 			// a and b are just touching
-			b = RectangleF(10.0f - EPSILON, 10.0f, 10.0f, 10.0f);
+			b = RectangleF(10.0f - EPSILON_F, 10.0f, 10.0f, 10.0f);
 			Assert::IsTrue(rectangles_intersect(a, b));
 
 			// a and b are just not touching
-			b = RectangleF(10.0f + EPSILON, 10.0f, 10.0f, 10.0f);
+			b = RectangleF(10.0f + EPSILON_F, 10.0f, 10.0f, 10.0f);
 			Assert::IsFalse(rectangles_intersect(a, b));
 
 			// b is inside a
@@ -106,12 +139,12 @@ namespace MattMathTests
 			Assert::IsTrue(p == Point2F(5.0f, 5.0f));
 
 			// a and c are just touching
-			c = Circle(15.0f - EPSILON, 5.0f, 5.0f);
+			c = Circle(15.0f - EPSILON_F, 5.0f, 5.0f);
 			Assert::IsTrue(rectangle_circle_intersect(a, c, p));
 			Assert::IsTrue(p == Point2F(10.0f, 5.0f));
 
 			// a and c are just not touching
-			c = Circle(15.0f + EPSILON, 5.0f, 5.0f);
+			c = Circle(15.0f + EPSILON_F, 5.0f, 5.0f);
 			Assert::IsFalse(rectangle_circle_intersect(a, c, p));
 			Assert::IsTrue(p == Point2F(10.0f, 5.0f));
 		}
@@ -161,16 +194,42 @@ namespace MattMathTests
 			Assert::IsTrue(rectangle_quad_intersect(a, q));
 
 			// a and q are just touching
-			q = Quad(RectangleF(10.0f - EPSILON, 10.0f, 10.0f, 10.0f));
+			q = Quad(RectangleF(10.0f - EPSILON_F, 10.0f, 10.0f, 10.0f));
 			Assert::IsTrue(rectangle_quad_intersect(a, q));
 
 			// a and q are just not touching
-			q = Quad(RectangleF(10.0f + EPSILON, 10.0f, 10.0f, 10.0f));
+			q = Quad(RectangleF(10.0f + EPSILON_F, 10.0f, 10.0f, 10.0f));
 			Assert::IsFalse(rectangle_quad_intersect(a, q));
 
 			// 2 identical rectangles
 			q = Quad(a);
 			Assert::IsTrue(rectangle_quad_intersect(a, q));
+		}
+		TEST_METHOD(test_rectangle_segment_intersect)
+		{
+			RectangleF a(0.0f, 0.0f, 10.0f, 10.0f);
+
+			Segment s(Point2F(5.0f, 5.0f), Point2F(15.0f, 5.0f));
+			Assert::IsTrue(rectangle_segment_intersect(a, s));
+
+			s = Segment(Point2F(500.0f, 500.0f), Point2F(1500.0f, 500.0f));
+			Assert::IsFalse(rectangle_segment_intersect(a, s));
+
+			// s is inside a
+			s = Segment(Point2F(2.0f, 2.0f), Point2F(8.0f, 8.0f));
+			Assert::IsTrue(rectangle_segment_intersect(a, s));
+
+			// a is inside s
+			s = Segment(Point2F(-2.0f, -2.0f), Point2F(12.0f, 12.0f));
+			Assert::IsTrue(rectangle_segment_intersect(a, s));
+
+			// a and s are just touching
+			s = Segment(Point2F(10.0f - EPSILON_F, 10.0f), Point2F(20.0f, 10.0f));
+			Assert::IsTrue(rectangle_segment_intersect(a, s));
+
+			// a and s are just not touching
+			s = Segment(Point2F(10.0f + EPSILON_F, 10.0f), Point2F(20.0f, 10.0f));
+			Assert::IsFalse(rectangle_segment_intersect(a, s));
 		}
 	};
 
