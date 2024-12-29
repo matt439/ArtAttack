@@ -123,6 +123,21 @@ namespace EricsonMathTests
 			closest_pt_point_segment(p, s0, s1, t, closest);
 			Assert::IsTrue(closest == Point2F(5.0f, 0.0f));
 			Assert::IsTrue(t == 0.5f);
+
+			p = Point2F(15.0f, 5.0f);
+			closest_pt_point_segment(p, s0, s1, t, closest);
+			Assert::IsTrue(closest == Point2F(10.0f, 0.0f));
+			Assert::IsTrue(t == 1.0f);
+
+			p = Point2F(-5.0f, 5.0f);
+			closest_pt_point_segment(p, s0, s1, t, closest);
+			Assert::IsTrue(closest == Point2F(0.0f, 0.0f));
+			Assert::IsTrue(t == 0.0f);
+
+			p = Point2F(5.0f, -5.0f);
+			closest_pt_point_segment(p, s0, s1, t, closest);
+			Assert::IsTrue(closest == Point2F(5.0f, 0.0f));
+			Assert::IsTrue(t == 0.5f);
 		}
 	};
 } // namespace EricsonMathTests
@@ -383,7 +398,36 @@ namespace MattMathTests
 		}
 		TEST_METHOD(test_circle_segment_intersect)
 		{
+			Circle c(0.0f, 0.0f, 10.0f);
+			Point2F p;
 
+			Segment s(Point2F(5.0f, 5.0f), Point2F(15.0f, 5.0f));
+			Assert::IsTrue(circle_segment_intersect(c, s, p));
+			Assert::IsTrue(p == Point2F(5.0f, 5.0f));
+
+			s = Segment(Point2F(500.0f, 500.0f), Point2F(1500.0f, 500.0f));
+			Assert::IsFalse(circle_segment_intersect(c, s, p));
+			Assert::IsTrue(p == Point2F(500.0f, 500.0f));
+
+			// s is inside c
+			s = Segment(Point2F(2.0f, 2.0f), Point2F(8.0f, 8.0f));
+			Assert::IsTrue(circle_segment_intersect(c, s, p));
+			Assert::IsTrue(p == Point2F(2.0f, 2.0f));
+
+			// c is inside s
+			s = Segment(Point2F(-2.0f, -2.0f), Point2F(12.0f, 12.0f));
+			Assert::IsTrue(circle_segment_intersect(c, s, p));
+			Assert::IsTrue(p == Point2F(0.0f, 0.0f));
+
+			// c and s are just touching
+			s = Segment(Point2F(10.0f - EPSILON_F, 0.0f), Point2F(20.0f, 0.0f));
+			Assert::IsTrue(circle_segment_intersect(c, s, p));
+			Assert::IsTrue(are_equal(p, Point2F(10.0f - EPSILON_F, 0.0f), 0.1f));
+
+			// c and s are just not touching
+			s = Segment(Point2F(10.0f + EPSILON_F, 0.0f), Point2F(20.0f, 0.0f));
+			Assert::IsFalse(circle_segment_intersect(c, s, p));
+			Assert::IsTrue(p == Point2F(10.0f + EPSILON_F, 0.0f));
 		}
 	};
 
