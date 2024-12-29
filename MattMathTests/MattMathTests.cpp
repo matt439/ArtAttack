@@ -9,7 +9,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace MattMath;
 using namespace EricsonMath;
 
-namespace MattMathTests
+namespace EricsonMathTests
 {
 	constexpr float EPSILON_F = 0.000001f;
 
@@ -71,21 +71,66 @@ namespace MattMathTests
 			float t;
 			Point2F p;
 			Segment s1(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f));
-			Segment s2(Point2F(5.0f, -5.0f), Point2F(5.0f, 5.0f));
 
 			// s1 and s2 intersect
+			Segment s2(Point2F(5.0f, -5.0f), Point2F(5.0f, 5.0f));
 			Assert::IsTrue(test_2D_segment_segment(s1.point_0, s1.point_1,
 				s2.point_0, s2.point_1, t, p));
-			Assert::IsTrue(p == Point2F(5.0f, 5.0f));
+			Assert::IsTrue(p == Point2F(5.0f, 0.0f));
 			Assert::IsTrue(t == 0.5f);
 
+			// s1 and s2 not intersecting
+			s2 = Segment(Point2F(15.0f, -5.0f), Point2F(15.0f, 5.0f));
+			Assert::IsFalse(test_2D_segment_segment(s1.point_0, s1.point_1,
+				s2.point_0, s2.point_1, t, p));
 		}
 		TEST_METHOD(test_test_segment_AABB)
 		{
+			// tested below with rectangle_segment_intersect
+		}
+		TEST_METHOD(test_closest_pt_point_triangle)
+		{
+			Triangle t(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f), Point2F(0.0f, 10.0f));
+			Point2F t0 = t.get_point_0();
+			Point2F t1 = t.get_point_1();
+			Point2F t2 = t.get_point_2();
+			Point2F closest;
 
+			Point2F p = Point2F(5.0f, 5.0f);
+			Assert::IsTrue(closest_pt_point_triangle(p, t0, t1, t2) == p);
+
+			p = Point2F(15.0f, 15.0f);
+			closest = closest_pt_point_triangle(p, t0, t1, t2);
+			Assert::IsTrue(closest == Point2F(5.0f, 5.0f));
+
+			p = Point2F(-5.0f, -5.0f);
+			closest = closest_pt_point_triangle(p, t0, t1, t2);
+			Assert::IsTrue(closest == Point2F(0.0f, 0.0f));
+
+			p = Point2F(5.0f, -5.0f);
+			closest = closest_pt_point_triangle(p, t0, t1, t2);
+			Assert::IsTrue(closest == Point2F(5.0f, 0.0f));
+		}
+		TEST_METHOD(test_closest_pt_point_segment)
+		{
+			Segment s(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f));
+			Point2F s0 = s.point_0;
+			Point2F s1 = s.point_1;
+			Point2F closest;
+			float t;
+
+			Point2F p = Point2F(5.0f, 5.0f);
+			closest_pt_point_segment(p, s0, s1, t, closest);
+			Assert::IsTrue(closest == Point2F(5.0f, 0.0f));
+			Assert::IsTrue(t == 0.5f);
 		}
 	};
+} // namespace EricsonMathTests
 
+namespace MattMathTests
+{
+	constexpr float EPSILON_F = 0.000001f;
+	
 	TEST_CLASS(MattMathTests)
 	{
 	public:
@@ -228,8 +273,117 @@ namespace MattMathTests
 			Assert::IsTrue(rectangle_segment_intersect(a, s));
 
 			// a and s are just not touching
-			s = Segment(Point2F(10.0f + EPSILON_F, 10.0f), Point2F(20.0f, 10.0f));
+			s = Segment(Point2F(10.0f + EPSILON_F * 2, 10.0f), Point2F(20.0f, 10.0f));
 			Assert::IsFalse(rectangle_segment_intersect(a, s));
+		}
+		TEST_METHOD(test_rectangle_point_intersect)
+		{
+			RectangleF a(0.0f, 0.0f, 10.0f, 10.0f);
+
+			Point2F p(5.0f, 5.0f);
+			Assert::IsTrue(rectangle_point_intersect(a, p));
+
+			p = Point2F(15.0f, 15.0f);
+			Assert::IsFalse(rectangle_point_intersect(a, p));
+
+			// p is on the edge of a
+			p = Point2F(10.0f, 10.0f);
+			Assert::IsTrue(rectangle_point_intersect(a, p));
+
+			// p is on the corner of a
+			p = Point2F(0.0f, 0.0f);
+			Assert::IsTrue(rectangle_point_intersect(a, p));
+		}
+		TEST_METHOD(test_circles_intersect)
+		{
+			Circle a(0.0f, 0.0f, 10.0f);
+
+			Circle b(5.0f, 5.0f, 5.0f);
+			Assert::IsTrue(circles_intersect(a, b));
+
+			// a and b are just touching
+			b = Circle(10.0f - EPSILON_F, 5.0f, 5.0f);
+			Assert::IsTrue(circles_intersect(a, b));
+
+			// a and b are just not touching
+			b = Circle(15.0f + EPSILON_F, 0.0f, 5.0f);
+			Assert::IsFalse(circles_intersect(a, b));
+
+			// b is inside a
+			b = Circle(2.0f, 2.0f, 2.0f);
+			Assert::IsTrue(circles_intersect(a, b));
+
+			// a is inside b
+			b = Circle(0.0f, 0.0f, 20.0f);
+			Assert::IsTrue(circles_intersect(a, b));
+
+			// 2 identical circles
+			Assert::IsTrue(circles_intersect(a, a));
+		}
+		TEST_METHOD(test_circle_triangle_intersect)
+		{
+			Circle a(0.0f, 0.0f, 10.0f);
+			Point2F p;
+
+			Triangle t(Point2F(5.0f, 5.0f), Point2F(15.0f, 5.0f), Point2F(5.0f, 15.0f));
+			Assert::IsTrue(circle_triangle_intersect(a, t, p));
+			Assert::IsTrue(p == Point2F(5.0f, 5.0f));
+
+			t = Triangle(Point2F(500.0f, 500.0f), Point2F(1500.0f, 500.0f), Point2F(1500.0f, 1500.0f));
+			Assert::IsFalse(circle_triangle_intersect(a, t, p));
+			Assert::IsTrue(p == Point2F(500.0f, 500.0f));
+
+			// t is inside a
+			t = Triangle(Point2F(2.0f, 2.0f), Point2F(2.0f, 8.0f), Point2F(8.0f, 2.0f));
+			Assert::IsTrue(circle_triangle_intersect(a, t, p));
+			Assert::IsTrue(p == Point2F(2.0f, 2.0f));
+
+			// a is inside t
+			t = Triangle(Point2F(-2.0f, -2.0f), Point2F(12.0f, -2.0f), Point2F(-2.0f, 12.0f));
+			Assert::IsTrue(circle_triangle_intersect(a, t, p));
+			Assert::IsTrue(p == Point2F(0.0f, 0.0f));
+
+			// a and t are just touching
+			t = Triangle(Point2F(10.0f - EPSILON_F, 0.0f), Point2F(20.0f, 0.0f),
+				Point2F(10.0f - EPSILON_F, 20.0f));
+			Assert::IsTrue(circle_triangle_intersect(a, t, p));
+			Assert::IsTrue(are_equal(p, Point2F(10.0f - EPSILON_F, 0.0f), 0.1f));
+
+			// a and t are just not touching
+			t = Triangle(Point2F(10.0f + EPSILON_F, 10.0f), Point2F(20.0f, 10.0f),
+				Point2F(10.0f + EPSILON_F, 20.0f));
+			Assert::IsFalse(circle_triangle_intersect(a, t, p));
+			Assert::IsTrue(p == Point2F(10.0f + EPSILON_F, 10.0f));
+		}
+		TEST_METHOD(test_circle_quad_intersect)
+		{
+			Circle a(0.0f, 0.0f, 10.0f);
+
+			Quad q(RectangleF(5.0f, 5.0f, 10.0f, 10.0f));
+			Assert::IsTrue(circle_quad_intersect(a, q));
+
+			q = Quad(RectangleF(500.0f, 500.0f, 10.0f, 10.0f));
+			Assert::IsFalse(circle_quad_intersect(a, q));
+
+			// q is inside a
+			q = Quad(RectangleF(2.0f, 2.0f, 2.0f, 2.0f));
+			Assert::IsTrue(circle_quad_intersect(a, q));
+
+			// a is inside q
+			q = Quad(RectangleF(-2.0f, -2.0f, 20.0f, 20.0f));
+			Assert::IsTrue(circle_quad_intersect(a, q));
+
+			// a and q are just touching
+			q = Quad(RectangleF(10.0f - EPSILON_F, 0.0f, 10.0f, 10.0f));
+			Assert::IsTrue(circle_quad_intersect(a, q));
+
+			// a and q are just not touching
+			q = Quad(RectangleF(10.0f + EPSILON_F, 10.0f, 10.0f, 10.0f));
+			Assert::IsFalse(circle_quad_intersect(a, q));
+		}
+		TEST_METHOD(test_circle_segment_intersect)
+		{
+
 		}
 	};
 
