@@ -429,6 +429,159 @@ namespace MattMathTests
 			Assert::IsFalse(circle_segment_intersect(c, s, p));
 			Assert::IsTrue(p == Point2F(10.0f + EPSILON_F, 0.0f));
 		}
+		TEST_METHOD(test_triangles_intersect)
+		{
+			Triangle a(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f), Point2F(0.0f, 10.0f));
+
+			Triangle b(Point2F(5.0f, 5.0f), Point2F(15.0f, 5.0f), Point2F(5.0f, 15.0f));
+			Assert::IsTrue(triangles_intersect(a, b));
+
+			b = Triangle(Point2F(500.0f, 500.0f), Point2F(1500.0f, 500.0f), Point2F(1500.0f, 1500.0f));
+			Assert::IsFalse(triangles_intersect(a, b));
+
+			// b is inside a
+			b = Triangle(Point2F(2.0f, 2.0f), Point2F(2.0f, 8.0f), Point2F(8.0f, 2.0f));
+			Assert::IsTrue(triangles_intersect(a, b));
+
+			// a is inside b
+			b = Triangle(Point2F(-2.0f, -2.0f), Point2F(12.0f, -2.0f), Point2F(-2.0f, 12.0f));
+			Assert::IsTrue(triangles_intersect(a, b));
+
+			// a and b are just touching
+			b = Triangle(Point2F(10.0f - EPSILON_F, 0.0f), Point2F(20.0f, 0.0f),
+				Point2F(10.0f - EPSILON_F, 10.0f));
+			Assert::IsTrue(triangles_intersect(a, b));
+
+			// a and b are just not touching
+			b = Triangle(Point2F(10.0f + EPSILON_F, 00.0f), Point2F(20.0f, 00.0f),
+				Point2F(10.0f + EPSILON_F, 10.0f));
+			Assert::IsFalse(triangles_intersect(a, b));
+		}
+		TEST_METHOD(test_triangle_quad_intersect)
+		{
+			Triangle a(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f), Point2F(0.0f, 10.0f));
+
+			Quad q(RectangleF(5.0f, 5.0f, 10.0f, 10.0f));
+			Assert::IsTrue(triangle_quad_intersect(a, q));
+
+			q = Quad(RectangleF(500.0f, 500.0f, 10.0f, 10.0f));
+			Assert::IsFalse(triangle_quad_intersect(a, q));
+
+			// q is inside a
+			q = Quad(RectangleF(2.0f, 2.0f, 2.0f, 2.0f));
+			Assert::IsTrue(triangle_quad_intersect(a, q));
+
+			// a is inside q
+			q = Quad(RectangleF(-2.0f, -2.0f, 20.0f, 20.0f));
+			Assert::IsTrue(triangle_quad_intersect(a, q));
+
+			// a and q are just touching
+			q = Quad(RectangleF(10.0f - EPSILON_F, 0.0f, 10.0f, 10.0f));
+			Assert::IsTrue(triangle_quad_intersect(a, q));
+
+			// a and q are just not touching
+			q = Quad(RectangleF(10.0f + EPSILON_F, 0.0f, 10.0f, 10.0f));
+			Assert::IsFalse(triangle_quad_intersect(a, q));
+		}
+		TEST_METHOD(test_triangle_segment_intersect)
+		{
+			Triangle a(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f), Point2F(0.0f, 10.0f));
+
+			Segment s(Point2F(5.0f, 5.0f), Point2F(15.0f, 5.0f));
+			Assert::IsTrue(triangle_segment_intersect(a, s));
+
+			s = Segment(Point2F(500.0f, 500.0f), Point2F(1500.0f, 500.0f));
+			Assert::IsFalse(triangle_segment_intersect(a, s));
+
+			// s is inside a
+			s = Segment(Point2F(2.0f, 2.0f), Point2F(8.0f, 8.0f));
+			Assert::IsTrue(triangle_segment_intersect(a, s));
+
+			// a is inside s
+			s = Segment(Point2F(-2.0f, -2.0f), Point2F(12.0f, 12.0f));
+			Assert::IsTrue(triangle_segment_intersect(a, s));
+
+			// a and s are just touching
+			s = Segment(Point2F(10.0f - EPSILON_F, 0.0f), Point2F(20.0f, 0.0f));
+			Assert::IsTrue(triangle_segment_intersect(a, s));
+
+			// a and s are just not touching
+			s = Segment(Point2F(10.0f + EPSILON_F, 0.0f), Point2F(20.0f, 0.0f));
+			Assert::IsFalse(triangle_segment_intersect(a, s));
+		}
+		TEST_METHOD(test_quads_intersect)
+		{
+			Quad a(RectangleF(0.0f, 0.0f, 10.0f, 10.0f));
+
+			Quad b(RectangleF(5.0f, 5.0f, 10.0f, 10.0f));
+			Assert::IsTrue(quads_intersect(a, b));
+
+			b = Quad(RectangleF(500.0f, 500.0f, 10.0f, 10.0f));
+			Assert::IsFalse(quads_intersect(a, b));
+
+			// b is inside a
+			b = Quad(RectangleF(2.0f, 2.0f, 2.0f, 2.0f));
+			Assert::IsTrue(quads_intersect(a, b));
+
+			// a is inside b
+			b = Quad(RectangleF(-2.0f, -2.0f, 20.0f, 20.0f));
+			Assert::IsTrue(quads_intersect(a, b));
+
+			// a and b are just touching
+			b = Quad(RectangleF(10.0f - EPSILON_F, 0.0f, 10.0f, 10.0f));
+			Assert::IsTrue(quads_intersect(a, b));
+
+			// a and b are just not touching
+			b = Quad(RectangleF(10.0f + EPSILON_F * 2, 0.0f, 10.0f, 10.0f));
+			Assert::IsFalse(quads_intersect(a, b));
+
+			// 2 identical quads
+			Assert::IsTrue(quads_intersect(a, a));
+		}
+		TEST_METHOD(test_quad_segment_intersect)
+		{
+			Quad a(RectangleF(0.0f, 0.0f, 10.0f, 10.0f));
+
+			Segment s(Point2F(5.0f, 5.0f), Point2F(15.0f, 5.0f));
+			Assert::IsTrue(quad_segment_intersect(a, s));
+
+			s = Segment(Point2F(500.0f, 500.0f), Point2F(1500.0f, 500.0f));
+			Assert::IsFalse(quad_segment_intersect(a, s));
+
+			// s is inside a
+			s = Segment(Point2F(2.0f, 2.0f), Point2F(8.0f, 8.0f));
+			Assert::IsTrue(quad_segment_intersect(a, s));
+
+			// a is inside s
+			s = Segment(Point2F(-5.0f, 5.0f), Point2F(15.0f, 5.0f));
+			Assert::IsTrue(quad_segment_intersect(a, s));
+
+			// a and s are just touching
+			s = Segment(Point2F(10.0f - EPSILON_F, 0.0f), Point2F(20.0f, 0.0f));
+			Assert::IsTrue(quad_segment_intersect(a, s));
+
+			// a and s are just not touching
+			s = Segment(Point2F(10.0f + EPSILON_F, 0.0f), Point2F(20.0f, 0.0f));
+			Assert::IsFalse(quad_segment_intersect(a, s));
+		}
+		TEST_METHOD(test_quad_point_intersect)
+		{
+			Quad a(RectangleF(0.0f, 0.0f, 10.0f, 10.0f));
+
+			Point2F p(5.0f, 5.0f);
+			Assert::IsTrue(quad_point_intersect(a, p));
+
+			p = Point2F(15.0f, 15.0f);
+			Assert::IsFalse(quad_point_intersect(a, p));
+
+			// p is on the edge of a
+			p = Point2F(10.0f, 10.0f);
+			Assert::IsTrue(quad_point_intersect(a, p));
+
+			// p is on the corner of a
+			p = Point2F(0.0f, 0.0f);
+			Assert::IsTrue(quad_point_intersect(a, p));
+		}
 	};
 
 } // namespace MattMathTests
