@@ -149,6 +149,43 @@ namespace MattMathTests
 	TEST_CLASS(MattMathTests)
 	{
 	public:
+		
+		TEST_METHOD(test_8_cardinal_direction)
+		{
+			Point2F p(0.0f, 0.0f);
+			Point2F q(1.0f, 1.0f);
+			Vector2F v = Vector2F::unit_vector(q - p);
+			Vector2F cardinal = Vector2F::direction_to_8_cardinal_direction(v);
+			Assert::IsTrue(cardinal == Vector2F::DIRECTION_DOWN_RIGHT);
+			q = Point2F(-1.0f, 1.0f);
+			v = Vector2F::unit_vector(q - p);
+			cardinal = Vector2F::direction_to_8_cardinal_direction(v);
+			Assert::IsTrue(cardinal == Vector2F::DIRECTION_DOWN_LEFT);
+			q = Point2F(-1.0f, -1.0f);
+			v = Vector2F::unit_vector(q - p);
+			cardinal = Vector2F::direction_to_8_cardinal_direction(v);
+			Assert::IsTrue(cardinal == Vector2F::DIRECTION_UP_LEFT);
+			q = Point2F(1.0f, -1.0f);
+			v = Vector2F::unit_vector(q - p);
+			cardinal = Vector2F::direction_to_8_cardinal_direction(v);
+			Assert::IsTrue(cardinal == Vector2F::DIRECTION_UP_RIGHT);
+			q = Point2F(0.0f, 1.0f);
+			v = Vector2F::unit_vector(q - p);
+			cardinal = Vector2F::direction_to_8_cardinal_direction(v);
+			Assert::IsTrue(cardinal == Vector2F::DIRECTION_DOWN);
+			q = Point2F(-1.0f, 0.0f);
+			v = Vector2F::unit_vector(q - p);
+			cardinal = Vector2F::direction_to_8_cardinal_direction(v);
+			Assert::IsTrue(cardinal == Vector2F::DIRECTION_LEFT);
+			q = Point2F(0.0f, -1.0f);
+			v = Vector2F::unit_vector(q - p);
+			cardinal = Vector2F::direction_to_8_cardinal_direction(v);
+			Assert::IsTrue(cardinal == Vector2F::DIRECTION_UP);
+			q = Point2F(1.0f, 0.0f);
+			v = Vector2F::unit_vector(q - p);
+			cardinal = Vector2F::direction_to_8_cardinal_direction(v);
+			Assert::IsTrue(cardinal == Vector2F::DIRECTION_RIGHT);
+		}
 		TEST_METHOD(test_rectangles_intersect)
 		{
 			RectangleF a(0.0f, 0.0f, 10.0f, 10.0f);
