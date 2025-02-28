@@ -346,6 +346,46 @@ namespace MattMathTests
 			p = Point2F(0.0f, 0.0f);
 			Assert::IsTrue(rectangle_point_intersect(a, p));
 		}
+		TEST_METHOD(test_rectangle_rotated_rectangle_intersect)
+		{
+			// first test with axes aligned
+			RectangleRotated rr = RectangleRotated(Vector2F::ZERO,
+				Vector2F::DIRECTION_RIGHT,
+				Vector2F::DIRECTION_UP, Vector2F(5.0f, 5.0f));
+
+			RectangleF r(0.0f, 0.0f, 10.0f, 10.0f);
+			Assert::IsTrue(rectangle_rotated_rectangle_intersect(r, rr));
+
+			r = RectangleF(5.0 - EPSILON_F, 5.0f - EPSILON_F, 10.0f, 10.0f);
+			Assert::IsTrue(rectangle_rotated_rectangle_intersect(r, rr));
+
+			r = RectangleF(5.0f + EPSILON_F, 5.0f + EPSILON_F, 10.0f, 10.0f);
+			Assert::IsFalse(rectangle_rotated_rectangle_intersect(r, rr));
+
+			r = RectangleF(10.0f, 10.0f, 10.0f, 10.0f);
+			Assert::IsFalse(rectangle_rotated_rectangle_intersect(r, rr));
+			
+			// second test with axes not aligned
+			rr = RectangleRotated(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+
+			r = RectangleF(0.0f, 0.0f, 10.0f, 10.0f);
+			Assert::IsTrue(rectangle_rotated_rectangle_intersect(r, rr));
+
+			Vector2F v = Vector2F::DIRECTION_DOWN_RIGHT * 10.0f;
+			Vector2F v_touching = v - Vector2F::DIRECTION_DOWN_RIGHT * EPSILON_F;
+			Vector2F v_not_touching = v + Vector2F::DIRECTION_DOWN_RIGHT * (EPSILON_F * 10);
+
+			r = RectangleF(v_touching.x, v_touching.y, 10.0f, 10.0f);
+			Assert::IsTrue(rectangle_rotated_rectangle_intersect(r, rr));
+
+			r = RectangleF(v_not_touching.x, v_not_touching.y, 10.0f, 10.0f);
+			Assert::IsFalse(rectangle_rotated_rectangle_intersect(r, rr));
+
+			r = RectangleF(15.0f, 15.0f, 10.0f, 10.0f);
+			Assert::IsFalse(rectangle_rotated_rectangle_intersect(r, rr));
+		}
 		TEST_METHOD(test_circles_intersect)
 		{
 			Circle a(0.0f, 0.0f, 10.0f);
