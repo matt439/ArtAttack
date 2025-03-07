@@ -9,10 +9,17 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace MattMath;
 using namespace EricsonMath;
 
-namespace EricsonMathTests
+namespace MathTestConstants
 {
 	constexpr float EPSILON_F = 0.000001f;
+	constexpr float EPSILON_F_2 = 0.000002f;
+	constexpr float EPSILON_F_100 = 0.0001f;
+}
 
+using namespace MathTestConstants;
+
+namespace EricsonMathTests
+{
 	TEST_CLASS(EricsonMathTests)
 	{
 	public:
@@ -325,7 +332,7 @@ namespace MattMathTests
 			Assert::IsTrue(rectangle_segment_intersect(a, s));
 
 			// a and s are just not touching
-			s = Segment(Point2F(10.0f + EPSILON_F * 2, 10.0f), Point2F(20.0f, 10.0f));
+			s = Segment(Point2F(10.0f + EPSILON_F_2, 10.0f), Point2F(20.0f, 10.0f));
 			Assert::IsFalse(rectangle_segment_intersect(a, s));
 		}
 		TEST_METHOD(test_rectangle_point_intersect)
@@ -373,9 +380,17 @@ namespace MattMathTests
 			r = RectangleF(0.0f, 0.0f, 10.0f, 10.0f);
 			Assert::IsTrue(rectangle_rotated_rectangle_intersect(r, rr));
 
+			// rectangle is inside rotated rectangle
+			r = RectangleF(2.0f, 2.0f, 2.0f, 2.0f);
+			Assert::IsTrue(rectangle_rotated_rectangle_intersect(r, rr));
+
+			// rotated rectangle is inside rectangle
+			r = RectangleF(-2.0f, -2.0f, 20.0f, 20.0f);
+			Assert::IsTrue(rectangle_rotated_rectangle_intersect(r, rr));
+
 			Vector2F v = Vector2F::DIRECTION_DOWN_RIGHT * 10.0f;
 			Vector2F v_touching = v - Vector2F::DIRECTION_DOWN_RIGHT * EPSILON_F;
-			Vector2F v_not_touching = v + Vector2F::DIRECTION_DOWN_RIGHT * (EPSILON_F * 10);
+			Vector2F v_not_touching = v + Vector2F::DIRECTION_DOWN_RIGHT * EPSILON_F_100;
 
 			r = RectangleF(v_touching.x, v_touching.y, 10.0f, 10.0f);
 			Assert::IsTrue(rectangle_rotated_rectangle_intersect(r, rr));
@@ -472,6 +487,31 @@ namespace MattMathTests
 			// a and q are just not touching
 			q = Quad(RectangleF(10.0f + EPSILON_F, 10.0f, 10.0f, 10.0f));
 			Assert::IsFalse(circle_quad_intersect(a, q));
+		}
+		TEST_METHOD(test_circle_rectangle_rotated_intersect)
+		{
+			RectangleRotated rr(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+
+			Circle c(5.0f, 5.0f, 10.0f);
+			Assert::IsTrue(circle_rectangle_rotated_intersect(c, rr));
+
+			// c is inside rr
+			c = Circle(0.0f, 0.0f, 2.0f);
+			Assert::IsTrue(circle_rectangle_rotated_intersect(c, rr));
+
+			// rr is inside c
+			c = Circle(0.0f, 0.0f, 200.0f);
+			Assert::IsTrue(circle_rectangle_rotated_intersect(c, rr));
+
+			// c and rr are just touching
+			c = Circle(Vector2F::DIRECTION_DOWN_RIGHT * (20.0f - EPSILON_F), 10.0f);
+			Assert::IsTrue(circle_rectangle_rotated_intersect(c, rr));
+
+			// c and rr are just not touching
+			c = Circle(Vector2F::DIRECTION_DOWN_RIGHT * (20.0f + EPSILON_F), 10.0f);
+			Assert::IsFalse(circle_rectangle_rotated_intersect(c, rr));
 		}
 		TEST_METHOD(test_circle_segment_intersect)
 		{
@@ -586,6 +626,40 @@ namespace MattMathTests
 			s = Segment(Point2F(10.0f + EPSILON_F, 0.0f), Point2F(20.0f, 0.0f));
 			Assert::IsFalse(triangle_segment_intersect(a, s));
 		}
+		TEST_METHOD(test_triangle_rectangle_rotated_intersect)
+		{
+			RectangleRotated rr(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+
+			Triangle t(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f), Point2F(0.0f, 10.0f));
+			Assert::IsTrue(triangle_rectangle_rotated_intersect(t, rr));
+
+			// t is inside rr
+			t = Triangle(Point2F(2.0f, 2.0f), Point2F(2.0f, 3.0f), Point2F(3.0f, 2.0f));
+			Assert::IsTrue(triangle_rectangle_rotated_intersect(t, rr));
+
+			// rr is inside t
+			t = Triangle(Point2F(-200.0f, -200.0f), Point2F(1000.0f, -200.0f),
+				Point2F(-200.0f, 1000.0f));
+			Assert::IsTrue(triangle_rectangle_rotated_intersect(t, rr));
+
+			t = Triangle(Point2F(-500.0f, -500.0f), Point2F(-500.0f, -400.0f),
+				Point2F(-400.0f, -500.0f));
+			Assert::IsFalse(triangle_rectangle_rotated_intersect(t, rr));
+
+			// t and rr are just touching
+			t = Triangle(Vector2F::DIRECTION_DOWN_RIGHT * (10.0f - EPSILON_F),
+				Vector2F::DIRECTION_DOWN_RIGHT * 20.0f,
+				Vector2F::DIRECTION_DOWN_RIGHT * 20.0f + Vector2F::DIRECTION_UP_RIGHT * 10.0f);
+			Assert::IsTrue(triangle_rectangle_rotated_intersect(t, rr));
+
+			// t and rr are just not touching
+			t = Triangle(Vector2F::DIRECTION_DOWN_RIGHT * (10.0f + EPSILON_F_100),
+				Vector2F::DIRECTION_DOWN_RIGHT * 20.0f,
+				Vector2F::DIRECTION_DOWN_RIGHT * 20.0f + Vector2F::DIRECTION_UP_RIGHT * 10.0f);
+			Assert::IsFalse(triangle_rectangle_rotated_intersect(t, rr));
+		}
 		TEST_METHOD(test_quads_intersect)
 		{
 			Quad a(RectangleF(0.0f, 0.0f, 10.0f, 10.0f));
@@ -609,7 +683,7 @@ namespace MattMathTests
 			Assert::IsTrue(quads_intersect(a, b));
 
 			// a and b are just not touching
-			b = Quad(RectangleF(10.0f + EPSILON_F * 2, 0.0f, 10.0f, 10.0f));
+			b = Quad(RectangleF(10.0f + EPSILON_F_2, 0.0f, 10.0f, 10.0f));
 			Assert::IsFalse(quads_intersect(a, b));
 
 			// 2 identical quads
@@ -658,6 +732,144 @@ namespace MattMathTests
 			// p is on the corner of a
 			p = Point2F(0.0f, 0.0f);
 			Assert::IsTrue(quad_point_intersect(a, p));
+		}
+		TEST_METHOD(test_quad_rectangle_rotated_intersect)
+		{
+			RectangleRotated rr(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+
+			Quad q(RectangleF(5.0f, 5.0f, 10.0f, 10.0f));
+			Assert::IsTrue(quad_rectangle_rotated_intersect(q, rr));
+
+			q = Quad(RectangleF(500.0f, 500.0f, 10.0f, 10.0f));
+			Assert::IsFalse(quad_rectangle_rotated_intersect(q, rr));
+
+			// q is inside rr
+			q = Quad(RectangleF(2.0f, 2.0f, 2.0f, 2.0f));
+			Assert::IsTrue(quad_rectangle_rotated_intersect(q, rr));
+
+			// rr is inside q
+			q = Quad(RectangleF(-200.0f, -200.0f, 1000.0f, 1000.0f));
+			Assert::IsTrue(quad_rectangle_rotated_intersect(q, rr));
+
+			// q and rr are just touching
+			q = Quad(RectangleF(Vector2F::DIRECTION_DOWN_RIGHT * (10.0f - EPSILON_F),
+				Vector2F(10.0f, 10.0f)));
+			Assert::IsTrue(quad_rectangle_rotated_intersect(q, rr));
+
+			// q and rr are just not touching
+			q = Quad(RectangleF(Vector2F::DIRECTION_DOWN_RIGHT * (10.0f + EPSILON_F_100),
+				Vector2F(10.0f, 10.0f)));
+			Assert::IsFalse(quad_rectangle_rotated_intersect(q, rr));
+		}
+		TEST_METHOD(test_segments_intersect)
+		{
+			Segment a(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f));
+			Segment b(Point2F(5.0f, -5.0f), Point2F(5.0f, 10.0f));
+			Assert::IsTrue(segments_intersect(a, b));
+			b = Segment(Point2F(500.0f, 500.0f), Point2F(1500.0f, 500.0f));
+			Assert::IsFalse(segments_intersect(a, b));
+			// a and b are just touching
+			b = Segment(Point2F(5.0f, -5.0f), Point2F(5.0f, EPSILON_F));
+			Assert::IsTrue(segments_intersect(a, b));
+			// a and b are just not touching
+			b = Segment(Point2F(5.0f, -5.0f), Point2F(5.0f, -EPSILON_F));
+			Assert::IsFalse(segments_intersect(a, b));
+			// a and b are equal
+			b = Segment(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f));
+			Assert::IsTrue(segments_intersect(a, b));
+		}
+		TEST_METHOD(test_segment_rectangle_rotated_intersect)
+		{
+			 RectangleRotated rr(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+
+			 Segment s(Point2F(5.0f, 5.0f), Point2F(15.0f, 5.0f));
+			 Assert::IsTrue(segment_rectangle_rotated_intersect(s, rr));
+
+			 s = Segment(Point2F(500.0f, 500.0f), Point2F(1500.0f, 500.0f));
+			 Assert::IsFalse(segment_rectangle_rotated_intersect(s, rr));
+
+			 // s is inside rr
+			 s = Segment(Point2F(2.0f, 2.0f), Point2F(3.0f, 3.0f));
+			 Assert::IsTrue(segment_rectangle_rotated_intersect(s, rr));
+		}
+		TEST_METHOD(test_point_rectangle_rotated_intersect)
+		{
+			RectangleRotated rr(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+
+			Point2F p(5.0f, 5.0f);
+			Assert::IsTrue(point_rectangle_rotated_intersect(p, rr));
+
+			p = Point2F(15.0f, 15.0f);
+			Assert::IsFalse(point_rectangle_rotated_intersect(p, rr));
+
+			// p is on the edge of rr
+			p = Vector2F::DIRECTION_DOWN_RIGHT * 10.0f;
+			Assert::IsTrue(point_rectangle_rotated_intersect(p, rr));
+
+			// p is just outside the edge of rr
+			p = Vector2F::DIRECTION_DOWN_RIGHT * (10.0f + EPSILON_F_100);
+			Assert::IsFalse(point_rectangle_rotated_intersect(p, rr));
+
+			// p is on the corner of rr
+			p = Vector2F::DIRECTION_DOWN_RIGHT * 10.0f + Vector2F::DIRECTION_UP_RIGHT * 10.0f;
+			Assert::IsTrue(point_rectangle_rotated_intersect(p, rr));
+
+			// p is just outside the corner of rr
+			p = Vector2F::DIRECTION_DOWN_RIGHT * (10.0f + EPSILON_F_100) +
+				Vector2F::DIRECTION_UP_RIGHT * (10.0f + EPSILON_F_100);
+
+			// p is inside rr
+			p = Point2F(2.0f, 2.0f);
+			Assert::IsTrue(point_rectangle_rotated_intersect(p, rr));
+		}
+		TEST_METHOD(test_rectangles_rotated_intersect)
+		{
+			RectangleRotated a(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+
+			RectangleRotated b(Vector2F::DIRECTION_DOWN_RIGHT * 5.0f,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+			Assert::IsTrue(rectangles_rotated_intersect(a, b));
+
+			b = RectangleRotated(Vector2F::DIRECTION_DOWN_RIGHT * 200.0f,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+			Assert::IsFalse (rectangles_rotated_intersect(a, b));
+
+			// b is inside a
+			b = RectangleRotated(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(2.0f, 2.0f));
+			Assert::IsTrue(rectangles_rotated_intersect(a, b));
+
+			// a is inside b
+			b = RectangleRotated(Vector2F::ZERO,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(40.0f, 40.0f));
+			Assert::IsTrue(rectangles_rotated_intersect(a, b));
+
+			// a and b are just touching
+			b = RectangleRotated(Vector2F::DIRECTION_DOWN_RIGHT * 20.0f,
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+			Assert::IsTrue(rectangles_rotated_intersect(a, b));
+
+			// a and b are just not touching
+			b = RectangleRotated(Vector2F::DIRECTION_DOWN_RIGHT * (20.0f + EPSILON_F_100),
+				Vector2F::DIRECTION_UP_RIGHT,
+				Vector2F::DIRECTION_DOWN_RIGHT, Vector2F(10.0f, 10.0f));
+			Assert::IsFalse(rectangles_rotated_intersect(a, b));
+
+			// 2 identical rectangles
+			Assert::IsTrue(rectangles_rotated_intersect(a, a));
 		}
 	};
 
