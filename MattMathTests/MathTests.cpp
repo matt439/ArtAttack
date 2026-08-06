@@ -146,6 +146,63 @@ namespace EricsonMathTests
 			Assert::IsTrue(closest == Point2F(5.0f, 0.0f));
 			Assert::IsTrue(t == 0.5f);
 		}
+
+		TEST_METHOD(test_closest_pt_point_OBB_axis_aligned)
+		{
+			// An axis-aligned OBB spanning (-5,-5) to (5,5), so every answer
+			// can be checked against the AABB result.
+			OBB b(Point2F::ZERO, Vector2F::DIRECTION_RIGHT,
+				Vector2F::DIRECTION_DOWN, Vector2F(5.0f, 5.0f));
+			Point2F q;
+
+			// inside the box: the closest point is the point itself
+			closest_pt_point_OBB(Point2F(1.0f, 2.0f), b, q);
+			Assert::IsTrue(q == Point2F(1.0f, 2.0f));
+
+			// outside along +x only: clamps on x, keeps y
+			closest_pt_point_OBB(Point2F(10.0f, 2.0f), b, q);
+			Assert::IsTrue(q == Point2F(5.0f, 2.0f));
+
+			// outside along -y only
+			closest_pt_point_OBB(Point2F(0.0f, -10.0f), b, q);
+			Assert::IsTrue(q == Point2F(0.0f, -5.0f));
+
+			// past a corner: clamps on both axes
+			closest_pt_point_OBB(Point2F(10.0f, 10.0f), b, q);
+			Assert::IsTrue(q == Point2F(5.0f, 5.0f));
+
+			// exactly on a face
+			closest_pt_point_OBB(Point2F(5.0f, 0.0f), b, q);
+			Assert::IsTrue(q == Point2F(5.0f, 0.0f));
+		}
+
+		TEST_METHOD(test_closest_pt_point_OBB_rotated)
+		{
+			// A square rotated 45 degrees - a diamond with vertices at
+			// (+-5*sqrt2, 0) and (0, +-5*sqrt2). Here the OBB answer differs
+			// from the AABB answer, which is the whole point of the routine.
+			OBB b(Point2F::ZERO, Vector2F::DIRECTION_DOWN_RIGHT,
+				Vector2F::DIRECTION_DOWN_LEFT, Vector2F(5.0f, 5.0f));
+			Point2F q;
+
+			const float half_diagonal = 5.0f * std::sqrt(2.0f);
+
+			// inside
+			closest_pt_point_OBB(Point2F(1.0f, 1.0f), b, q);
+			Assert::IsTrue(are_equal(q.x, 1.0f, EPSILON_F_100));
+			Assert::IsTrue(are_equal(q.y, 1.0f, EPSILON_F_100));
+
+			// straight out along +x lands on the vertex
+			closest_pt_point_OBB(Point2F(20.0f, 0.0f), b, q);
+			Assert::IsTrue(are_equal(q.x, half_diagonal, EPSILON_F_100));
+			Assert::IsTrue(are_equal(q.y, 0.0f, EPSILON_F_100));
+
+			// out along the diagonal lands on an edge midpoint, NOT on the
+			// bounding-box corner (half_diagonal, half_diagonal)
+			closest_pt_point_OBB(Point2F(10.0f, 10.0f), b, q);
+			Assert::IsTrue(are_equal(q.x, half_diagonal / 2.0f, EPSILON_F_100));
+			Assert::IsTrue(are_equal(q.y, half_diagonal / 2.0f, EPSILON_F_100));
+		}
 	};
 } // namespace EricsonMathTests
 
@@ -870,6 +927,99 @@ namespace MattMathTests
 
 			// 2 identical rectangles
 			Assert::IsTrue(rectangles_rotated_intersect(a, a));
+		}
+
+		TEST_METHOD(test_rectangle_rotated_segment_constructor)
+		{
+			// The (Segment, thickness) overload is what paint trails and thick
+			// line segments use. Segment::get_direction() is un-normalised, so
+			// this used to throw for every segment not exactly 1 unit long.
+			const float thickness = 2.0f;
+			Segment s(Point2F(0.0f, 0.0f), Point2F(10.0f, 0.0f));
+			RectangleRotated rr(s, thickness);
+
+			Assert::IsTrue(rr.is_valid());
+
+			// centre is the segment midpoint
+			Assert::IsTrue(are_equal(rr.get_center().x, 5.0f, EPSILON_F_100));
+			Assert::IsTrue(are_equal(rr.get_center().y, 0.0f, EPSILON_F_100));
+
+			// x axis runs along the segment and is a unit vector
+			Assert::IsTrue(are_equal(rr.get_x_axis().length(), 1.0f, EPSILON_F_100));
+			Assert::IsTrue(are_equal(rr.get_y_axis().length(), 1.0f, EPSILON_F_100));
+			Assert::IsTrue(are_equal(rr.get_x_axis().x, 1.0f, EPSILON_F_100));
+			Assert::IsTrue(are_equal(rr.get_x_axis().y, 0.0f, EPSILON_F_100));
+
+			// half extents: half the length plus the thickness along the
+			// segment, the thickness across it
+			Assert::IsTrue(are_equal(rr.get_half_x_width(),
+				5.0f + thickness, EPSILON_F_100));
+			Assert::IsTrue(are_equal(rr.get_half_y_width(),
+				thickness, EPSILON_F_100));
+
+			// a diagonal segment stays valid and picks up the right angle
+			Segment diagonal(Point2F(0.0f, 0.0f), Point2F(10.0f, 10.0f));
+			RectangleRotated rr_diagonal(diagonal, 1.0f);
+			Assert::IsTrue(rr_diagonal.is_valid());
+			Assert::IsTrue(are_equal(rr_diagonal.get_x_axis().length(),
+				1.0f, EPSILON_F_100));
+		}
+
+		TEST_METHOD(test_rectangle_rotated_rejects_invalid)
+		{
+			// is_valid() consults edges_valid(), which reads _points. When
+			// _points was still all-zero at validation time these degenerate
+			// cases were accepted.
+
+			// zero-length segment: no direction, so no valid axes
+			Segment degenerate(Point2F(3.0f, 3.0f), Point2F(3.0f, 3.0f));
+			Assert::ExpectException<std::invalid_argument>(
+				[&] { RectangleRotated rr(degenerate, 1.0f); });
+
+			// zero half extents
+			Assert::ExpectException<std::invalid_argument>(
+				[&] { RectangleRotated rr(Point2F::ZERO,
+					Vector2F::DIRECTION_RIGHT, Vector2F::DIRECTION_DOWN,
+					Vector2F::ZERO); });
+
+			// non-perpendicular axes
+			Assert::ExpectException<std::invalid_argument>(
+				[&] { RectangleRotated rr(Point2F::ZERO,
+					Vector2F::DIRECTION_RIGHT, Vector2F::DIRECTION_DOWN_RIGHT,
+					Vector2F(5.0f, 5.0f)); });
+		}
+
+		TEST_METHOD(test_rectangle_rotated_setters_are_transactional)
+		{
+			// A rejected setter argument must leave the rectangle untouched.
+			RectangleRotated rr(Point2F::ZERO, Vector2F::DIRECTION_RIGHT,
+				Vector2F::DIRECTION_DOWN, Vector2F(5.0f, 5.0f));
+
+			Assert::ExpectException<std::invalid_argument>(
+				[&] { rr.set_half_x_width(-1.0f); });
+			Assert::IsTrue(are_equal(rr.get_half_x_width(), 5.0f, EPSILON_F_100));
+			Assert::IsTrue(rr.is_valid());
+
+			Assert::ExpectException<std::invalid_argument>(
+				[&] { rr.set_half_extents(Vector2F(0.0f, 0.0f)); });
+			Assert::IsTrue(are_equal(rr.get_half_x_width(), 5.0f, EPSILON_F_100));
+			Assert::IsTrue(are_equal(rr.get_half_y_width(), 5.0f, EPSILON_F_100));
+
+			Assert::ExpectException<std::invalid_argument>(
+				[&] { rr.set_x_axis(Vector2F::DIRECTION_DOWN_RIGHT); });
+			Assert::IsTrue(are_equal(rr.get_x_axis().x, 1.0f, EPSILON_F_100));
+			Assert::IsTrue(rr.is_valid());
+
+			Assert::ExpectException<std::invalid_argument>(
+				[&] { rr.inflate(-10.0f); });
+			Assert::IsTrue(are_equal(rr.get_half_x_width(), 5.0f, EPSILON_F_100));
+			Assert::IsTrue(rr.is_valid());
+
+			// a valid inflate still works, and keeps the corner cache in sync
+			rr.inflate(1.0f);
+			Assert::IsTrue(are_equal(rr.get_half_x_width(), 6.0f, EPSILON_F_100));
+			Assert::IsTrue(are_equal(rr.get_point_2().x, 6.0f, EPSILON_F_100));
+			Assert::IsTrue(rr.is_valid());
 		}
 	};
 
