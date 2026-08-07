@@ -1,11 +1,12 @@
 #ifndef VIEWPORTMANAGER_H
 #define VIEWPORTMANAGER_H
 
-#include "screen_layout.h"
-#include "ResolutionManager.h"
-#include "DeviceResources.h"
+#include "engine/render/screen_layout.h"
+#include "engine/render/resolution_manager.h"
+#include "engine/render/device_resources.h"
 #include "engine/math/matt_math.h"
-#include "Colour.h"
+#include "engine/math/colour.h"
+#include "SpriteBatch.h"
 
 namespace viewport_consts
 {

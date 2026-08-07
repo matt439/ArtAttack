@@ -1,6 +1,6 @@
-#include "pch.h"
-#include "SpriteSheet.h"
-#include "JsonLoader.h"
+#include "engine/render/sprite_sheet.h"
+#include "engine/assets/json_loader.h"
+#include <stdexcept>
 
 using namespace DirectX;
 using namespace MattMath;

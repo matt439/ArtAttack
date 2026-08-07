@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "AnimationStrip.h"
+#include "engine/render/animation_strip.h"
 
 using namespace DirectX;
 using namespace MattMath;

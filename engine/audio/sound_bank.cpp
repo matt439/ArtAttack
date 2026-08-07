@@ -1,7 +1,7 @@
-#include "pch.h"
-#include "SoundBank.h"
-#include "JsonLoader.h"
+#include "engine/audio/sound_bank.h"
+#include "engine/assets/json_loader.h"
 #include <cstdio>
+#include <stdexcept>
 
 using namespace DirectX;
 using namespace rapidjson;

@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "ThreadPool.h"
+#include "engine/core/thread_pool.h"
 
 ThreadPool::ThreadPool(int min_num_threads, int max_num_threads) :
     _min_num_threads(min_num_threads),

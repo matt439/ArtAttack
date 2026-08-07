@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "JsonLoader.h"
+#include "engine/assets/json_loader.h"
 
 #include <cstdio>
 #include <memory>

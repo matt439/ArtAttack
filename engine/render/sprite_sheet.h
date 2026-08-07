@@ -1,11 +1,12 @@
 #ifndef SPRITESHEET_H
 #define SPRITESHEET_H
 
-#include "SpriteFrame.h"
-#include "Colour.h"
+#include "engine/render/sprite_frame.h"
+#include "engine/math/colour.h"
+#include "SpriteBatch.h"
 #include "rapidjson/document.h"
 #include <map>
-#include "AnimationStrip.h"
+#include "engine/render/animation_strip.h"
 
 class SpriteSheet
 {	

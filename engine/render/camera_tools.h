@@ -1,7 +1,7 @@
 #ifndef CAMERATOOLS_H
 #define CAMERATOOLS_H
 
-#include "BorderThickness.h"
+#include "engine/render/border_thickness.h"
 #include "engine/math/matt_math.h"
 
 namespace camera_consts

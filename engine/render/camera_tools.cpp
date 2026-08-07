@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "CameraTools.h"
+#include "engine/render/camera_tools.h"
 
 using namespace DirectX;
 using namespace camera_consts;

@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "ResolutionManager.h"
+#include "engine/render/resolution_manager.h"
 
 using namespace MattMath;
 

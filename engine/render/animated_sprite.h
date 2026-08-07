@@ -1,7 +1,8 @@
 #ifndef ANIMATEDSPRITE_H
 #define ANIMATEDSPRITE_H
 
-#include "SpriteSheet.h"
+#include "engine/render/sprite_sheet.h"
+#include "SpriteBatch.h"
 
 class AnimatedSprite
 {

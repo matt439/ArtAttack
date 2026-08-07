@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "Partitioner.h"
+#include "engine/collision/partitioner.h"
 
 std::vector<std::pair<int, int>> Partitioner::partition(int num_elements, int num_partitions) const
 {

@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "MovingObject.h"
+#include "engine/core/moving_object.h"
 
 using namespace MattMath;
 

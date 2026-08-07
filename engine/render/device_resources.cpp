@@ -3,8 +3,16 @@
 //                       (requires DirectX 11.1 Runtime)
 //
 
-#include "pch.h"
-#include "DeviceResources.h"
+#include "engine/render/device_resources.h"
+#include "engine/core/throw_if_failed.h"
+
+#include <DirectXMath.h>
+#include <stdexcept>
+#include <system_error>
+
+#ifdef _DEBUG
+#include <dxgidebug.h>
+#endif
 
 using namespace DirectX;
 using namespace DX;

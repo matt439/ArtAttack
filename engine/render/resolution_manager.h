@@ -3,7 +3,7 @@
 
 #include <string>
 #include "engine/math/matt_math.h"
-#include "screen_resolution.h"
+#include "engine/render/screen_resolution.h"
 
 class ResolutionManager
 {

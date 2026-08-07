@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "SpriteFrame.h"
+#include "engine/render/sprite_frame.h"
 
 using namespace MattMath;
 

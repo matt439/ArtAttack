@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "AnimatedSprite.h"
+#include "engine/render/animated_sprite.h"
 
 using namespace DirectX;
 using namespace MattMath;
