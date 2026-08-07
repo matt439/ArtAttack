@@ -9,5 +9,6 @@ include(cmake/settings.cmake)
 
 enable_testing()
 
+add_subdirectory(engine/math)
 add_subdirectory(ArtAttack)
-add_subdirectory(MattMathTests)
+add_subdirectory(tests/math)

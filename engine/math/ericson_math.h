@@ -5,7 +5,7 @@
 // Christer Ericson
 // 2005
 
-#include "MattMath.h"
+#include "engine/math/matt_math.h"
 #include <cmath>
 
 namespace EricsonMath

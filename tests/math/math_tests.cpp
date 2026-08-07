@@ -1,6 +1,6 @@
 #include <doctest/doctest.h>
-#include "MattMath.h"
-#include "EricsonMath.h"
+#include "engine/math/matt_math.h"
+#include "engine/math/ericson_math.h"
 #include <cfloat>
 #include <stdexcept>
 

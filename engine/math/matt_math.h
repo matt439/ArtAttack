@@ -2,10 +2,11 @@
 #define MATTMATH_H
 
 #include "SimpleMath.h"
-#include "shape_type.h"
+#include "engine/math/shape_type.h"
 #include <d3d11.h>
 #include <cmath>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace MattMath
@@ -685,13 +686,13 @@ namespace MattMath
 		Vector3F& operator/=(float other);
 	};
 
-	static Vector3F operator+ (const Vector3F& V1, const Vector3F& V2);
-	static Vector3F operator- (const Vector3F& V1, const Vector3F& V2);
-	static Vector3F operator* (const Vector3F& V1, const Vector3F& V2);
-	static Vector3F operator* (const Vector3F& V, float S);
-	static Vector3F operator/ (const Vector3F& V1, const Vector3F& V2);
-	static Vector3F operator/ (const Vector3F& V, float S);
-	static Vector3F operator* (float S, const Vector3F& V);
+	Vector3F operator+ (const Vector3F& V1, const Vector3F& V2);
+	Vector3F operator- (const Vector3F& V1, const Vector3F& V2);
+	Vector3F operator* (const Vector3F& V1, const Vector3F& V2);
+	Vector3F operator* (const Vector3F& V, float S);
+	Vector3F operator/ (const Vector3F& V1, const Vector3F& V2);
+	Vector3F operator/ (const Vector3F& V, float S);
+	Vector3F operator* (float S, const Vector3F& V);
 
 	struct MatrixF
 	{

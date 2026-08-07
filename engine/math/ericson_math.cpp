@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "EricsonMath.h"
+#include "engine/math/ericson_math.h"
 
 using namespace MattMath;
 using namespace EricsonMath;

@@ -1,8 +1,8 @@
 #ifndef  COLLISION_TOOLS_H
 #define COLLISION_TOOLS_H
 
-#include "MattMath.h"
-#include "shape_type.h"
+#include "engine/math/matt_math.h"
+#include "engine/math/shape_type.h"
 
 constexpr int BRACKET_ITERATIONS = 40;
 constexpr float ITERATION_POWER = 1.5f;
