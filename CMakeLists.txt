@@ -11,5 +11,6 @@ enable_testing()
 
 add_subdirectory(engine)
 add_subdirectory(ArtAttack)
+add_subdirectory(tests/assets)
 add_subdirectory(tests/core)
 add_subdirectory(tests/math)
