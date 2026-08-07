@@ -11,6 +11,7 @@ enable_testing()
 
 add_subdirectory(engine)
 add_subdirectory(game)
+add_subdirectory(samples/minimal)
 add_subdirectory(tests/assets)
 add_subdirectory(tests/core)
 add_subdirectory(tests/math)
