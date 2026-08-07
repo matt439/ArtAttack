@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "TextureObject.h"
+#include "engine/render/texture_object.h"
 
 using namespace DirectX;
 using namespace MattMath;

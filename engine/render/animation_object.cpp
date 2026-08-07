@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "AnimationObject.h"
+#include "engine/render/animation_object.h"
 
 using namespace DirectX;
 using namespace MattMath;

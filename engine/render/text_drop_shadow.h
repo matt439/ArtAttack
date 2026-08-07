@@ -1,7 +1,7 @@
 #ifndef TEXTDROPSHADOW_H
 #define TEXTDROPSHADOW_H
 
-#include "Text.h"
+#include "engine/render/text.h"
 
 class TextDropShadow : public Text
 {

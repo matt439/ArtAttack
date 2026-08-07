@@ -1,7 +1,7 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include "TextObject.h"
+#include "engine/render/text_object.h"
 
 class Text : public TextObject
 {

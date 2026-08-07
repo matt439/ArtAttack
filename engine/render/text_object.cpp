@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "TextObject.h"
+#include "engine/render/text_object.h"
 
 using namespace DirectX;
 using namespace MattMath;

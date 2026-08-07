@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "SoundBankObject.h"
+#include "engine/audio/sound_bank_object.h"
 
 using namespace DirectX;
 

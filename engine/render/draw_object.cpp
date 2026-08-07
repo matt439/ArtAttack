@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "DrawObject.h"
+#include "engine/render/draw_object.h"
 
 using namespace DirectX;
 using namespace MattMath;

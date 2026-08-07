@@ -1,7 +1,7 @@
 #ifndef TEXTOBJECT_H
 #define TEXTOBJECT_H
 
-#include "DrawObject.h"
+#include "engine/render/draw_object.h"
 
 class TextObject : public DrawObject
 {

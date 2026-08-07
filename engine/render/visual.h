@@ -2,7 +2,7 @@
 #define VISUAL_H
 
 #include "engine/core/i_game_object.h"
-#include "TextureObject.h"
+#include "engine/render/texture_object.h"
 #include "engine/math/matt_math.h"
 
 class Visual final : public IGameObject, public TextureObject

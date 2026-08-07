@@ -1,7 +1,7 @@
 #ifndef TEXTUREOBJECT_H
 #define TEXTUREOBJECT_H
 
-#include "SpriteSheetObject.h"
+#include "engine/render/sprite_sheet_object.h"
 
 class TextureObject : public SpriteSheetObject
 {

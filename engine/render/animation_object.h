@@ -1,7 +1,7 @@
 #ifndef ANIMATIONOBJECT_H
 #define ANIMATIONOBJECT_H
 
-#include "SpriteSheetObject.h"
+#include "engine/render/sprite_sheet_object.h"
 #include "engine/render/animated_sprite.h"
 
 class AnimationObject : public SpriteSheetObject

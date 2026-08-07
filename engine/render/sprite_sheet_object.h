@@ -1,7 +1,7 @@
 #ifndef SPRITESHEETOBJECT_H
 #define SPRITESHEETOBJECT_H
 
-#include "DrawObject.h"
+#include "engine/render/draw_object.h"
 
 class SpriteSheetObject : public DrawObject
 {

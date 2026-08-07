@@ -2,8 +2,8 @@
 #define MH_H
 
 #include "engine/core/i_game_object.h"
-#include "TextureObject.h"
-#include "TextDropShadow.h"
+#include "engine/render/texture_object.h"
+#include "engine/render/text_drop_shadow.h"
 
 class MObject : public IGameObject
 {

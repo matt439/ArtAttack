@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "Visual.h"
+#include "engine/render/visual.h"
 
 using namespace MattMath;
 using namespace DirectX;

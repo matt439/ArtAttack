@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "SpriteSheetObject.h"
+#include "engine/render/sprite_sheet_object.h"
 
 using namespace DirectX;
 using namespace MattMath;
