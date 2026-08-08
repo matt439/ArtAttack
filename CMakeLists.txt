@@ -7,6 +7,15 @@ project(ArtAttack LANGUAGES CXX RC)
 
 include(cmake/settings.cmake)
 
+# The module graph, enforced. Runs on every build.
+add_custom_target(check_engine_includes ALL
+    COMMAND "${CMAKE_COMMAND}"
+        "-DENGINE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/engine"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/check_engine_includes.cmake"
+    COMMENT "Checking that no engine file includes a game header"
+    VERBATIM
+)
+
 enable_testing()
 
 add_subdirectory(engine)
